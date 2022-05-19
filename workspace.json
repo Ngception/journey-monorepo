@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "journey-ui": "apps/journey-ui",
+    "journey-ui-e2e": "apps/journey-ui-e2e"
+  }
+}

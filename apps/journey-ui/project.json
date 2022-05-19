@@ -1,0 +1,83 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/journey-ui/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/journey-ui",
+        "index": "apps/journey-ui/src/index.html",
+        "baseHref": "/",
+        "main": "apps/journey-ui/src/main.tsx",
+        "polyfills": "apps/journey-ui/src/polyfills.ts",
+        "tsConfig": "apps/journey-ui/tsconfig.app.json",
+        "assets": [
+          "apps/journey-ui/src/favicon.ico",
+          "apps/journey-ui/src/assets"
+        ],
+        "styles": ["apps/journey-ui/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/journey-ui/src/environments/environment.ts",
+              "with": "apps/journey-ui/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "journey-ui:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "journey-ui:build:development"
+        },
+        "production": {
+          "buildTarget": "journey-ui:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/journey-ui/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/journey-ui"],
+      "options": {
+        "jestConfig": "apps/journey-ui/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
