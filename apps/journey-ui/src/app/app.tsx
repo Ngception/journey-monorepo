@@ -1,23 +1,20 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { LayoutAside, LayoutBody, LayoutHeader } from '@journey-monorepo/ui';
+
 import 'bulma/css/bulma.min.css';
-import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <>
-      <div className="buttons">
-        <button className="button is-primary">Primary</button>
-        <button className="button is-link">Link</button>
+      <LayoutHeader />
+      <div className="columns is-gapless">
+        <div className="column is-one-third">
+          <LayoutAside />
+        </div>
+        <div className="column">
+          <LayoutBody />
+        </div>
       </div>
-
-      <div className="buttons">
-        <button className="button is-info">Info</button>
-        <button className="button is-success">Success</button>
-        <button className="button is-warning">Warning</button>
-        <button className="button is-danger">Danger</button>
-      </div>
-      <NxWelcome title="journey-ui" />
-      <div />
     </>
   );
 }

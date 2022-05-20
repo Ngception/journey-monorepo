@@ -1,17 +1,32 @@
-import { render } from '@testing-library/react';
+import { render, RenderResult } from '@testing-library/react';
 
 import App from './app';
 
 describe('App', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<App />);
+  let component: HTMLElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let query: any;
 
-    expect(baseElement).toBeTruthy();
+  beforeEach(() => {
+    const renderResult: RenderResult = render(<App />);
+
+    component = renderResult.baseElement;
+    query = renderResult.queryByTestId;
   });
 
-  it('should have a greeting as the title', () => {
-    const { getByText } = render(<App />);
+  it('should render', () => {
+    expect(component).toBeTruthy();
+  });
 
-    expect(getByText(/Welcome journey-ui/gi)).toBeTruthy();
+  it('should render header', () => {
+    expect(query('layout-header')).toBeTruthy();
+  });
+
+  it('should render aside', () => {
+    expect(query('layout-aside')).toBeTruthy();
+  });
+
+  it('should render body', () => {
+    expect(query('layout-body')).toBeTruthy();
   });
 });
