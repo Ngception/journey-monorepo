@@ -6,7 +6,7 @@
     "start": "nx serve",
     "start:dev": "nx serve --live-reload=false",
     "build": "nx build",
-    "test": "nx run-many --all --target=test",
+    "test": "nx test",
     "test-branch": "nx affected:test",
     "test-e2e-branch": "nx affected:e2e"
   },
