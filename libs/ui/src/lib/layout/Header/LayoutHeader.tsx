@@ -1,14 +1,18 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
+
+import styles from './LayoutHeader.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface LayoutHeaderProps {}
+interface LayoutHeaderProps {
+  children?: ReactNode;
+}
 
 export const LayoutHeader: FC<LayoutHeaderProps> = (
   props: LayoutHeaderProps
 ) => {
   return (
-    <div data-testid="layout-header">
-      <h2>LayoutHeader works!</h2>
+    <div className={styles['layout-header']} data-testid="layout-header">
+      {props.children}
     </div>
   );
 };
