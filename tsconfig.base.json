@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@journey-monorepo/ui": ["libs/ui/src/index.ts"]
+      "@journey-monorepo/ui": ["libs/ui/src/index.ts"],
+      "@journey-monorepo/util": ["libs/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

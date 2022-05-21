@@ -2,6 +2,7 @@
 import { LayoutAside, LayoutBody, LayoutHeader } from '@journey-monorepo/ui';
 
 import 'bulma/css/bulma.min.css';
+import { TaskContainer } from './components/Task/TaskContainer';
 
 export function App() {
   return (
@@ -12,7 +13,9 @@ export function App() {
           <LayoutAside />
         </div>
         <div className="column">
-          <LayoutBody />
+          <LayoutBody>
+            <TaskContainer />
+          </LayoutBody>
         </div>
       </div>
     </>
