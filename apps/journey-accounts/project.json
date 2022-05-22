@@ -1,0 +1,83 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/journey-accounts/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/journey-accounts",
+        "index": "apps/journey-accounts/src/index.html",
+        "baseHref": "/",
+        "main": "apps/journey-accounts/src/main.tsx",
+        "polyfills": "apps/journey-accounts/src/polyfills.ts",
+        "tsConfig": "apps/journey-accounts/tsconfig.app.json",
+        "assets": [
+          "apps/journey-accounts/src/favicon.ico",
+          "apps/journey-accounts/src/assets"
+        ],
+        "styles": ["apps/journey-accounts/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/journey-accounts/src/environments/environment.ts",
+              "with": "apps/journey-accounts/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "journey-accounts:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "journey-accounts:build:development"
+        },
+        "production": {
+          "buildTarget": "journey-accounts:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/journey-accounts/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/journey-accounts"],
+      "options": {
+        "jestConfig": "apps/journey-accounts/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

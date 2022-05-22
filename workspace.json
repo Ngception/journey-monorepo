@@ -2,6 +2,8 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "journey-accounts": "apps/journey-accounts",
+    "journey-accounts-e2e": "apps/journey-accounts-e2e",
     "journey-ui": "apps/journey-ui",
     "journey-ui-e2e": "apps/journey-ui-e2e",
     "ui": "libs/ui",
