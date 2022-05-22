@@ -1,6 +1,37 @@
+# Journey Monorepo
 
+## About
 
-# JourneyMonorepo
+This monorepo houses applications, services, and libraries related to the Journey project; a task management application. Journey's frontend is built using Typescript with React components and Bulma styling. Currently, there are plans to integrate GraphQL to communicate between the UI and backend services. The backend services themselves will be built with consideration towards one or a combination of languages that include Node.js, PHP, and Go.
+
+## Development
+
+### Prerequisites
+
+Please make sure you have the following installed:
+
+- Yarn 3
+- Node.js >=16
+
+### Setup
+
+Install package dependencies:
+
+```
+  yarn install
+```
+
+All work is done on a feature branch based on the `main` branch. When finished, a pull request is opened for the feature branch.
+
+To spin up a development server, specify the app name by running:
+
+```
+  APP=app-name yarn start
+```
+
+Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+
+---
 
 This project was generated using [Nx](https://nx.dev).
 
@@ -47,10 +78,6 @@ Run `nx g @nrwl/react:lib my-lib` to generate a library.
 
 Libraries are shareable across libraries and applications. They can be imported from `@journey-monorepo/mylib`.
 
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
 ## Code scaffolding
 
 Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
@@ -78,17 +105,3 @@ Run `nx graph` to see a diagram of the dependencies of your projects.
 ## Further help
 
 Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.

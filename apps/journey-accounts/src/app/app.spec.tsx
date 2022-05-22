@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './app';
 
 describe('App', () => {
-  it('should render successfully', () => {
+  it('should render', () => {
     const { baseElement } = render(
       <BrowserRouter>
         <App />
@@ -13,15 +13,5 @@ describe('App', () => {
     );
 
     expect(baseElement).toBeTruthy();
-  });
-
-  it('should have a greeting as the title', () => {
-    const { getByText } = render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
-
-    expect(getByText(/Welcome journey-accounts/gi)).toBeTruthy();
   });
 });
