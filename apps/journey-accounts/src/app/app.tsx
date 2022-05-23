@@ -1,7 +1,7 @@
 import { LayoutAside, LayoutBody, LayoutHeader } from '@journey-monorepo/ui';
-import { ProfileContainer } from './pages/Profile/ProfileContainer';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 import { AsideNavbar } from './components/Nav/Aside/AsideNavbar';
+import { AppRoutes } from './app.routes';
 
 import 'bulma/css/bulma.min.css';
 
@@ -19,7 +19,7 @@ export function App() {
         </div>
         <div className="column">
           <LayoutBody>
-            <ProfileContainer />
+            <AppRoutes />
           </LayoutBody>
         </div>
       </div>
