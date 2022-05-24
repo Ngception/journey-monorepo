@@ -4,6 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve $APP",
+    "start:accounts": "nx serve journey-accounts",
+    "start:ui": "nx serve journey-ui",
     "build": "nx build",
     "test": "nx run-many --all --target=test",
     "test-branch": "nx affected:test",
