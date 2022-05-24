@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Icon } from '@journey-monorepo/ui';
 
 import styles from './ProfileDetails.module.scss';
 
@@ -12,7 +13,12 @@ export const ProfileDetails: FC<ProfileDetailsProps> = (
 
   return (
     <div>
-      <h1>About you</h1>
+      <h1>
+        <span className={styles['about-icon']}>
+          <Icon type="solid" name="user" />
+        </span>
+        About you{' '}
+      </h1>
       <div className={detailsCardClasses}>
         <h2>User: account@email.com</h2>
         <h2>Account created on 05/21/2022</h2>
