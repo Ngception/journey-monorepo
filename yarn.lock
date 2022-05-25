@@ -6639,6 +6639,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"focus-trap-react@npm:^8.11.1":
+  version: 8.11.1
+  resolution: "focus-trap-react@npm:8.11.1"
+  dependencies:
+    focus-trap: ^6.9.1
+  peerDependencies:
+    prop-types: ^15.8.1
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: 0239b92e5250b7018795b429c7637176b1a09f00d39d9c8d5c09c572e73fce11c4a8b80912b024379824b5fa164d76838eadb3b34496be1abfdc886269b4632f
+  languageName: node
+  linkType: hard
+
+"focus-trap@npm:^6.9.1":
+  version: 6.9.2
+  resolution: "focus-trap@npm:6.9.2"
+  dependencies:
+    tabbable: ^5.3.2
+  checksum: 326f210dceb5db6fec414e758bfd388a8ce9c9a013380fbe2fbaf40558436219fbbd6c747e4ed7bf4149086382c0d755490ca5847e37808e0d33b4ccc7c7369e
+  languageName: node
+  linkType: hard
+
 "follow-redirects@npm:^1.0.0":
   version: 1.15.0
   resolution: "follow-redirects@npm:1.15.0"
@@ -8496,6 +8518,7 @@ __metadata:
     eslint-plugin-jsx-a11y: 6.5.1
     eslint-plugin-react: 7.29.4
     eslint-plugin-react-hooks: 4.5.0
+    focus-trap-react: ^8.11.1
     jest: 27.5.1
     nx: 14.1.7
     prettier: ^2.5.1
@@ -12153,6 +12176,13 @@ __metadata:
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
   checksum: 6e8fc7e1486b8b54bea91199d9535bb72f10842e40c79e882fc94fb7b14b89866adf2fd79efa5ebb5b658bc07fb459ccce5ac0e99ef3d72f474e74aaf284029d
+  languageName: node
+  linkType: hard
+
+"tabbable@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "tabbable@npm:5.3.2"
+  checksum: 30e9526fd1aaf173944597c838846c32bf38d71192f0565f7e0bd62b86e86c24be9c929b6b49b3f7a9066d913d7d6ba06d754c82ebb9334dd26a58e7df37b9d0
   languageName: node
   linkType: hard
 

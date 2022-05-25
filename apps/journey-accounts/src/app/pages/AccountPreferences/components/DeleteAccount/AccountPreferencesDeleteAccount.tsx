@@ -1,5 +1,5 @@
-import { Icon } from '@journey-monorepo/ui';
-import { FC } from 'react';
+import { ConfirmationDialog, Icon } from '@journey-monorepo/ui';
+import { FC, useRef, useState } from 'react';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
 
@@ -9,8 +9,19 @@ interface AccountPreferencesDeleteAccountProps {}
 export const AccountPreferencesDeleteAccount: FC<
   AccountPreferencesDeleteAccountProps
 > = (props: AccountPreferencesDeleteAccountProps) => {
-  const handleClick = () => {
-    console.log('delete!');
+  const deleteAccountTrigger = useRef<HTMLButtonElement>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleConfirm = () => {
+    return console.log('Confirmed!');
   };
 
   return (
@@ -23,20 +34,40 @@ export const AccountPreferencesDeleteAccount: FC<
           </span>
           <p>
             When you delete your account, you lose access to Journey account
-            services, and we permanently delete your personal data. This action
-            cannot be undone.
+            services, and we permanently delete your personal data.
           </p>
         </div>
       </div>
       <div className={styles['actions']}>
         <button
+          ref={deleteAccountTrigger}
           className="button is-danger"
           type="button"
-          onClick={() => handleClick()}
+          onClick={() => openDialog()}
         >
           Delete account
         </button>
       </div>
+
+      <ConfirmationDialog
+        title="Confirm account deletion"
+        trigger={deleteAccountTrigger}
+        showDanger={true}
+        confirmButtonColor="is-danger"
+        confirmHandler={() => handleConfirm()}
+        cancelHandler={() => closeDialog()}
+        isDialogOpen={isDialogOpen}
+      >
+        <div className={styles['dialog-content']}>
+          <span className="">
+            <Icon type="solid" name="triangle-exclamation" />
+          </span>
+          <p>
+            You are about to delete your account. Once confirmed, this action
+            cannot be undone.
+          </p>
+        </div>
+      </ConfirmationDialog>
     </div>
   );
 };

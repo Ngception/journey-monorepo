@@ -5,4 +5,5 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 library.add(far, fas);
 
 export * from './lib/layout';
-export * from './lib/icons';
+export * from './lib/icon';
+export * from './lib/dialog';
