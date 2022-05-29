@@ -51,7 +51,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "journey-accounts:build",
-        "hmr": true
+        "hmr": true,
+        "proxyConfig": "apps/journey-accounts/proxy.conf.json"
       },
       "configurations": {
         "development": {

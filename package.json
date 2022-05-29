@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve $APP",
     "start:accounts": "nx serve journey-accounts",
+    "start:aapi": "nx serve accounts-api",
     "start:ui": "nx serve journey-ui",
     "start:japi": "nx serve journey-api",
     "build": "nx build",
