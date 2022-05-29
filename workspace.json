@@ -4,6 +4,7 @@
   "projects": {
     "journey-accounts": "apps/journey-accounts",
     "journey-accounts-e2e": "apps/journey-accounts-e2e",
+    "journey-api": "apps/journey-api",
     "journey-ui": "apps/journey-ui",
     "journey-ui-e2e": "apps/journey-ui-e2e",
     "ui": "libs/ui",
