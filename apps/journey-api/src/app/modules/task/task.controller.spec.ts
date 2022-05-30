@@ -37,19 +37,23 @@ describe('TaskController', () => {
     it('should get all tasks', async () => {
       jest.spyOn(taskService, 'getAllTasks');
 
-      const res = await taskController.getAllTasks().data;
+      const res = await taskController.getAllTasks();
 
       expect(taskService.getAllTasks).toHaveBeenCalled();
-      expect(res).toEqual([task]);
+      expect(res).toEqual({
+        data: [task],
+      });
     });
 
     it('should get a single task by id', async () => {
       jest.spyOn(taskService, 'getTaskById');
 
-      const res = await taskController.getTaskById('id').data;
+      const res = await taskController.getTaskById('id');
 
       expect(taskService.getTaskById).toHaveBeenCalledWith('id');
-      expect(res).toEqual(task);
+      expect(res).toEqual({
+        data: task,
+      });
     });
   });
 });

@@ -7,16 +7,16 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Get()
-  getAllTasks(): { data: Promise<Task[]> } {
+  async getAllTasks(): Promise<{ data: Task[] }> {
     return {
-      data: this.taskService.getAllTasks(),
+      data: await this.taskService.getAllTasks(),
     };
   }
 
   @Get(':id')
-  getTaskById(@Param('id') id: string): { data: Promise<Task> } {
+  async getTaskById(@Param('id') id: string): Promise<{ data: Task }> {
     return {
-      data: this.taskService.getTaskById(id),
+      data: await this.taskService.getTaskById(id),
     };
   }
 }
