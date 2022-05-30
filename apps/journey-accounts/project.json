@@ -52,7 +52,8 @@
       "options": {
         "buildTarget": "journey-accounts:build",
         "hmr": true,
-        "proxyConfig": "apps/journey-accounts/proxy.conf.json"
+        "proxyConfig": "apps/journey-accounts/proxy.conf.json",
+        "port": 4200
       },
       "configurations": {
         "development": {

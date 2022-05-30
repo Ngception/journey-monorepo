@@ -4,16 +4,15 @@
 
 This monorepo houses applications, services, and libraries related to the Journey project; a task management application. Journey's frontend is built using Typescript with React components and Bulma styling. Currently, there are plans to integrate GraphQL to communicate between the UI and backend services. The backend services themselves will be built with consideration towards one or a combination of languages that include Node.js, PHP, and Go.
 
-## Development
-
-### Prerequisites
+## Prerequisites
 
 Please make sure you have the following installed:
 
 - Yarn 3
 - Node.js >=16
+- Docker
 
-### Setup
+## Setup
 
 Install package dependencies:
 
@@ -21,15 +20,53 @@ Install package dependencies:
   yarn install
 ```
 
+To create project databases:
+
+- Create a `.env` directory at the project root
+- Create `journey-db.env` and `accounts-db.env` files
+- Add postgres database passwords in each file
+
+Then run:
+
+```
+  make create-dbs
+```
+
+## Development
+
 All work is done on a feature branch based on the `main` branch. When finished, a pull request is opened for the feature branch.
 
-To spin up a development server, specify the app name by running:
+Spin up project databases:
+
+```
+  make start-dbs
+```
+
+Spin up development servers for all apps:
+
+```
+  yarn start:all
+```
+
+Spin up a development server for a specific app:
 
 ```
   APP=app-name yarn start
 ```
 
-Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+Shutdown project databases:
+
+```
+  make stop-dbs
+```
+
+Delete project databases:
+
+```
+  make destroy-dbs
+```
+
+Apps will automatically reload when changes are made to source files.
 
 ---
 
