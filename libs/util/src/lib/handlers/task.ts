@@ -7,3 +7,7 @@ export const createTaskLists = () => {
 export const createTasks = () => {
   return TasksFixtures;
 };
+
+export const createTask = () => {
+  return TasksFixtures[0];
+};

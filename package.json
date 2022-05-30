@@ -23,18 +23,22 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "latest",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.0.1",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^8.0.4",
     "bulma": "^0.9.4",
     "core-js": "^3.6.5",
     "focus-trap-react": "^8.11.1",
+    "pg": "^8.7.3",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-router-dom": "6.3.0",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "typeorm": "^0.3.6"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",

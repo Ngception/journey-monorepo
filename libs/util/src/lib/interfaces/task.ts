@@ -6,7 +6,10 @@ export interface ITaskList {
 }
 
 export interface ITask {
-  id: string;
-  text: string;
-  status: Status;
+  task_id: string;
+  content: string;
+  current_status: Status;
+  user_id: string;
+  created_at: Date;
+  updated_at: Date | null;
 }
