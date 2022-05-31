@@ -38,7 +38,8 @@
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
     "tslib": "^2.3.0",
-    "typeorm": "^0.3.6"
+    "typeorm": "^0.3.6",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",

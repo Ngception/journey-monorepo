@@ -22,8 +22,21 @@ describe('TaskController', () => {
           useValue: {
             find: jest.fn().mockResolvedValue([task]),
             findOneBy: jest.fn().mockResolvedValue(task),
+            create: jest.fn().mockResolvedValue(task),
+            insert: jest
+              .fn()
+              .mockResolvedValue({ identifiers: [{ task_id: 'uuid' }] }),
+            update: jest.fn().mockResolvedValue({
+              affected: 1,
+            }),
+            delete: jest.fn().mockResolvedValue({
+              affected: 1,
+            }),
             getAllTasks: jest.fn(),
             getTaskById: jest.fn(),
+            createTask: jest.fn(),
+            updateTaskById: jest.fn(),
+            deleteTaskbyId: jest.fn(),
           },
         },
       ],
@@ -53,6 +66,56 @@ describe('TaskController', () => {
       expect(taskService.getTaskById).toHaveBeenCalledWith('id');
       expect(res).toEqual({
         data: task,
+      });
+    });
+  });
+
+  describe('POST', () => {
+    it('should create a single task', async () => {
+      jest.spyOn(taskService, 'createTask');
+
+      const data = {
+        content: 'test content',
+        current_status: 'done' as const,
+        user_id: 'uuid',
+      };
+
+      const res = await taskController.createTask(data);
+
+      expect(taskService.createTask).toHaveBeenCalledWith(data);
+      expect(res).toEqual({
+        data: 'uuid',
+      });
+    });
+  });
+
+  describe('PATCH', () => {
+    it('should update a single task by id', async () => {
+      jest.spyOn(taskService, 'updateTaskById');
+
+      const data = {
+        content: 'updated content',
+        current_status: 'in progress' as const,
+      };
+
+      const res = await taskController.updateTaskById('uuid', data);
+
+      expect(taskService.updateTaskById).toHaveBeenCalledWith('uuid', data);
+      expect(res).toEqual({
+        data: 1,
+      });
+    });
+  });
+
+  describe('DELETE', () => {
+    it('should delete a single task by id', async () => {
+      jest.spyOn(taskService, 'deleteTaskById');
+
+      const res = await taskController.deleteTaskById('uuid');
+
+      expect(taskService.deleteTaskById).toHaveBeenCalledWith('uuid');
+      expect(res).toEqual({
+        data: 1,
       });
     });
   });
