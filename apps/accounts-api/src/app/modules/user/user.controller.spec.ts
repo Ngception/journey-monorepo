@@ -6,7 +6,7 @@ import { UserController } from './user.controller';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
-describe('TaskController', () => {
+describe('UserController', () => {
   let userService: UserService;
   let userController: UserController;
 
@@ -22,8 +22,21 @@ describe('TaskController', () => {
           useValue: {
             find: jest.fn().mockResolvedValue([user]),
             findOneBy: jest.fn().mockResolvedValue(user),
-            getAllTasks: jest.fn(),
-            getTaskById: jest.fn(),
+            create: jest.fn().mockResolvedValue(user),
+            insert: jest
+              .fn()
+              .mockResolvedValue({ identifiers: [{ user_id: 'uuid' }] }),
+            update: jest.fn().mockResolvedValue({
+              affected: 1,
+            }),
+            delete: jest.fn().mockResolvedValue({
+              affected: 1,
+            }),
+            getAllUsers: jest.fn(),
+            getUserById: jest.fn(),
+            createUser: jest.fn(),
+            updateUserById: jest.fn(),
+            deleteUserById: jest.fn(),
           },
         },
       ],
@@ -53,6 +66,54 @@ describe('TaskController', () => {
       expect(userService.getUserById).toHaveBeenCalledWith('id');
       expect(res).toEqual({
         data: user,
+      });
+    });
+  });
+
+  describe('POST', () => {
+    it('should create a single task', async () => {
+      jest.spyOn(userService, 'createUser');
+
+      const data = {
+        email: 'testemail',
+        password: 'testpassword',
+      };
+
+      const res = await userController.createUser(data);
+
+      expect(userService.createUser).toHaveBeenCalledWith(data);
+      expect(res).toEqual({
+        data: 'uuid',
+      });
+    });
+  });
+
+  describe('PATCH', () => {
+    it('should update a single user by id', async () => {
+      jest.spyOn(userService, 'updateUserById');
+
+      const data = {
+        password: 'newpassword',
+      };
+
+      const res = await userController.updateUserById('uuid', data);
+
+      expect(userService.updateUserById).toHaveBeenCalledWith('uuid', data);
+      expect(res).toEqual({
+        data: 1,
+      });
+    });
+  });
+
+  describe('DELETE', () => {
+    it('should delete a single user by id', async () => {
+      jest.spyOn(userService, 'deleteUserById');
+
+      const res = await userController.deleteUserById('uuid');
+
+      expect(userService.deleteUserById).toHaveBeenCalledWith('uuid');
+      expect(res).toEqual({
+        data: 1,
       });
     });
   });
