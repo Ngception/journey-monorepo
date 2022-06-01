@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { hashData, throwError } from '@journey-monorepo/util';
+import { hashData, throwError } from '../../shared/auth/auth.util';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 

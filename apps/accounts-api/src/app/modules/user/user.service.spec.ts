@@ -1,12 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { createUser, hashData } from '@journey-monorepo/util';
+import { createUser } from '@journey-monorepo/util';
+import { hashData } from '../../shared/auth/auth.util';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
 // Mock utils module to be able mock certain methods
-jest.mock('@journey-monorepo/util', () => {
+jest.mock('../../shared/auth/auth.util', () => {
   const originalModule = jest.requireActual('@journey-monorepo/util');
 
   return {

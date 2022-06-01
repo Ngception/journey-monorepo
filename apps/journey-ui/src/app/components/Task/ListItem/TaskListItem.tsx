@@ -15,7 +15,7 @@ export const TaskListItem: FC<TaskListItemProps> = (
 
   return (
     <div className={classes}>
-      <h2>{props.item.text}</h2>
+      <h2>{props.item.content}</h2>
     </div>
   );
 };

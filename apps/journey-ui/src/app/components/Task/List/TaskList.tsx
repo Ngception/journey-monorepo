@@ -17,7 +17,7 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
           <span>{props.list.items.length}</span> {props.list.title}
         </h1>
         {props.list.items.map((i) => (
-          <TaskListItem item={i} key={i.id} />
+          <TaskListItem item={i} key={i.task_id} />
         ))}
       </div>
     </div>
