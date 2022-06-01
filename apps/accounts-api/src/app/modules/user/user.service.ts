@@ -1,6 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { hashData, throwError } from '@journey-monorepo/util';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 
@@ -8,50 +9,73 @@ import { User } from './user.entity';
 export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  throwError() {
-    throw new HttpException(
-      {
-        status: HttpStatus.EXPECTATION_FAILED,
-        error: 'Unexpected error. Please try again later.',
-      },
-      HttpStatus.EXPECTATION_FAILED
-    );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async checkForExistingUser(data: Record<string, any>) {
+    const existingUser = await this.repo.findOneBy(data);
+
+    if (existingUser !== null) {
+      throwError(409, 'User already exists.');
+      return;
+    }
+  }
+
+  async hashPassword(password, saltRounds = 10): Promise<string> {
+    const hash = await hashData(password, saltRounds);
+
+    if (typeof hash !== 'string') {
+      throwError();
+      return;
+    }
+
+    return hash;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async saveNewUser(data: Record<string, any>): Promise<string> {
+    try {
+      const newUser = this.repo.create(data);
+      const { identifiers } = await this.repo.insert(newUser);
+
+      return identifiers[0].user_id;
+    } catch (err) {
+      throwError();
+    }
   }
 
   async getAllUsers(): Promise<User[]> {
     try {
       return await this.repo.find();
     } catch (err) {
-      this.throwError();
+      throwError();
       return;
     }
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getUserById(id: string): Promise<User | null> {
     try {
       return await this.repo.findOneBy({
         user_id: id,
       });
     } catch (err) {
-      this.throwError();
+      throwError();
       return;
     }
   }
 
   async createUser(data: CreateUserDto): Promise<string> {
-    try {
-      const newUser = this.repo.create({
-        ...data,
-        created_at: new Date(),
-        updated_at: new Date(),
-      });
-      const { identifiers } = await this.repo.insert(newUser);
+    await this.checkForExistingUser({
+      email: data.email,
+    });
 
-      return identifiers[0].user_id;
-    } catch (err) {
-      this.throwError();
-      return;
-    }
+    const hash = await this.hashPassword(data.password);
+    const newUserUuid = await this.saveNewUser({
+      ...data,
+      password: hash,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+
+    return newUserUuid;
   }
 
   async updateUserById(id: string, data: UpdateUserDto): Promise<number> {
@@ -63,7 +87,7 @@ export class UserService {
 
       return affected;
     } catch (err) {
-      this.throwError();
+      throwError();
       return;
     }
   }
@@ -74,7 +98,7 @@ export class UserService {
 
       return affected;
     } catch (err) {
-      this.throwError();
+      throwError();
       return;
     }
   }

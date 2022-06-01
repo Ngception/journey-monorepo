@@ -2,6 +2,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
+import { Repository } from 'typeorm';
 import { UserController } from './user.controller';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -9,10 +10,11 @@ import { UserService } from './user.service';
 describe('UserController', () => {
   let userService: UserService;
   let userController: UserController;
+  let userRepository: Repository<User>;
 
   const user = createUser();
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
@@ -21,7 +23,7 @@ describe('UserController', () => {
           provide: getRepositoryToken(User),
           useValue: {
             find: jest.fn().mockResolvedValue([user]),
-            findOneBy: jest.fn().mockResolvedValue(user),
+            findOneBy: jest.fn(),
             create: jest.fn().mockResolvedValue(user),
             insert: jest
               .fn()
@@ -44,6 +46,7 @@ describe('UserController', () => {
 
     userService = module.get<UserService>(UserService);
     userController = module.get<UserController>(UserController);
+    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
   });
 
   describe('GET', () => {
@@ -60,6 +63,7 @@ describe('UserController', () => {
 
     it('should get a single user by id', async () => {
       jest.spyOn(userService, 'getUserById');
+      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(user);
 
       const res = await userController.getUserById('id');
 
@@ -71,8 +75,9 @@ describe('UserController', () => {
   });
 
   describe('POST', () => {
-    it('should create a single task', async () => {
+    it('should create a single user', async () => {
       jest.spyOn(userService, 'createUser');
+      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
 
       const data = {
         email: 'testemail',

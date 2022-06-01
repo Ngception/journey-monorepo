@@ -8,7 +8,6 @@ import { TaskService } from './task.service';
 describe('TaskService', () => {
   let taskService: TaskService;
   let taskRepository: Repository<Task>;
-  let setSpies: (serviceMethod, repoMethod) => void;
 
   const task = createTask();
 
@@ -43,16 +42,12 @@ describe('TaskService', () => {
 
     taskService = module.get<TaskService>(TaskService);
     taskRepository = module.get<Repository<Task>>(getRepositoryToken(Task));
-
-    setSpies = (serviceMethod, repoMethod) => {
-      jest.spyOn(taskService, serviceMethod);
-      jest.spyOn(taskRepository, repoMethod);
-    };
   });
 
   describe('GET', () => {
     it('should get all tasks', async () => {
-      setSpies('getAllTasks', 'find');
+      jest.spyOn(taskService, 'getAllTasks');
+      jest.spyOn(taskRepository, 'find');
 
       const res = await taskService.getAllTasks();
 
@@ -61,7 +56,8 @@ describe('TaskService', () => {
     });
 
     it('should get a single task by id', async () => {
-      setSpies('getTaskById', 'findOneBy');
+      jest.spyOn(taskService, 'getTaskById');
+      jest.spyOn(taskRepository, 'findOneBy');
 
       const res = await taskService.getTaskById('id');
 
@@ -72,7 +68,8 @@ describe('TaskService', () => {
 
   describe('POST', () => {
     it('should create a single task', async () => {
-      setSpies('createTask', 'create');
+      jest.spyOn(taskService, 'createTask');
+      jest.spyOn(taskRepository, 'create');
       jest.spyOn(taskRepository, 'insert');
 
       const data = {
@@ -97,7 +94,8 @@ describe('TaskService', () => {
 
   describe('PATCH', () => {
     it('should update a single task by id', async () => {
-      setSpies('updateTaskById', 'update');
+      jest.spyOn(taskService, 'updateTaskById');
+      jest.spyOn(taskRepository, 'update');
 
       const data = {
         content: 'updated content',
@@ -114,7 +112,8 @@ describe('TaskService', () => {
 
   describe('DELETE', () => {
     it('should delete a single task by id', async () => {
-      setSpies('deleteTaskById', 'delete');
+      jest.spyOn(taskService, 'deleteTaskById');
+      jest.spyOn(taskRepository, 'delete');
 
       const res = await taskService.deleteTaskById('uuid');
 

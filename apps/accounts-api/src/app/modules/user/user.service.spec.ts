@@ -1,16 +1,26 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { createUser } from '@journey-monorepo/util';
+import { createUser, hashData } from '@journey-monorepo/util';
 import { User } from './user.entity';
 import { UserService } from './user.service';
+
+// Mock utils module to be able mock certain methods
+jest.mock('@journey-monorepo/util', () => {
+  const originalModule = jest.requireActual('@journey-monorepo/util');
+
+  return {
+    ...originalModule,
+    hashData: jest.fn(),
+  };
+});
 
 describe('UserService', () => {
   let userService: UserService;
   let userRepository: Repository<User>;
-  let setSpies: (serviceMethod, repoMethod) => void;
 
   const user = createUser();
+
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       providers: [
@@ -19,7 +29,7 @@ describe('UserService', () => {
           provide: getRepositoryToken(User),
           useValue: {
             find: jest.fn().mockResolvedValue([user]),
-            findOneBy: jest.fn().mockResolvedValue(user),
+            findOneBy: jest.fn(),
             create: jest.fn().mockResolvedValue(user),
             insert: jest
               .fn()
@@ -42,15 +52,12 @@ describe('UserService', () => {
 
     userService = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
-    setSpies = (serviceMethod, repoMethod) => {
-      jest.spyOn(userService, serviceMethod);
-      jest.spyOn(userRepository, repoMethod);
-    };
   });
 
   describe('GET', () => {
     it('should get all users', async () => {
-      setSpies('getAllUsers', 'find');
+      jest.spyOn(userService, 'getAllUsers');
+      jest.spyOn(userRepository, 'find');
 
       const res = await userService.getAllUsers();
 
@@ -59,7 +66,8 @@ describe('UserService', () => {
     });
 
     it('should get a single user by id', async () => {
-      setSpies('getUserById', 'findOneBy');
+      jest.spyOn(userService, 'getUserById');
+      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(user);
 
       const res = await userService.getUserById('id');
 
@@ -70,7 +78,12 @@ describe('UserService', () => {
 
   describe('POST', () => {
     it('should create a single user', async () => {
-      setSpies('createUser', 'create');
+      const mocked = { hashData };
+
+      jest.spyOn(mocked, 'hashData').mockResolvedValue('password');
+      jest.spyOn(userService, 'createUser');
+      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
+      jest.spyOn(userRepository, 'create');
       jest.spyOn(userRepository, 'insert');
 
       const data = {
@@ -94,7 +107,8 @@ describe('UserService', () => {
 
   describe('PATCH', () => {
     it('should update a single user by id', async () => {
-      setSpies('updateUserById', 'update');
+      jest.spyOn(userService, 'updateUserById');
+      jest.spyOn(userRepository, 'update');
 
       const data = {
         password: 'newpassword',
@@ -110,7 +124,8 @@ describe('UserService', () => {
 
   describe('DELETE', () => {
     it('should delete a single user by id', async () => {
-      setSpies('deleteUserById', 'delete');
+      jest.spyOn(userService, 'deleteUserById');
+      jest.spyOn(userRepository, 'delete');
 
       const res = await userService.deleteUserById('uuid');
 
