@@ -21,6 +21,7 @@ describe('UserService', () => {
   let userRepository: Repository<User>;
 
   const user = createUser();
+  const date = new Date().toString();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -53,6 +54,8 @@ describe('UserService', () => {
 
     userService = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+
+    jest.spyOn(global, 'Date').mockReturnValue(date);
   });
 
   describe('GET', () => {

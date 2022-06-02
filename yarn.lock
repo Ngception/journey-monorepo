@@ -4521,7 +4521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.27.2":
+"axios@npm:0.27.2, axios@npm:^0.27.2":
   version: 0.27.2
   resolution: "axios@npm:0.27.2"
   dependencies:
@@ -9165,6 +9165,7 @@ __metadata:
     "@types/react-router-dom": 5.3.3
     "@typescript-eslint/eslint-plugin": ~5.18.0
     "@typescript-eslint/parser": ~5.18.0
+    axios: ^0.27.2
     babel-jest: 27.5.1
     bcrypt: ^5.0.1
     bulma: ^0.9.4

@@ -18,9 +18,15 @@ export class TaskService {
     );
   }
 
-  async getAllTasks(): Promise<Task[]> {
+  async getAllTasks(user_id?: string): Promise<Task[]> {
     try {
-      return await this.repo.find();
+      if (user_id) {
+        return await this.repo.findBy({
+          user_id,
+        });
+      } else {
+        return await this.repo.find();
+      }
     } catch (err) {
       this.throwError(err);
       return;

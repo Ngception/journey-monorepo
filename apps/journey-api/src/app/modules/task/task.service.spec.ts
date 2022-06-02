@@ -10,6 +10,7 @@ describe('TaskService', () => {
   let taskRepository: Repository<Task>;
 
   const task = createTask();
+  const date = new Date().toString();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -19,6 +20,7 @@ describe('TaskService', () => {
           provide: getRepositoryToken(Task),
           useValue: {
             find: jest.fn().mockResolvedValue([task]),
+            findBy: jest.fn(),
             findOneBy: jest.fn().mockResolvedValue(task),
             create: jest.fn().mockResolvedValue(task),
             insert: jest
@@ -42,6 +44,8 @@ describe('TaskService', () => {
 
     taskService = module.get<TaskService>(TaskService);
     taskRepository = module.get<Repository<Task>>(getRepositoryToken(Task));
+
+    jest.spyOn(global, 'Date').mockReturnValue(date);
   });
 
   describe('GET', () => {
@@ -53,6 +57,16 @@ describe('TaskService', () => {
 
       expect(res).toEqual([task]);
       expect(taskRepository.find).toHaveBeenCalled();
+    });
+
+    it('should get all tasks by user id', async () => {
+      jest.spyOn(taskService, 'getAllTasks');
+      jest.spyOn(taskRepository, 'findBy').mockResolvedValue([task]);
+
+      const res = await taskService.getAllTasks('uuid');
+
+      expect(res).toEqual([task]);
+      expect(taskRepository.findBy).toHaveBeenCalledWith({ user_id: 'uuid' });
     });
 
     it('should get a single task by id', async () => {
@@ -71,6 +85,7 @@ describe('TaskService', () => {
       jest.spyOn(taskService, 'createTask');
       jest.spyOn(taskRepository, 'create');
       jest.spyOn(taskRepository, 'insert');
+      jest.spyOn(global, 'Date').mockReturnValue(date);
 
       const data = {
         content: 'test content',

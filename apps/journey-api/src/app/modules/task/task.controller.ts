@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateTaskDto, UpdateTaskDto } from './task.dto';
 import { Task } from './task.entity';
@@ -15,10 +16,12 @@ import { TaskService } from './task.service';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  @Get()
-  async getAllTasks(): Promise<{ data: Task[] }> {
+  @Get('')
+  async getAllTasks(
+    @Query('user') user_id?: string
+  ): Promise<{ data: Task[] }> {
     return {
-      data: await this.taskService.getAllTasks(),
+      data: await this.taskService.getAllTasks(user_id),
     };
   }
 
