@@ -1,29 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ConfirmationDialog } from './ConfirmationDialog';
+import { ActionDialog } from './ActionDialog';
 
-describe('ConfirmationDialog', () => {
+describe('ActionDialog', () => {
   let component: HTMLElement;
   let query: any;
 
   const testProps = {
     title: 'title',
     isDialogOpen: true,
-    confirmHandler: jest.fn(),
+    actionButtonLabel: 'action',
+    actionHandler: jest.fn(),
     cancelHandler: jest.fn(),
   };
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
-      <ConfirmationDialog
+      <ActionDialog
         title={testProps.title}
         isDialogOpen={testProps.isDialogOpen}
-        confirmHandler={testProps.confirmHandler}
+        actionButtonLabel={testProps.actionButtonLabel}
+        actionHandler={testProps.actionHandler}
         cancelHandler={testProps.cancelHandler}
       >
         <p>Test</p>
-      </ConfirmationDialog>
+      </ActionDialog>
     );
 
     component = renderResult.baseElement;
@@ -35,16 +37,14 @@ describe('ConfirmationDialog', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should confirm', async () => {
-    const confirmButton = query('confirm-button');
-    const confirmField = query('confirm-field');
+  it('should perform action', async () => {
+    const actionButton = query('action-button');
 
-    expect(confirmButton).toBeTruthy();
+    expect(actionButton).toBeTruthy();
 
-    await userEvent.type(confirmField, 'confirm');
-    await userEvent.click(confirmButton);
+    await userEvent.click(actionButton);
 
-    expect(testProps.confirmHandler).toHaveBeenCalled();
+    expect(testProps.actionHandler).toHaveBeenCalled();
   });
 
   it('should cancel', async () => {
