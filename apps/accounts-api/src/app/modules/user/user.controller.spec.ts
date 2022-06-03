@@ -56,9 +56,7 @@ describe('UserController', () => {
       const res = await userController.getAllUsers();
 
       expect(userService.getAllUsers).toHaveBeenCalled();
-      expect(res).toEqual({
-        data: [user],
-      });
+      expect(res).toEqual([user]);
     });
 
     it('should get a single user by id', async () => {
@@ -68,9 +66,7 @@ describe('UserController', () => {
       const res = await userController.getUserById('id');
 
       expect(userService.getUserById).toHaveBeenCalledWith('id');
-      expect(res).toEqual({
-        data: user,
-      });
+      expect(res).toEqual(user);
     });
   });
 
@@ -87,9 +83,7 @@ describe('UserController', () => {
       const res = await userController.createUser(data);
 
       expect(userService.createUser).toHaveBeenCalledWith(data);
-      expect(res).toEqual({
-        data: 'uuid',
-      });
+      expect(res).toEqual('uuid');
     });
   });
 
@@ -104,9 +98,7 @@ describe('UserController', () => {
       const res = await userController.updateUserById('uuid', data);
 
       expect(userService.updateUserById).toHaveBeenCalledWith('uuid', data);
-      expect(res).toEqual({
-        data: 1,
-      });
+      expect(res).toEqual(1);
     });
   });
 
@@ -117,9 +109,7 @@ describe('UserController', () => {
       const res = await userController.deleteUserById('uuid');
 
       expect(userService.deleteUserById).toHaveBeenCalledWith('uuid');
-      expect(res).toEqual({
-        data: 1,
-      });
+      expect(res).toEqual(1);
     });
   });
 });

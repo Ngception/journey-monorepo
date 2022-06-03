@@ -6,9 +6,9 @@ const BASE_URL = process.env['NX_JAPI_BASE_URL'];
 export const getAllTasksByUserId = async (
   userId?: string
 ): Promise<ITask[] | []> => {
-  const { data: response }: AxiosResponse<{ data: ITask[] }> = await axios.get(
+  const { data }: AxiosResponse<ITask[]> = await axios.get(
     `${BASE_URL}/tasks?user=${userId}`
   );
 
-  return response.data;
+  return data;
 };

@@ -53,9 +53,7 @@ describe('TaskController', () => {
       const res = await taskController.getAllTasks();
 
       expect(taskService.getAllTasks).toHaveBeenCalled();
-      expect(res).toEqual({
-        data: [task],
-      });
+      expect(res).toEqual([task]);
     });
 
     it('should get a single task by id', async () => {
@@ -64,9 +62,7 @@ describe('TaskController', () => {
       const res = await taskController.getTaskById('id');
 
       expect(taskService.getTaskById).toHaveBeenCalledWith('id');
-      expect(res).toEqual({
-        data: task,
-      });
+      expect(res).toEqual(task);
     });
   });
 
@@ -83,9 +79,7 @@ describe('TaskController', () => {
       const res = await taskController.createTask(data);
 
       expect(taskService.createTask).toHaveBeenCalledWith(data);
-      expect(res).toEqual({
-        data: 'uuid',
-      });
+      expect(res).toEqual('uuid');
     });
   });
 
@@ -101,9 +95,7 @@ describe('TaskController', () => {
       const res = await taskController.updateTaskById('uuid', data);
 
       expect(taskService.updateTaskById).toHaveBeenCalledWith('uuid', data);
-      expect(res).toEqual({
-        data: 1,
-      });
+      expect(res).toEqual(1);
     });
   });
 
@@ -114,9 +106,7 @@ describe('TaskController', () => {
       const res = await taskController.deleteTaskById('uuid');
 
       expect(taskService.deleteTaskById).toHaveBeenCalledWith('uuid');
-      expect(res).toEqual({
-        data: 1,
-      });
+      expect(res).toEqual(1);
     });
   });
 });
