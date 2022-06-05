@@ -16,12 +16,7 @@ describe('ConfirmationDialog', () => {
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
-      <ConfirmationDialog
-        title={testProps.title}
-        isDialogOpen={testProps.isDialogOpen}
-        confirmHandler={testProps.confirmHandler}
-        cancelHandler={testProps.cancelHandler}
-      >
+      <ConfirmationDialog {...testProps}>
         <p>Test</p>
       </ConfirmationDialog>
     );

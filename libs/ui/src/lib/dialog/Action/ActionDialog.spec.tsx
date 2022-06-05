@@ -17,13 +17,7 @@ describe('ActionDialog', () => {
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
-      <ActionDialog
-        title={testProps.title}
-        isDialogOpen={testProps.isDialogOpen}
-        actionButtonLabel={testProps.actionButtonLabel}
-        actionHandler={testProps.actionHandler}
-        cancelHandler={testProps.cancelHandler}
-      >
+      <ActionDialog {...testProps}>
         <p>Test</p>
       </ActionDialog>
     );

@@ -1,4 +1,4 @@
-import { ConfirmationDialog, Icon } from '@journey-monorepo/ui';
+import { DialogContainer, Icon } from '@journey-monorepo/ui';
 import { FC, useRef, useState } from 'react';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
@@ -22,6 +22,16 @@ export const AccountPreferencesDeleteAccount: FC<
 
   const handleConfirm = () => {
     return console.log('Confirmed!');
+  };
+
+  const confirmationDialogProps = {
+    title: 'Confirm account deletion',
+    trigger: deleteAccountTrigger,
+    showDanger: true,
+    confirmButtonColor: 'is-danger',
+    confirmHandler: () => handleConfirm(),
+    cancelHandler: () => closeDialog(),
+    isDialogOpen: isDialogOpen,
   };
 
   return (
@@ -49,25 +59,22 @@ export const AccountPreferencesDeleteAccount: FC<
         </button>
       </div>
 
-      <ConfirmationDialog
-        title="Confirm account deletion"
-        trigger={deleteAccountTrigger}
-        showDanger={true}
-        confirmButtonColor="is-danger"
-        confirmHandler={() => handleConfirm()}
-        cancelHandler={() => closeDialog()}
-        isDialogOpen={isDialogOpen}
-      >
-        <div className={styles['dialog-content']}>
-          <span className="">
-            <Icon type="solid" name="triangle-exclamation" />
-          </span>
-          <p>
-            You are about to delete your account. Once confirmed, this action
-            cannot be undone.
-          </p>
-        </div>
-      </ConfirmationDialog>
+      {isDialogOpen && (
+        <DialogContainer
+          type="confirmation"
+          dialogProps={confirmationDialogProps}
+        >
+          <div className={styles['dialog-content']}>
+            <span className="">
+              <Icon type="solid" name="triangle-exclamation" />
+            </span>
+            <p>
+              You are about to delete your account. Once confirmed, this action
+              cannot be undone.
+            </p>
+          </div>
+        </DialogContainer>
+      )}
     </div>
   );
 };
