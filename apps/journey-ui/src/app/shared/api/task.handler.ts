@@ -12,3 +12,13 @@ export const getAllTasksByUserId = async (
 
   return data;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const addTask = async (newTaskData: any): Promise<string> => {
+  const { data }: AxiosResponse<string> = await axios.post(
+    `${BASE_URL}/tasks`,
+    newTaskData
+  );
+
+  return data;
+};

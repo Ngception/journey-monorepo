@@ -22,9 +22,9 @@ describe('App', () => {
     expect(query('layout-header')).toBeTruthy();
   });
 
-  it('should render aside', () => {
-    expect(query('layout-aside')).toBeTruthy();
-  });
+  // it('should render aside', () => {
+  //   expect(query('layout-aside')).toBeTruthy();
+  // });
 
   it('should render body', () => {
     expect(query('layout-body')).toBeTruthy();

@@ -11,15 +11,10 @@ export function App() {
       <LayoutHeader>
         <PrimaryNavbar />
       </LayoutHeader>
-      <div className="columns is-gapless">
-        <div className="column is-one-third">
-          <LayoutAside />
-        </div>
-        <div className="column">
-          <LayoutBody>
-            <TaskContainer />
-          </LayoutBody>
-        </div>
+      <div className="column">
+        <LayoutBody>
+          <TaskContainer />
+        </LayoutBody>
       </div>
     </>
   );

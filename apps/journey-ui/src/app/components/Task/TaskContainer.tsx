@@ -1,7 +1,10 @@
+import { FC, useEffect, useRef, useState } from 'react';
 import { ITask, ITaskList } from '@journey-monorepo/util';
-import { FC, useEffect, useState } from 'react';
 import { getAllTasksByUserId } from '../../shared';
+import { AddTask } from './AddTask/AddTask';
 import { TaskList } from './List/TaskList';
+
+import styles from './TaskContainer.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface TaskContainerProps {}
@@ -22,9 +25,38 @@ export const TaskContainer: FC<TaskContainerProps> = (
     items: [],
   });
 
+  const effectCalled = useRef(false);
+
+  useEffect(() => {
+    if (effectCalled.current) {
+      return;
+    } else {
+      effectCalled.current = true;
+      fetchTasks();
+    }
+  }, []);
+
   // TODO: Placeholder to be replaced with logic to fetch user ID.
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const userId: string = process.env['NX_TEST_USER_UUID']!;
+
+  const taskLists = [toDoTasks, inProgressTasks, doneTasks];
+
+  const taskListClasses = `column ${styles['task-list']}`;
+  const taskListHeaderClasses = `${styles['task-list-header']}`;
+  const taskListCountClasses = `tag is-primary is-medium ${styles['task-list-count']}`;
+
+  const fetchTasks = async () => {
+    try {
+      const tasks = await getAllTasksByUserId(userId);
+
+      setToDoTasks(filterTasks('To Do', tasks));
+      setInProgressTasks(filterTasks('In Progress', tasks));
+      setDoneTasks(filterTasks('Done', tasks));
+    } catch (err) {
+      return err;
+    }
+  };
 
   const filterTasks = (title: string, tasks: ITask[]): ITaskList => {
     return {
@@ -35,21 +67,24 @@ export const TaskContainer: FC<TaskContainerProps> = (
     };
   };
 
-  useEffect(() => {
-    getAllTasksByUserId(userId)
-      .then((tasks) => {
-        setToDoTasks(filterTasks('To Do', tasks));
-        setInProgressTasks(filterTasks('In Progress', tasks));
-        setDoneTasks(filterTasks('Done', tasks));
-      })
-      .catch((err) => err);
-  }, []);
-
   return (
-    <div className="columns">
-      <TaskList list={toDoTasks} />
-      <TaskList list={inProgressTasks} />
-      <TaskList list={doneTasks} />
+    <div className="columns container is-fluid">
+      {taskLists.map((list) => (
+        <div className={taskListClasses} key={list.title}>
+          <div className={styles['task-list-header']}>
+            <h2 className={taskListHeaderClasses}>
+              <span className={taskListCountClasses}>{list.items.length}</span>
+              {list.title}
+            </h2>
+            <AddTask
+              title={list.title}
+              userId={userId}
+              fetchTasks={fetchTasks}
+            />
+          </div>
+          <TaskList list={list} />
+        </div>
+      ))}
     </div>
   );
 };

@@ -1,0 +1,17 @@
+.task-list {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem;
+  height: 100%;
+}
+
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-list-count {
+  margin-right: 0.5rem;
+}
