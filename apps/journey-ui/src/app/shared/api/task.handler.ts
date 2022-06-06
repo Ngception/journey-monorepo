@@ -22,3 +22,12 @@ export const addTask = async (newTaskData: any): Promise<string> => {
 
   return data;
 };
+
+export const updateTask = async (updatedTaskData: any): Promise<number> => {
+  const { data }: AxiosResponse<number> = await axios.patch(
+    `${BASE_URL}/tasks/${updatedTaskData.task_id}`,
+    updatedTaskData
+  );
+
+  return data;
+};

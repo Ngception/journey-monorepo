@@ -38,25 +38,23 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
   const saveNewTask = async () => {
     setIsLoading(true);
 
-    setTimeout(async () => {
-      const data = {
-        content: newTask.content,
-        current_status: newTask.current_status.toLowerCase(),
-        user_id: props.userId,
-      };
-      const response = await addTask(data);
+    const data = {
+      content: newTask.content,
+      current_status: newTask.current_status.toLowerCase(),
+      user_id: props.userId,
+    };
+    const response = await addTask(data);
 
-      if (response) {
-        await props.fetchTasks();
+    if (response) {
+      await props.fetchTasks();
 
-        setIsDialogOpen(false);
+      setIsDialogOpen(false);
 
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-        return;
-      }
-    }, 3000);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      return;
+    }
   };
 
   const openDialog = (title: string) => {
@@ -87,6 +85,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
               </label>
               <textarea
                 className="textarea has-fixed-size"
+                data-testid="dialog-textarea"
                 id="new-task-content"
                 rows={5}
                 placeholder="Type content here."

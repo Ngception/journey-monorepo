@@ -1,5 +1,6 @@
 import { ITask } from '@journey-monorepo/util';
 import { FC } from 'react';
+import { TaskListItemActions } from './Actions/TaskListItemActions';
 
 import styles from './TaskListItem.module.scss';
 
@@ -16,6 +17,7 @@ export const TaskListItem: FC<TaskListItemProps> = (
   return (
     <div className={classes}>
       <h2>{props.item.content}</h2>
+      <TaskListItemActions task={props.item} />
     </div>
   );
 };

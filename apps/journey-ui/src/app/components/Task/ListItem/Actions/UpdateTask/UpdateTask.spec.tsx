@@ -1,30 +1,32 @@
+import { createTask } from '@journey-monorepo/util';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { addTask } from '../../../shared/api/task.handler';
-import { AddTask } from './AddTask';
+import { updateTask } from '../../../../../shared/api/task.handler';
+import { UpdateTask } from './UpdateTask';
 
 // Mock utils module to be able mock certain methods
-jest.mock('../../../shared/api/task.handler', () => {
-  const originalModule = jest.requireActual('../../../shared/api/task.handler');
+jest.mock('../../../../../shared/api/task.handler', () => {
+  const originalModule = jest.requireActual(
+    '../../../../../shared/api/task.handler'
+  );
 
   return {
     ...originalModule,
-    addTask: jest.fn(),
+    updateTask: jest.fn(),
   };
 });
-describe('AddTask', () => {
+describe('UpdateTask', () => {
   let component: HTMLElement;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let query: any;
 
   const testProps = {
-    title: 'test',
-    userId: 'uuid',
-    fetchTasks: jest.fn(),
+    dropdownToggler: jest.fn(),
+    task: createTask(),
   };
 
   beforeEach(() => {
-    const renderResult: RenderResult = render(<AddTask {...testProps} />);
+    const renderResult: RenderResult = render(<UpdateTask {...testProps} />);
 
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;
@@ -35,17 +37,17 @@ describe('AddTask', () => {
   });
 
   it('should submit', async () => {
-    const mocked = { addTask };
-    jest.spyOn(mocked, 'addTask').mockResolvedValue('uuid');
+    const mocked = { updateTask };
+    jest.spyOn(mocked, 'updateTask').mockResolvedValue(1);
 
     await userEvent.click(query('open-dialog-button'));
 
     const actionButton = query('action-button');
     expect(actionButton).toBeTruthy();
 
-    await userEvent.type(query('dialog-textarea'), 'add');
+    await userEvent.type(query('dialog-textarea'), 'update');
     await userEvent.click(actionButton);
 
-    expect(addTask).toHaveBeenCalled();
+    expect(updateTask).toHaveBeenCalled();
   });
 });

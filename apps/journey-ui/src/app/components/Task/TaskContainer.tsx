@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { ITask, ITaskList } from '@journey-monorepo/util';
-import { getAllTasksByUserId } from '../../shared';
+import { getAllTasksByUserId, TaskContext } from '../../shared';
 import { AddTask } from './AddTask/AddTask';
 import { TaskList } from './List/TaskList';
 
@@ -69,22 +69,26 @@ export const TaskContainer: FC<TaskContainerProps> = (
 
   return (
     <div className="columns container is-fluid">
-      {taskLists.map((list) => (
-        <div className={taskListClasses} key={list.title}>
-          <div className={styles['task-list-header']}>
-            <h2 className={taskListHeaderClasses}>
-              <span className={taskListCountClasses}>{list.items.length}</span>
-              {list.title}
-            </h2>
-            <AddTask
-              title={list.title}
-              userId={userId}
-              fetchTasks={fetchTasks}
-            />
+      <TaskContext.Provider value={{ fetchTasks }}>
+        {taskLists.map((list) => (
+          <div className={taskListClasses} key={list.title}>
+            <div className={styles['task-list-header']}>
+              <h2 className={taskListHeaderClasses}>
+                <span className={taskListCountClasses}>
+                  {list.items.length}
+                </span>
+                {list.title}
+              </h2>
+              <AddTask
+                title={list.title}
+                userId={userId}
+                fetchTasks={fetchTasks}
+              />
+            </div>
+            <TaskList list={list} />
           </div>
-          <TaskList list={list} />
-        </div>
-      ))}
+        ))}
+      </TaskContext.Provider>
     </div>
   );
 };
