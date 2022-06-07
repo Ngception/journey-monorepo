@@ -7,3 +7,5 @@ library.add(far, fas);
 export * from './lib/layout';
 export * from './lib/icon';
 export * from './lib/dialog';
+export * from './lib/loader';
+export * from './lib/error';

@@ -1,9 +1,18 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { LayoutAside, LayoutBody, LayoutHeader } from '@journey-monorepo/ui';
-
-import 'bulma/css/bulma.min.css';
+import { lazy, Suspense } from 'react';
+import {
+  ErrorBoundary,
+  LayoutBody,
+  LayoutHeader,
+  Loader,
+} from '@journey-monorepo/ui';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
-import { TaskContainer } from './components/Task/TaskContainer';
+import 'bulma/css/bulma.min.css';
+
+const TaskContainer = lazy(() =>
+  import('./components/Task/TaskContainer').then(({ TaskContainer }) => ({
+    default: TaskContainer,
+  }))
+);
 
 export function App() {
   return (
@@ -13,7 +22,11 @@ export function App() {
       </LayoutHeader>
       <div className="column">
         <LayoutBody>
-          <TaskContainer />
+          <ErrorBoundary>
+            <Suspense fallback={<Loader />}>
+              <TaskContainer />
+            </Suspense>
+          </ErrorBoundary>
         </LayoutBody>
       </div>
     </>
