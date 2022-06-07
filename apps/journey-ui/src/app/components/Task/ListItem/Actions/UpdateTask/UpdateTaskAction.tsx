@@ -3,12 +3,14 @@ import { DialogContainer } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { TaskContext, updateTask } from '../../../../../shared';
 
-interface UpdateTaskProps {
+interface UpdateTaskActionProps {
   dropdownToggler: (status: boolean) => void;
   task: ITask;
 }
 
-export const UpdateTask: FC<UpdateTaskProps> = (props: UpdateTaskProps) => {
+export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
+  props: UpdateTaskActionProps
+) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [taskToUpdate, setTaskToUpdate] = useState<{

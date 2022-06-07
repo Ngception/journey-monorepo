@@ -31,3 +31,11 @@ export const updateTask = async (updatedTaskData: any): Promise<number> => {
 
   return data;
 };
+
+export const deleteTaskById = async (taskId: string): Promise<number> => {
+  const { data }: AxiosResponse<number> = await axios.delete(
+    `${BASE_URL}/tasks/${taskId}`
+  );
+
+  return data;
+};

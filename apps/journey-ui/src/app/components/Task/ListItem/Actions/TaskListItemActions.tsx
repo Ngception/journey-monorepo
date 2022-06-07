@@ -1,7 +1,8 @@
 import { FC, MouseEvent, RefObject, useRef, useState } from 'react';
 import { Icon } from '@journey-monorepo/ui';
-import { UpdateTask } from './UpdateTask/UpdateTask';
 import { ITask } from '@journey-monorepo/util';
+import { UpdateTaskAction } from './UpdateTask/UpdateTaskAction';
+import { DeleteTaskAction } from './DeleteTask/DeleteTaskAction';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface TaskListItemActionsProps {
@@ -40,7 +41,16 @@ export const TaskListItemActions: FC<TaskListItemActionsProps> = (
       </div>
       <div className="dropdown-menu" id="main-dropdown" role="menu">
         <div className="dropdown-content">
-          <UpdateTask task={props.task} dropdownToggler={setIsDropdownOpen} />
+          <UpdateTaskAction
+            task={props.task}
+            dropdownToggler={setIsDropdownOpen}
+          />
+        </div>
+        <div className="dropdown-content">
+          <DeleteTaskAction
+            task={props.task}
+            dropdownToggler={setIsDropdownOpen}
+          />
         </div>
       </div>
     </div>

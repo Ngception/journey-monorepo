@@ -9,6 +9,7 @@ interface ConfirmationDialogProps {
   showDanger?: boolean;
   trigger?: RefObject<HTMLButtonElement>;
   isDialogOpen: boolean;
+  isLoading?: boolean;
   children: ReactNode;
   confirmButtonLabel?: string;
   confirmButtonColor?: string;
@@ -24,7 +25,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
   const modalClasses = `modal ${props.isDialogOpen ? 'is-active' : undefined}`;
   const confirmButtonClasses = `button ${
     props.confirmButtonColor ? props.confirmButtonColor : 'is-success'
-  }`;
+  } ${props.isLoading ? 'is-loading' : undefined}`;
   const notificationClasses = `notification ${
     props.showWarning ? 'is-warning' : undefined
   } ${props.showDanger ? 'is-danger' : undefined}`;
@@ -53,6 +54,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
               className="delete"
               type="button"
               aria-label="close"
+              disabled={props.isLoading}
               onClick={() => closeDialog()}
             ></button>
           </header>
@@ -75,7 +77,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
           <footer className="modal-card-foot">
             <button
               data-testid="confirm-button"
-              disabled={confirmField !== 'confirm'}
+              disabled={confirmField !== 'confirm' || props.isLoading}
               className={confirmButtonClasses}
               type="button"
               onClick={() => props.confirmHandler()}
@@ -86,6 +88,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
               data-testid="cancel-button"
               className="button"
               type="button"
+              disabled={props.isLoading}
               onClick={() => closeDialog()}
             >
               {props.cancelButtonLabel || 'Cancel'}
