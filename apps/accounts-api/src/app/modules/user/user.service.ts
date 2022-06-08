@@ -71,8 +71,6 @@ export class UserService {
     const newUserUuid = await this.saveNewUser({
       ...data,
       password: hash,
-      created_at: new Date(),
-      updated_at: new Date(),
     });
 
     return newUserUuid;

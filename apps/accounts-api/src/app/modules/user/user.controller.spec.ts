@@ -13,6 +13,7 @@ describe('UserController', () => {
   let userRepository: Repository<User>;
 
   const user = createUser();
+  const date = new Date();
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -78,6 +79,8 @@ describe('UserController', () => {
       const data = {
         email: 'testemail',
         password: 'testpassword',
+        created_at: date,
+        updated_at: null,
       };
 
       const res = await userController.createUser(data);

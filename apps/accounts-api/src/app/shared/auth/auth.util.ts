@@ -10,6 +10,14 @@ export const hashData = async (
 
 export const throwError = (statusCode?: number, error?: string) => {
   switch (statusCode) {
+    case 401:
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error,
+        },
+        HttpStatus.UNAUTHORIZED
+      );
     case 409:
       throw new HttpException(
         {

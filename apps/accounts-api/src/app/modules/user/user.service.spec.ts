@@ -21,7 +21,7 @@ describe('UserService', () => {
   let userRepository: Repository<User>;
 
   const user = createUser();
-  const date = new Date().toString();
+  const date = new Date();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -54,8 +54,6 @@ describe('UserService', () => {
 
     userService = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
-
-    jest.spyOn(global, 'Date').mockReturnValue(date);
   });
 
   describe('GET', () => {
@@ -93,18 +91,14 @@ describe('UserService', () => {
       const data = {
         email: 'email',
         password: 'password',
-      };
-
-      const createData = {
-        ...data,
-        created_at: new Date(),
-        updated_at: new Date(),
+        created_at: date,
+        updated_at: date,
       };
 
       const res = await userService.createUser(data);
 
       expect(res).toEqual('uuid');
-      expect(userRepository.create).toHaveBeenCalledWith(createData);
+      expect(userRepository.create).toHaveBeenCalledWith(data);
       expect(userRepository.insert).toHaveBeenCalled();
     });
   });

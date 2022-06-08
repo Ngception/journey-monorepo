@@ -1,27 +1,46 @@
 import { Icon } from '@journey-monorepo/ui';
 import { FC, FormEvent, useState } from 'react';
 
+import styles from './HomeLogin.module.scss';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HomeLoginProps {}
 
 export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
+  const [authType, setAuthType] = useState<string>('login');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const submitButtonClasses = `button is-primary ${
-    isLoading ? 'is-loading' : undefined
+  const invalidForm = !email || !password;
+  const submitButtonClasses = `button ${isLoading ? 'is-loading' : undefined} ${
+    invalidForm ? 'is-light' : 'is-primary'
   }`;
+  const buttonGroupClasses = `field ${styles['button-group']}`;
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     setIsLoading(true);
 
+    if (authType === 'login') {
+      // login handler
+    } else {
+      // register handler
+    }
+
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);
+  };
+
+  const toggleAuth = () => {
+    if (authType === 'login') {
+      setAuthType('register');
+    } else {
+      setAuthType('login');
+    }
   };
 
   return (
@@ -78,15 +97,26 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
           </div>
         </fieldset>
         <fieldset>
-          <div className="field">
+          <div className={buttonGroupClasses}>
             <div className="control">
               <button
                 data-testid="submit-button"
-                disabled={!email || !password || isLoading}
+                disabled={invalidForm || isLoading}
                 type="submit"
                 className={submitButtonClasses}
               >
-                Login
+                {authType === 'login' ? 'Login' : 'Register'}
+              </button>
+            </div>
+            <div className="control">
+              <button
+                data-testid="toggle-auth"
+                className="button is-link"
+                type="button"
+                disabled={isLoading}
+                onClick={() => toggleAuth()}
+              >
+                {authType === 'login' ? 'New user?' : 'Have an account?'}
               </button>
             </div>
           </div>
