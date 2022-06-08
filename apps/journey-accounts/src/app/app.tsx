@@ -6,23 +6,32 @@ import { AppRoutes } from './app.routes';
 import 'bulma/css/bulma.min.css';
 
 export function App() {
+  // const userId = process.env['NX_TEST_USER_UUID'];
+  const userId = null;
+
   return (
     <>
       <LayoutHeader>
         <PrimaryNavbar />
       </LayoutHeader>
-      <div className="columns is-gapless">
-        <div className="column is-one-fifth">
-          <LayoutAside>
-            <AsideNavbar />
-          </LayoutAside>
+      {userId ? (
+        <div className="columns is-gapless">
+          <div className="column is-one-fifth">
+            <LayoutAside>
+              <AsideNavbar />
+            </LayoutAside>
+          </div>
+          <div className="column">
+            <LayoutBody>
+              <AppRoutes />
+            </LayoutBody>
+          </div>
         </div>
-        <div className="column">
-          <LayoutBody>
-            <AppRoutes />
-          </LayoutBody>
-        </div>
-      </div>
+      ) : (
+        <LayoutBody>
+          <AppRoutes />
+        </LayoutBody>
+      )}
     </>
   );
 }
