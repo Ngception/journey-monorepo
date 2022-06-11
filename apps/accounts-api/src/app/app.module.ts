@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import * as fromModules from './modules';
+import { AuthModule } from './modules';
 
 @Module({
   imports: [
@@ -15,7 +14,7 @@ import * as fromModules from './modules';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    ...fromModules.modules,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

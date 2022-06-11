@@ -1,8 +1,8 @@
 export class CreateUserDto {
   email: string;
   password: string;
-  created_at: Date;
-  updated_at: Date | null;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export class LoginUserDto {

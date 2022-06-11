@@ -2,29 +2,22 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { createUser } from '@journey-monorepo/util';
-import { hashData } from '../../shared/auth/auth.util';
+import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { User } from './user.entity';
 import { UserService } from './user.service';
-
-// Mock utils module to be able mock certain methods
-jest.mock('../../shared/auth/auth.util', () => {
-  const originalModule = jest.requireActual('@journey-monorepo/util');
-
-  return {
-    ...originalModule,
-    hashData: jest.fn(),
-  };
-});
+import { AuthUtilService } from '../../shared/auth/auth-util.service';
 
 describe('UserService', () => {
   let userService: UserService;
   let userRepository: Repository<User>;
+  let authUtilService: AuthUtilService;
 
   const user = createUser();
   const date = new Date();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
+      imports: [AuthUtilModule],
       providers: [
         UserService,
         {
@@ -54,6 +47,11 @@ describe('UserService', () => {
 
     userService = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+    authUtilService = module.get<AuthUtilService>(AuthUtilService);
+
+    jest
+      .spyOn(global, 'Date')
+      .mockImplementation(() => date as unknown as string);
   });
 
   describe('GET', () => {
@@ -80,13 +78,9 @@ describe('UserService', () => {
 
   describe('POST', () => {
     it('should create a single user', async () => {
-      const mocked = { hashData };
-
-      jest.spyOn(mocked, 'hashData').mockResolvedValue('password');
-      jest.spyOn(userService, 'createUser');
-      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
-      jest.spyOn(userRepository, 'create');
-      jest.spyOn(userRepository, 'insert');
+      const mockToken = {
+        access_token: 'token',
+      };
 
       const data = {
         email: 'email',
@@ -95,9 +89,16 @@ describe('UserService', () => {
         updated_at: date,
       };
 
+      jest.spyOn(authUtilService, 'hashData').mockResolvedValue(data.password);
+      jest.spyOn(authUtilService, 'createToken').mockResolvedValue(mockToken);
+      jest.spyOn(userService, 'createUser');
+      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
+      jest.spyOn(userRepository, 'create');
+      jest.spyOn(userRepository, 'insert');
+
       const res = await userService.createUser(data);
 
-      expect(res).toEqual('uuid');
+      expect(res).toEqual(mockToken);
       expect(userRepository.create).toHaveBeenCalledWith(data);
       expect(userRepository.insert).toHaveBeenCalled();
     });
@@ -110,7 +111,7 @@ describe('UserService', () => {
 
       const data = {
         password: 'newpassword',
-        updated_at: new Date(),
+        updated_at: date,
       };
 
       const res = await userService.updateUserById('uuid', data);

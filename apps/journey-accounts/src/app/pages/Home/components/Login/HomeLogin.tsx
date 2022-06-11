@@ -1,4 +1,5 @@
 import { Icon } from '@journey-monorepo/ui';
+import { createUser, handleError, loginUser } from '../../../../shared';
 import { FC, FormEvent, useState } from 'react';
 
 import styles from './HomeLogin.module.scss';
@@ -19,15 +20,27 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   }`;
   const buttonGroupClasses = `field ${styles['button-group']}`;
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     setIsLoading(true);
 
-    if (authType === 'login') {
-      // login handler
-    } else {
-      // register handler
+    const data = {
+      email,
+      password,
+    };
+
+    try {
+      if (authType === 'login') {
+        // login handler
+        const res = await loginUser(data);
+      } else {
+        // register handler
+        const res = await createUser(data);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.log(handleError(err));
     }
 
     setTimeout(() => {

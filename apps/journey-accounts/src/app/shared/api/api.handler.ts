@@ -1,16 +1,20 @@
-import axios from 'axios';
-import { ICreateUser, ILoginUser } from '@journey-monorepo/util';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { HttpException } from '@nestjs/common';
+import { ICreateUser } from '@journey-monorepo/util';
 
 const BASE_URL = process.env['NX_AAPI_BASE_URL'];
 
-export const createUser = async (createUserData: ICreateUser) => {
-  const { data } = await axios.post(`${BASE_URL}/users`, createUserData);
-
-  return data;
+export const handleError = (error: AxiosError<HttpException>) => {
+  return error?.response?.data;
 };
 
-export const loginUser = async (loginUserData: ILoginUser) => {
-  const { data } = await axios.post(`${BASE_URL}/users`, loginUserData);
+export const createUser = async (createUserData: ICreateUser) => {
+  const response: AxiosResponse<{ access_token: string } | HttpException> =
+    await axios.post(`${BASE_URL}/users`, createUserData);
 
-  return data;
+  if (axios.isAxiosError(response)) {
+    return response.response?.data;
+  }
+
+  return response;
 };

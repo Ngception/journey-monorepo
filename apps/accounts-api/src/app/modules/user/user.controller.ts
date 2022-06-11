@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateUserDto, LoginUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -26,7 +26,9 @@ export class UserController {
   }
 
   @Post()
-  async createUser(@Body() data: CreateUserDto): Promise<string> {
+  async createUser(
+    @Body() data: CreateUserDto
+  ): Promise<{ access_token: string }> {
     return await this.userService.createUser(data);
   }
 

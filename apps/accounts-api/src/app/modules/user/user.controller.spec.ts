@@ -1,22 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Repository } from 'typeorm';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
-import { Repository } from 'typeorm';
 import { UserController } from './user.controller';
 import { User } from './user.entity';
 import { UserService } from './user.service';
+import { AuthUtilModule } from '../../shared/auth/auth-util.module';
+import { AuthUtilService } from '../../shared/auth/auth-util.service';
 
 describe('UserController', () => {
   let userService: UserService;
   let userController: UserController;
   let userRepository: Repository<User>;
+  let authUtilService: AuthUtilService;
 
   const user = createUser();
   const date = new Date();
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [AuthUtilModule],
       controllers: [UserController],
       providers: [
         UserService,
@@ -48,6 +52,7 @@ describe('UserController', () => {
     userService = module.get<UserService>(UserService);
     userController = module.get<UserController>(UserController);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+    authUtilService = module.get<AuthUtilService>(AuthUtilService);
   });
 
   describe('GET', () => {
@@ -73,6 +78,9 @@ describe('UserController', () => {
 
   describe('POST', () => {
     it('should create a single user', async () => {
+      const mockToken = { access_token: 'token' };
+
+      jest.spyOn(authUtilService, 'createToken').mockResolvedValue(mockToken);
       jest.spyOn(userService, 'createUser');
       jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
 
@@ -86,7 +94,7 @@ describe('UserController', () => {
       const res = await userController.createUser(data);
 
       expect(userService.createUser).toHaveBeenCalledWith(data);
-      expect(res).toEqual('uuid');
+      expect(res).toEqual(mockToken);
     });
   });
 

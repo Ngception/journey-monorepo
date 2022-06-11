@@ -1,29 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { hashData, throwError } from '../../shared/auth/auth.util';
+import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repo: Repository<User>,
+    private authUtilService: AuthUtilService
+  ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async checkForExistingUser(data: Record<string, any>) {
     const existingUser = await this.repo.findOneBy(data);
 
     if (existingUser !== null) {
-      throwError(409, 'User already exists.');
-      return;
+      return this.authUtilService.throwError(409, 'User already exists.');
     }
   }
 
   async hashPassword(password, saltRounds = 10): Promise<string> {
-    const hash = await hashData(password, saltRounds);
+    const hash = await this.authUtilService.hashData(password, saltRounds);
 
     if (typeof hash !== 'string') {
-      throwError();
+      this.authUtilService.throwError();
       return;
     }
 
@@ -38,7 +40,7 @@ export class UserService {
 
       return identifiers[0].user_id;
     } catch (err) {
-      throwError();
+      this.authUtilService.throwError();
     }
   }
 
@@ -46,7 +48,16 @@ export class UserService {
     try {
       return await this.repo.find();
     } catch (err) {
-      throwError();
+      this.authUtilService.throwError();
+      return;
+    }
+  }
+
+  async getUser(data) {
+    try {
+      return await this.repo.findOneBy(data);
+    } catch (err) {
+      this.authUtilService.throwError();
       return;
     }
   }
@@ -57,23 +68,30 @@ export class UserService {
         user_id: id,
       });
     } catch (err) {
-      throwError();
+      this.authUtilService.throwError();
       return;
     }
   }
 
-  async createUser(data: CreateUserDto): Promise<string> {
+  async createUser(data: CreateUserDto): Promise<{ access_token: string }> {
     await this.checkForExistingUser({
       email: data.email,
     });
 
     const hash = await this.hashPassword(data.password);
     const newUserUuid = await this.saveNewUser({
-      ...data,
+      email: data.email,
       password: hash,
+      created_at: new Date(),
+      updated_at: new Date(),
     });
 
-    return newUserUuid;
+    const accessToken = this.authUtilService.createToken({
+      email: data.email,
+      user_id: newUserUuid,
+    });
+
+    return accessToken;
   }
 
   async updateUserById(id: string, data: UpdateUserDto): Promise<number> {
@@ -85,7 +103,7 @@ export class UserService {
 
       return affected;
     } catch (err) {
-      throwError();
+      this.authUtilService.throwError();
       return;
     }
   }
@@ -96,7 +114,7 @@ export class UserService {
 
       return affected;
     } catch (err) {
-      throwError();
+      this.authUtilService.throwError();
       return;
     }
   }
