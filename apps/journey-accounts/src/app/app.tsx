@@ -2,6 +2,7 @@ import { LayoutAside, LayoutBody, LayoutHeader } from '@journey-monorepo/ui';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 import { AsideNavbar } from './components/Nav/Aside/AsideNavbar';
 import { AppRoutes } from './app.routes';
+import { AuthProvider } from './shared';
 
 import 'bulma/css/bulma.min.css';
 
@@ -10,29 +11,31 @@ export function App() {
   const userId = null;
 
   return (
-    <>
-      <LayoutHeader>
-        <PrimaryNavbar />
-      </LayoutHeader>
-      {userId ? (
-        <div className="columns is-gapless">
-          <div className="column is-one-fifth">
-            <LayoutAside>
-              <AsideNavbar />
-            </LayoutAside>
+    <div>
+      <AuthProvider>
+        <LayoutHeader>
+          <PrimaryNavbar />
+        </LayoutHeader>
+        {userId ? (
+          <div className="columns is-gapless">
+            <div className="column is-one-fifth">
+              <LayoutAside>
+                <AsideNavbar />
+              </LayoutAside>
+            </div>
+            <div className="column">
+              <LayoutBody>
+                <AppRoutes />
+              </LayoutBody>
+            </div>
           </div>
-          <div className="column">
-            <LayoutBody>
-              <AppRoutes />
-            </LayoutBody>
-          </div>
-        </div>
-      ) : (
-        <LayoutBody>
-          <AppRoutes />
-        </LayoutBody>
-      )}
-    </>
+        ) : (
+          <LayoutBody>
+            <AppRoutes />
+          </LayoutBody>
+        )}
+      </AuthProvider>
+    </div>
   );
 }
 
