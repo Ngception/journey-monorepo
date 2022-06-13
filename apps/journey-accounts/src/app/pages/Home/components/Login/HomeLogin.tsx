@@ -1,8 +1,20 @@
-import { Icon } from '@journey-monorepo/ui';
-import { createUser, handleError, loginUser } from '../../../../shared';
 import { FC, FormEvent, useState } from 'react';
-
+import { Location, useLocation, useNavigate } from 'react-router-dom';
+import { Icon } from '@journey-monorepo/ui';
+import {
+  AuthContextType,
+  createUser,
+  handleError,
+  loginUser,
+  useAuth,
+} from '../../../../shared';
 import styles from './HomeLogin.module.scss';
+
+type LocationProps = {
+  state: {
+    from: Location;
+  };
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HomeLoginProps {}
@@ -14,6 +26,11 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+  const location = useLocation() as LocationProps;
+  const { dispatch } = useAuth() as AuthContextType;
+
+  const from = location.state?.from?.pathname || '/';
   const invalidForm = !email || !password;
   const submitButtonClasses = `button ${isLoading ? 'is-loading' : undefined} ${
     invalidForm ? 'is-light' : 'is-primary'
@@ -33,7 +50,9 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
     try {
       if (authType === 'login') {
         // login handler
-        const res = await loginUser(data);
+        const { access_token } = await loginUser(data);
+        dispatch({ type: 'login', payload: access_token });
+        navigate(from, { replace: true });
       } else {
         // register handler
         const res = await createUser(data);
@@ -63,6 +82,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
           <div className="field">
             <div className="control has-icons-left">
               <input
+                data-testid="email-field"
                 className="input"
                 id="email"
                 name="email"
@@ -81,6 +101,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
           <div className="field has-addons">
             <div className="control has-icons-left is-expanded">
               <input
+                data-testid="password-field"
                 className="input"
                 name="password"
                 type={isPasswordVisible ? 'text' : 'password'}
