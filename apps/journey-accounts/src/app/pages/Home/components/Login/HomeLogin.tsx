@@ -30,7 +30,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const location = useLocation() as LocationProps;
   const { dispatch } = useAuth() as AuthContextType;
 
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || '/profile';
   const invalidForm = !email || !password;
   const submitButtonClasses = `button ${isLoading ? 'is-loading' : undefined} ${
     invalidForm ? 'is-light' : 'is-primary'

@@ -5,6 +5,8 @@ import { HomeRoutes } from './pages/Home/Home.routes';
 import { ProfileRoutes } from './pages/Profile/Profile.routes';
 import { SecurityRoutes } from './pages/Security/Security.routes';
 import { AuthGuard } from './components/Auth/AuthGuard';
+import { LayoutContainer } from '@journey-monorepo/ui';
+import { AsideNavbar } from './components/Nav/Aside/AsideNavbar';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AppRoutesProps {}
@@ -12,7 +14,11 @@ interface AppRoutesProps {}
 export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
   return (
     <Routes>
-      <Route element={<AuthGuard />}>
+      <Route
+        element={
+          <LayoutContainer aside={<AsideNavbar />} body={<AuthGuard />} />
+        }
+      >
         <Route path="/profile/*" element={<ProfileRoutes />}></Route>
         <Route path="/security/*" element={<SecurityRoutes />}></Route>
         <Route

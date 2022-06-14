@@ -11,7 +11,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
   const location = useLocation();
 
   return auth?.isLoggedIn ? (
-    <Outlet />
+    <Outlet></Outlet>
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
   );

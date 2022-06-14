@@ -10,7 +10,7 @@ interface LayoutBodyProps {
 export const LayoutBody: FC<LayoutBodyProps> = (props: LayoutBodyProps) => {
   return (
     <div data-testid="layout-body" className={styles['layout-body']}>
-      <h2>{props.children}</h2>
+      {props.children}
     </div>
   );
 };
