@@ -15,9 +15,11 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
     event.preventDefault();
 
     const { message } = await logoutUser();
-    if (message === 'Success') {
+    if (message === 'success') {
       dispatch({ type: 'logout' });
       navigate('/', { replace: true });
+    } else {
+      return;
     }
   };
 

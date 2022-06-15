@@ -86,7 +86,7 @@ export class UserService {
       updated_at: new Date(),
     });
 
-    const accessToken = this.authUtilService.createToken({
+    const accessToken = await this.authUtilService.createToken({
       email: data.email,
       user_id: newUserUuid,
     });

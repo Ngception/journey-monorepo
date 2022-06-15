@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,7 +16,7 @@ describe('AppController', () => {
 
   const responseObject = {
     status: 201,
-    message: 'Success',
+    message: 'success',
   };
 
   const mockResponse: Partial<Response> = {
@@ -24,6 +24,13 @@ describe('AppController', () => {
     json: jest.fn().mockImplementation().mockReturnValue(responseObject),
     cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
     clearCookie: jest.fn(),
+  };
+
+  const mockRequest: Partial<Request> = {
+    body: jest.fn().mockImplementation().mockReturnValue({}),
+    signedCookies: {
+      user: {},
+    },
   };
 
   beforeEach(async () => {
@@ -60,7 +67,7 @@ describe('AppController', () => {
 
       const res = await appController.login(testUser, mockResponse as Response);
 
-      expect(res).toEqual({ message: 'Success' });
+      expect(res).toEqual({ message: 'success' });
       expect(authService.validateUser).toHaveBeenCalledWith(testUser);
       expect(mockResponse.cookie).toHaveBeenCalled();
     });
@@ -68,9 +75,12 @@ describe('AppController', () => {
 
   describe('logout', () => {
     it('should logout user', async () => {
-      const res = await appController.logout(mockResponse as Response);
+      const res = await appController.logout(
+        mockResponse as Response,
+        mockRequest as Request
+      );
 
-      expect(res).toEqual({ message: 'Success' });
+      expect(res).toEqual({ message: 'success' });
       expect(mockResponse.clearCookie).toHaveBeenCalled();
     });
   });

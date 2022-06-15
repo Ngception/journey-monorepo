@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AuthService } from './modules/auth/auth.service';
 import { CreateUserDto } from './modules/user/user.dto';
 import { AppService } from './app.service';
@@ -18,29 +18,45 @@ export class AppController {
   ): Promise<{ message: string } | void> {
     const token = await this.authService.validateUser(data);
 
-    response.cookie('user', token, {
-      httpOnly: false,
-      sameSite: 'none',
-      secure: true,
-      signed: true,
-    });
+    if (token) {
+      response.cookie('user', token, {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: true,
+        signed: true,
+      });
 
-    return {
-      message: 'Success',
-    };
+      return {
+        message: 'success',
+      };
+    } else {
+      return {
+        message: 'error',
+      };
+    }
   }
 
   @Post('auth/logout')
-  logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('user', {
-      httpOnly: false,
-      sameSite: 'none',
-      secure: true,
-    });
+  logout(
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: Request
+  ) {
+    if (request.signedCookies['user']) {
+      response.clearCookie('user', {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: true,
+        signed: true,
+      });
 
-    return {
-      message: 'Success',
-    };
+      return {
+        message: 'success',
+      };
+    } else {
+      return {
+        message: 'error',
+      };
+    }
   }
 
   @Get('status')

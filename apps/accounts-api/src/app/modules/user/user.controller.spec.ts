@@ -8,6 +8,7 @@ import { User } from './user.entity';
 import { UserService } from './user.service';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
+import { Response } from 'express';
 
 describe('UserController', () => {
   let userService: UserService;
@@ -17,6 +18,18 @@ describe('UserController', () => {
 
   const user = createUser();
   const date = new Date();
+
+  const responseObject = {
+    status: 201,
+    message: 'success',
+  };
+
+  const mockResponse: Partial<Response> = {
+    status: jest.fn().mockImplementation().mockReturnValue(201),
+    json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+    cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
+    clearCookie: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -78,9 +91,9 @@ describe('UserController', () => {
 
   describe('POST', () => {
     it('should create a single user', async () => {
-      const mockToken = { access_token: 'token' };
-
-      jest.spyOn(authUtilService, 'createToken').mockResolvedValue(mockToken);
+      jest
+        .spyOn(authUtilService, 'createToken')
+        .mockResolvedValue({ access_token: 'token' });
       jest.spyOn(userService, 'createUser');
       jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
 
@@ -91,10 +104,13 @@ describe('UserController', () => {
         updated_at: null,
       };
 
-      const res = await userController.createUser(data);
+      const res = await userController.createUser(
+        data,
+        mockResponse as Response
+      );
 
       expect(userService.createUser).toHaveBeenCalledWith(data);
-      expect(res).toEqual(mockToken);
+      expect(res).toEqual({ message: 'success' });
     });
   });
 

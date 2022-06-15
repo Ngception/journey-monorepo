@@ -48,14 +48,28 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
     };
 
     try {
+      const navigateToAccount = () => {
+        dispatch({ type: 'login' });
+        navigate(from, { replace: true });
+      };
+
       if (authType === 'login') {
         // login handler
-        const { access_token } = await loginUser(data);
-        dispatch({ type: 'login', payload: access_token });
-        navigate(from, { replace: true });
-      } else {
-        // register handler
-        const res = await createUser(data);
+        const { message } = await loginUser(data);
+        if (message === 'success') {
+          navigateToAccount();
+        } else {
+          return;
+        }
+      }
+
+      if (authType === 'register') {
+        const { message } = await createUser(data);
+        if (message === 'success') {
+          navigateToAccount();
+        } else {
+          return;
+        }
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

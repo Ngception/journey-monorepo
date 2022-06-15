@@ -4,10 +4,12 @@ import { ILoginUser } from '@journey-monorepo/util';
 const BASE_URL = process.env['NX_AAPI_BASE_URL'];
 
 export const loginUser = async (loginUserData: ILoginUser) => {
-  const { data }: AxiosResponse<{ access_token: string }> = await axios.post(
+  const { data }: AxiosResponse<{ message: string }> = await axios.post(
     `${BASE_URL}/auth/login`,
     loginUserData,
-    { withCredentials: true }
+    {
+      withCredentials: true,
+    }
   );
 
   return data;
@@ -16,6 +18,7 @@ export const loginUser = async (loginUserData: ILoginUser) => {
 export const logoutUser = async () => {
   const { data }: AxiosResponse<{ message: string }> = await axios.post(
     `${BASE_URL}/auth/logout`,
+    undefined,
     {
       withCredentials: true,
     }

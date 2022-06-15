@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -27,9 +29,27 @@ export class UserController {
 
   @Post()
   async createUser(
-    @Body() data: CreateUserDto
-  ): Promise<{ access_token: string }> {
-    return await this.userService.createUser(data);
+    @Body() data: CreateUserDto,
+    @Res({ passthrough: true }) response: Response
+  ): Promise<{ message: string }> {
+    const token = await this.userService.createUser(data);
+
+    if (token) {
+      response.cookie('user', token, {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: true,
+        signed: true,
+      });
+
+      return {
+        message: 'success',
+      };
+    } else {
+      return {
+        message: 'error',
+      };
+    }
   }
 
   @Patch(':id')
