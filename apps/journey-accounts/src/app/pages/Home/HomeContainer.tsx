@@ -9,7 +9,7 @@ export const HomeContainer: FC<HomeContainerProps> = (
 ) => {
   return (
     <div>
-      <div className="section">
+      <div data-testid="home-container" className="section">
         <h1>Login to start planning</h1>
         <HomeLogin />
       </div>

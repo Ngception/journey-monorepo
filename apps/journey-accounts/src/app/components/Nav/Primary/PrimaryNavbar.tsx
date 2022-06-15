@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { FC, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContextType, useAuth } from '../../../shared';
+import { AuthContextType, logoutUser, useAuth } from '../../../shared';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PrimaryNavbarProps {}
@@ -11,15 +11,20 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
   const { state: user, dispatch } = useAuth() as AuthContextType;
   const navigate = useNavigate();
 
-  const logout = () => {
-    dispatch({ type: 'logout' });
-    navigate('/', { replace: true });
+  const logout = async (event: FormEvent) => {
+    event.preventDefault();
+
+    const { message } = await logoutUser();
+    if (message === 'Success') {
+      dispatch({ type: 'logout' });
+      navigate('/', { replace: true });
+    }
   };
 
   return (
     <nav className="navbar" role="navigation" aria-label="primary navigation">
       <div className="navbar-brand">
-        <a href="#" className="navbar-item">
+        <a data-testid="brand-button" href="#" className="navbar-item">
           Brand
         </a>
       </div>
@@ -28,10 +33,19 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <a href="#" className="button is-primary">
+              <a
+                data-testid="back-to-board-button"
+                href="#"
+                className="button is-primary"
+              >
                 <strong>Back to board</strong>
               </a>
-              <a href="#" className="button is-light" onClick={() => logout()}>
+              <a
+                data-testid="logout-button"
+                href="#"
+                className="button is-light"
+                onClick={(event) => logout(event)}
+              >
                 Log out
               </a>
             </div>

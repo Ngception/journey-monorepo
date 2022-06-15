@@ -1,9 +1,11 @@
 const origin = process.env['NX_ALLOWED_ORIGIN'];
-const methods = ['GET', 'PATCH', 'POST', 'DELETE'];
+const allowedHeaders = ['Content-Type', 'Set-Cookie'];
+const methods = ['GET', 'HEAD', 'PATCH', 'POST', 'DELETE', 'OPTIONS'];
+const credentials = true;
 
 export const corsConfig = {
   origin,
   methods,
+  allowedHeaders,
+  credentials,
 };
-
-module.exports = corsConfig;

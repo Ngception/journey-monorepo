@@ -77,7 +77,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   return (
     <div>
-      <form onSubmit={(event) => handleSubmit(event)}>
+      <form data-testid="login-form" onSubmit={(event) => handleSubmit(event)}>
         <fieldset>
           <div className="field">
             <div className="control has-icons-left">

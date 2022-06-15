@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './modules/auth/auth.service';
 import { CreateUserDto } from './modules/user/user.dto';
 import { AppService } from './app.service';
@@ -11,8 +12,35 @@ export class AppController {
   ) {}
 
   @Post('auth/login')
-  login(@Body() data: CreateUserDto): Promise<{ access_token: string } | void> {
-    return this.authService.validateUser(data);
+  async login(
+    @Body() data: CreateUserDto,
+    @Res({ passthrough: true }) response: Response
+  ): Promise<{ message: string } | void> {
+    const token = await this.authService.validateUser(data);
+
+    response.cookie('user', token, {
+      httpOnly: false,
+      sameSite: 'none',
+      secure: true,
+      signed: true,
+    });
+
+    return {
+      message: 'Success',
+    };
+  }
+
+  @Post('auth/logout')
+  logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('user', {
+      httpOnly: false,
+      sameSite: 'none',
+      secure: true,
+    });
+
+    return {
+      message: 'Success',
+    };
   }
 
   @Get('status')
