@@ -1,6 +1,6 @@
 import { FC, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContextType, logoutUser, useAuth } from '../../../shared';
+import { logoutUser, useAuth } from '../../../shared';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PrimaryNavbarProps {}
@@ -8,15 +8,15 @@ interface PrimaryNavbarProps {}
 export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
   props: PrimaryNavbarProps
 ) => {
-  const { state: user, dispatch } = useAuth() as AuthContextType;
+  const { state: user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const logout = async (event: FormEvent) => {
+  const handleLogout = async (event: FormEvent) => {
     event.preventDefault();
 
     const { message } = await logoutUser();
     if (message === 'success') {
-      dispatch({ type: 'logout' });
+      logout();
       navigate('/', { replace: true });
     } else {
       return;
@@ -46,7 +46,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
                 data-testid="logout-button"
                 href="#"
                 className="button is-light"
-                onClick={(event) => logout(event)}
+                onClick={(event) => handleLogout(event)}
               >
                 Log out
               </a>

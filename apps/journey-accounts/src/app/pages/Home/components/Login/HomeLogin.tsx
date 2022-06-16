@@ -2,7 +2,6 @@ import { FC, FormEvent, useState } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from '@journey-monorepo/ui';
 import {
-  AuthContextType,
   createUser,
   handleError,
   loginUser,
@@ -28,7 +27,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
-  const { dispatch } = useAuth() as AuthContextType;
+  const { login } = useAuth();
 
   const from = location.state?.from?.pathname || '/profile';
   const invalidForm = !email || !password;
@@ -49,7 +48,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
     try {
       const navigateToAccount = () => {
-        dispatch({ type: 'login' });
+        login();
         navigate(from, { replace: true });
       };
 

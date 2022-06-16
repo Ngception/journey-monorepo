@@ -1,14 +1,14 @@
-export interface Action {
+export interface AuthAction {
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }
 
-export interface initialAuthStateType {
+export interface InitialAuthStateInterface {
   isLoggedIn: boolean;
 }
 
-export const ACTIONS = {
+export const AUTH_ACTIONS = {
   LOGIN: 'login',
   LOGOUT: 'logout',
 };
@@ -17,13 +17,13 @@ export const authInitialState = {
   isLoggedIn: false,
 };
 
-export const authReducer = (state = authInitialState, action: Action) => {
+export const authReducer = (state = authInitialState, action: AuthAction) => {
   switch (action.type) {
-    case ACTIONS.LOGIN:
+    case AUTH_ACTIONS.LOGIN:
       return {
         isLoggedIn: true,
       };
-    case ACTIONS.LOGOUT:
+    case AUTH_ACTIONS.LOGOUT:
       return authInitialState;
     default:
       return state;

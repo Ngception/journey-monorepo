@@ -1,20 +1,21 @@
-import { createContext, Dispatch, FC, ReactNode, useReducer } from 'react';
+import { createContext, FC, ReactNode, useReducer } from 'react';
 import {
-  Action,
-  initialAuthStateType,
+  InitialAuthStateInterface,
   authInitialState,
   authReducer,
+  AUTH_ACTIONS,
 } from '../reducer';
 
-export interface AuthContextType {
-  state: initialAuthStateType;
-  dispatch: Dispatch<Action>;
+export interface IAuthContext {
+  state: InitialAuthStateInterface;
+  login: () => void;
+  logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<IAuthContext | null>(null);
 
 interface AuthProviderProps {
-  initialState?: initialAuthStateType;
+  initialState?: InitialAuthStateInterface;
   children: ReactNode;
 }
 
@@ -24,9 +25,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
 
-  return (
-    <AuthContext.Provider value={{ state: initialState || state, dispatch }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = {
+    state: initialState || (state as InitialAuthStateInterface),
+    login: () => dispatch({ type: AUTH_ACTIONS.LOGIN }),
+    logout: () => dispatch({ type: AUTH_ACTIONS.LOGOUT }),
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
