@@ -98,7 +98,11 @@ describe('UserService', () => {
 
       const res = await userService.createUser(data);
 
-      expect(res).toEqual(mockToken);
+      expect(res).toEqual({
+        ...mockToken,
+        created_at: date,
+        user_id: 'uuid',
+      });
       expect(userRepository.create).toHaveBeenCalledWith(data);
       expect(userRepository.insert).toHaveBeenCalled();
     });

@@ -36,7 +36,7 @@ describe('AuthService', () => {
   });
 
   describe('validateUser', () => {
-    it('should return an access token if user is successfully validated', async () => {
+    it('should return an access token and user info if user is successfully validated', async () => {
       const mockToken = { access_token: 'token' };
 
       jest.spyOn(userService, 'getUser').mockResolvedValue(user);
@@ -45,7 +45,11 @@ describe('AuthService', () => {
 
       const res = await authService.validateUser(user);
 
-      expect(res).toEqual(mockToken);
+      expect(res).toEqual({
+        ...mockToken,
+        user_id: user.user_id,
+        created_at: user.created_at,
+      });
       expect(userService.getUser).toHaveBeenCalledWith({ email: user.email });
     });
   });

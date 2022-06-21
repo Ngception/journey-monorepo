@@ -6,6 +6,7 @@ import {
   handleError,
   loginUser,
   useAuth,
+  useUser,
 } from '../../../../shared';
 import styles from './HomeLogin.module.scss';
 
@@ -28,6 +29,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
   const { login } = useAuth();
+  const { setUser } = useUser();
 
   const from = location.state?.from?.pathname || '/profile';
   const invalidForm = !email || !password;
@@ -54,8 +56,9 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
       if (authType === 'login') {
         // login handler
-        const { message } = await loginUser(data);
+        const { message, user } = await loginUser(data);
         if (message === 'success') {
+          setUser(user);
           navigateToAccount();
         } else {
           return;
@@ -63,8 +66,9 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
       }
 
       if (authType === 'register') {
-        const { message } = await createUser(data);
+        const { message, user } = await createUser(data);
         if (message === 'success') {
+          setUser(user);
           navigateToAccount();
         } else {
           return;

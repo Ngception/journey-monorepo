@@ -1,10 +1,13 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Icon } from '@journey-monorepo/ui';
 
 import styles from './ProfileDetails.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ProfileDetailsProps {}
+interface ProfileDetailsProps {
+  email: string;
+  createdAt: string;
+}
 
 export const ProfileDetails: FC<ProfileDetailsProps> = (
   props: ProfileDetailsProps
@@ -20,8 +23,8 @@ export const ProfileDetails: FC<ProfileDetailsProps> = (
         About you{' '}
       </h1>
       <div className={detailsCardClasses}>
-        <h2>User: account@email.com</h2>
-        <h2>Account created on 05/21/2022</h2>
+        <h2>User: {props.email}</h2>
+        <h2>{`Account created on ${props.createdAt}`}</h2>
       </div>
     </div>
   );

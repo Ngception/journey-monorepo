@@ -9,11 +9,18 @@ export const handleError = (error: AxiosError<HttpException>) => {
 };
 
 export const createUser = async (createUserData: ICreateUser) => {
-  const { data }: AxiosResponse<{ message: string }> = await axios.post(
-    `${BASE_URL}/users`,
-    createUserData,
-    { withCredentials: true }
-  );
+  const {
+    data,
+  }: AxiosResponse<{
+    message: string;
+    user: {
+      user_id: string;
+      email: string;
+      created_at: Date;
+    };
+  }> = await axios.post(`${BASE_URL}/users`, createUserData, {
+    withCredentials: true,
+  });
 
   return data;
 };

@@ -31,11 +31,19 @@ export class UserController {
   async createUser(
     @Body() data: CreateUserDto,
     @Res({ passthrough: true }) response: Response
-  ): Promise<{ message: string }> {
-    const token = await this.userService.createUser(data);
+  ): Promise<{
+    message: string;
+    user?: {
+      email: string;
+      user_id: string;
+      created_at: Date;
+    };
+  }> {
+    const { user_id, access_token, created_at } =
+      await this.userService.createUser(data);
 
-    if (token) {
-      response.cookie('user', token, {
+    if (access_token) {
+      response.cookie('user', access_token, {
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
@@ -44,6 +52,11 @@ export class UserController {
 
       return {
         message: 'success',
+        user: {
+          user_id,
+          created_at,
+          email: data.email,
+        },
       };
     } else {
       return {

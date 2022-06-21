@@ -1,5 +1,5 @@
 import { LayoutHeader } from '@journey-monorepo/ui';
-import { AuthProvider } from './shared';
+import { AuthProvider, UserProvider } from './shared';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 import { AppRoutes } from './app.routes';
 
@@ -9,10 +9,12 @@ export function App() {
   return (
     <div>
       <AuthProvider>
-        <LayoutHeader>
-          <PrimaryNavbar />
-        </LayoutHeader>
-        <AppRoutes />
+        <UserProvider>
+          <LayoutHeader>
+            <PrimaryNavbar />
+          </LayoutHeader>
+          <AppRoutes />
+        </UserProvider>
       </AuthProvider>
     </div>
   );

@@ -2,7 +2,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MockRouter } from '@journey-monorepo/ui';
-import { AuthProvider, loginUser } from '../../../../shared';
+import { AuthProvider, loginUser, UserProvider } from '../../../../shared';
 import { HomeLogin } from './HomeLogin';
 
 jest.mock('react-router-dom', () => ({
@@ -24,7 +24,9 @@ describe('HomeLogin', () => {
     const renderResult = render(
       <MockRouter route={'/'}>
         <AuthProvider>
-          <HomeLogin />
+          <UserProvider>
+            <HomeLogin />
+          </UserProvider>
         </AuthProvider>
       </MockRouter>
     );

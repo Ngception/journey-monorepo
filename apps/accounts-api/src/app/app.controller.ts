@@ -15,11 +15,19 @@ export class AppController {
   async login(
     @Body() data: CreateUserDto,
     @Res({ passthrough: true }) response: Response
-  ): Promise<{ message: string } | void> {
-    const token = await this.authService.validateUser(data);
+  ): Promise<{
+    message: string;
+    user?: {
+      user_id: string;
+      email: string;
+      created_at: Date;
+    };
+  } | void> {
+    const { user_id, access_token, created_at } =
+      await this.authService.validateUser(data);
 
-    if (token) {
-      response.cookie('user', token, {
+    if (access_token) {
+      response.cookie('user', access_token, {
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
@@ -28,6 +36,11 @@ export class AppController {
 
       return {
         message: 'success',
+        user: {
+          user_id,
+          created_at,
+          email: data.email,
+        },
       };
     } else {
       return {

@@ -73,25 +73,31 @@ export class UserService {
     }
   }
 
-  async createUser(data: CreateUserDto): Promise<{ access_token: string }> {
+  async createUser(
+    data: CreateUserDto
+  ): Promise<{ user_id: string; access_token: string; created_at: Date }> {
     await this.checkForExistingUser({
       email: data.email,
     });
 
     const hash = await this.hashPassword(data.password);
-    const newUserUuid = await this.saveNewUser({
+    const user_id = await this.saveNewUser({
       email: data.email,
       password: hash,
       created_at: new Date(),
       updated_at: new Date(),
     });
 
-    const accessToken = await this.authUtilService.createToken({
+    const { access_token } = await this.authUtilService.createToken({
       email: data.email,
-      user_id: newUserUuid,
+      user_id,
     });
 
-    return accessToken;
+    return {
+      user_id,
+      access_token,
+      created_at: new Date(),
+    };
   }
 
   async updateUserById(id: string, data: UpdateUserDto): Promise<number> {

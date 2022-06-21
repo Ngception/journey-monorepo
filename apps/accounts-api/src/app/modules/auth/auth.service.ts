@@ -13,7 +13,7 @@ export class AuthService {
 
   async validateUser(
     data: LoginUserDto
-  ): Promise<{ access_token: string } | void> {
+  ): Promise<{ user_id: string; access_token: string; created_at: Date }> {
     const user = await this.userService.getUser({
       email: data.email,
     });
@@ -22,13 +22,20 @@ export class AuthService {
       const isMatch = await bcrypt.compare(data.password, user.password);
 
       if (isMatch) {
-        return this.authUtilService.createToken({
+        const { user_id, created_at } = user;
+        const { access_token } = await this.authUtilService.createToken({
           user_id: user.user_id,
           email: user.email,
         });
+
+        return {
+          user_id,
+          access_token,
+          created_at,
+        };
       }
     }
 
-    return await this.authUtilService.throwError(401, 'Invalid login attempt.');
+    await this.authUtilService.throwError(401, 'Invalid login attempt.');
   }
 }

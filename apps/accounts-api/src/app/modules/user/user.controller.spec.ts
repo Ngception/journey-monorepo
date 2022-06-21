@@ -66,6 +66,9 @@ describe('UserController', () => {
     userController = module.get<UserController>(UserController);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     authUtilService = module.get<AuthUtilService>(AuthUtilService);
+    jest
+      .spyOn(global, 'Date')
+      .mockImplementation(() => date as unknown as string);
   });
 
   describe('GET', () => {
@@ -100,8 +103,6 @@ describe('UserController', () => {
       const data = {
         email: 'testemail',
         password: 'testpassword',
-        created_at: date,
-        updated_at: null,
       };
 
       const res = await userController.createUser(
@@ -110,7 +111,14 @@ describe('UserController', () => {
       );
 
       expect(userService.createUser).toHaveBeenCalledWith(data);
-      expect(res).toEqual({ message: 'success' });
+      expect(res).toEqual({
+        message: 'success',
+        user: {
+          email: data.email,
+          user_id: 'uuid',
+          created_at: date,
+        },
+      });
     });
   });
 

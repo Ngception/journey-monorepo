@@ -63,11 +63,20 @@ describe('AppController', () => {
         access_token: 'token',
       };
 
-      jest.spyOn(authService, 'validateUser').mockResolvedValue(mockToken);
+      const mockUserInfo = {
+        user_id: 'uuid',
+        email: testUser.email,
+        created_at: new Date(),
+      };
+
+      jest.spyOn(authService, 'validateUser').mockResolvedValue({
+        ...mockToken,
+        ...mockUserInfo,
+      });
 
       const res = await appController.login(testUser, mockResponse as Response);
 
-      expect(res).toEqual({ message: 'success' });
+      expect(res).toEqual({ message: 'success', user: mockUserInfo });
       expect(authService.validateUser).toHaveBeenCalledWith(testUser);
       expect(mockResponse.cookie).toHaveBeenCalled();
     });
