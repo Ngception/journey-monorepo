@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { HttpException } from '@nestjs/common';
-import { ICreateUser, IUpdateUser } from '@journey-monorepo/util';
+import { ICreateUser, IDeleteUser, IUpdateUser } from '@journey-monorepo/util';
 
 const BASE_URL = process.env['NX_AAPI_BASE_URL'];
 
@@ -31,6 +31,17 @@ export const updateUser = async (updateUserData: IUpdateUser) => {
     {
       password: updateUserData.password,
     },
+    {
+      withCredentials: true,
+    }
+  );
+
+  return data;
+};
+
+export const deleteUser = async (deleteUserData: IDeleteUser) => {
+  const { data }: AxiosResponse<{ message: string }> = await axios.delete(
+    `${BASE_URL}/users/${deleteUserData.user_id}`,
     {
       withCredentials: true,
     }

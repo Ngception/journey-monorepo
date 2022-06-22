@@ -146,7 +146,9 @@ describe('UserController', () => {
       const res = await userController.deleteUserById('uuid');
 
       expect(userService.deleteUserById).toHaveBeenCalledWith('uuid');
-      expect(res).toEqual(1);
+      expect(res).toEqual({
+        message: 'success',
+      });
     });
   });
 });

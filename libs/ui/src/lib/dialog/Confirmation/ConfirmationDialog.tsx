@@ -1,4 +1,4 @@
-import { FC, ReactNode, RefObject, useState } from 'react';
+import { FC, FormEvent, ReactNode, RefObject, useState } from 'react';
 import FocusTrap from 'focus-trap-react';
 
 import styles from './ConfirmationDialog.module.scss';
@@ -13,7 +13,7 @@ interface ConfirmationDialogProps {
   children: ReactNode;
   confirmButtonLabel?: string;
   confirmButtonColor?: string;
-  confirmHandler: () => void;
+  confirmHandler: (event: FormEvent) => void;
   cancelButtonLabel?: string;
   cancelHandler: () => void;
 }
@@ -58,42 +58,45 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
               onClick={() => closeDialog()}
             ></button>
           </header>
-          <section className="modal-card-body">
-            <div className={notificationClasses}>{props.children}</div>
-            <div className={styles['confirm-field']}>
-              <label htmlFor="confirm-field">
-                Please type "confirm" to proceed.
-              </label>
-              <input
-                data-testid="confirm-field"
-                className="input"
-                type="text"
-                id="confirm-field"
-                aria-required="true"
-                onChange={(e) => setConfirmField(e.target.value.toLowerCase())}
-              />
-            </div>
-          </section>
-          <footer className="modal-card-foot">
-            <button
-              data-testid="confirm-button"
-              disabled={confirmField !== 'confirm' || props.isLoading}
-              className={confirmButtonClasses}
-              type="button"
-              onClick={() => props.confirmHandler()}
-            >
-              {props.confirmButtonLabel || 'Confirm'}
-            </button>
-            <button
-              data-testid="cancel-button"
-              className="button"
-              type="button"
-              disabled={props.isLoading}
-              onClick={() => closeDialog()}
-            >
-              {props.cancelButtonLabel || 'Cancel'}
-            </button>
-          </footer>
+          <form onSubmit={(event) => props.confirmHandler(event)}>
+            <section className="modal-card-body">
+              <div className={notificationClasses}>{props.children}</div>
+              <div className={styles['confirm-field']}>
+                <label htmlFor="confirm-field">
+                  Please type "confirm" to proceed.
+                </label>
+                <input
+                  data-testid="confirm-field"
+                  className="input"
+                  type="text"
+                  id="confirm-field"
+                  aria-required="true"
+                  onChange={(e) =>
+                    setConfirmField(e.target.value.toLowerCase())
+                  }
+                />
+              </div>
+            </section>
+            <footer className="modal-card-foot">
+              <button
+                data-testid="confirm-button"
+                disabled={confirmField !== 'confirm' || props.isLoading}
+                className={confirmButtonClasses}
+                type="submit"
+              >
+                {props.confirmButtonLabel || 'Confirm'}
+              </button>
+              <button
+                data-testid="cancel-button"
+                className="button"
+                type="button"
+                disabled={props.isLoading}
+                onClick={() => closeDialog()}
+              >
+                {props.cancelButtonLabel || 'Cancel'}
+              </button>
+            </footer>
+          </form>
         </div>
       </div>
     </FocusTrap>

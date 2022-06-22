@@ -1,5 +1,6 @@
+import { FC, FormEvent, useRef, useState } from 'react';
 import { DialogContainer, Icon } from '@journey-monorepo/ui';
-import { FC, useRef, useState } from 'react';
+import { deleteUser, useLogout, useUser } from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
 
@@ -11,6 +12,9 @@ export const AccountPreferencesDeleteAccount: FC<
 > = (props: AccountPreferencesDeleteAccountProps) => {
   const deleteAccountTrigger = useRef<HTMLButtonElement>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { state: user } = useUser();
+  const handleLogout = useLogout();
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -20,8 +24,23 @@ export const AccountPreferencesDeleteAccount: FC<
     setIsDialogOpen(false);
   };
 
-  const handleConfirm = () => {
-    return console.log('Confirmed!');
+  const handleConfirm = async (event: FormEvent) => {
+    event.preventDefault();
+
+    setIsLoading(true);
+
+    const response = await deleteUser({
+      user_id: user.user_id,
+    });
+
+    if (response.message === 'success') {
+      setIsDialogOpen(false);
+      handleLogout();
+    } else {
+      return;
+    }
+
+    setIsLoading(false);
   };
 
   const confirmationDialogProps = {
@@ -29,9 +48,10 @@ export const AccountPreferencesDeleteAccount: FC<
     trigger: deleteAccountTrigger,
     showDanger: true,
     confirmButtonColor: 'is-danger',
-    confirmHandler: () => handleConfirm(),
+    confirmHandler: (event: FormEvent) => handleConfirm(event),
     cancelHandler: () => closeDialog(),
     isDialogOpen: isDialogOpen,
+    isLoading,
   };
 
   return (
@@ -50,6 +70,7 @@ export const AccountPreferencesDeleteAccount: FC<
       </div>
       <div className={styles['actions']}>
         <button
+          data-testid="delete-account-dialog-trigger"
           ref={deleteAccountTrigger}
           className="button is-danger"
           type="button"
@@ -69,8 +90,8 @@ export const AccountPreferencesDeleteAccount: FC<
               <Icon type="solid" name="triangle-exclamation" />
             </span>
             <p>
-              You are about to delete your account. Once confirmed, this action
-              cannot be undone.
+              You are about to delete your account. Once confirmed, you will
+              lose access and this action cannot be undone.
             </p>
           </div>
         </DialogContainer>
