@@ -5,7 +5,7 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
+import * as morgan from 'morgan';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -13,6 +13,7 @@ async function bootstrap() {
   app.enableCors();
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.use(morgan('dev'));
   const port = process.env.PORT || 3400;
   await app.listen(port);
   Logger.log(

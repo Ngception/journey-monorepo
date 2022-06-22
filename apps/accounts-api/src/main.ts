@@ -6,6 +6,7 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
+import * as morgan from 'morgan';
 import { AppModule } from './app/app.module';
 import { corsConfig } from './config';
 
@@ -15,6 +16,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   app.enableCors(corsConfig);
   app.use(cookieParser(process.env['NX_COOKIE_SECRET']));
+  app.use(morgan('dev'));
   const port = process.env.PORT || 3300;
   await app.listen(port);
   Logger.log(
