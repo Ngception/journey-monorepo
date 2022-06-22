@@ -114,7 +114,7 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'update');
 
       const data = {
-        password: 'newpassword',
+        password: 'password',
         updated_at: date,
       };
 

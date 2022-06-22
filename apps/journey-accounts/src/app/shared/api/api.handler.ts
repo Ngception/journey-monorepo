@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { HttpException } from '@nestjs/common';
-import { ICreateUser } from '@journey-monorepo/util';
+import { ICreateUser, IUpdateUser } from '@journey-monorepo/util';
 
 const BASE_URL = process.env['NX_AAPI_BASE_URL'];
 
@@ -21,6 +21,20 @@ export const createUser = async (createUserData: ICreateUser) => {
   }> = await axios.post(`${BASE_URL}/users`, createUserData, {
     withCredentials: true,
   });
+
+  return data;
+};
+
+export const updateUser = async (updateUserData: IUpdateUser) => {
+  const { data }: AxiosResponse<{ message: string }> = await axios.patch(
+    `${BASE_URL}/users/${updateUserData.user_id}`,
+    {
+      password: updateUserData.password,
+    },
+    {
+      withCredentials: true,
+    }
+  );
 
   return data;
 };

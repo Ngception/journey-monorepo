@@ -69,8 +69,18 @@ export class UserController {
   async updateUserById(
     @Param('id') id: string,
     @Body() data: UpdateUserDto
-  ): Promise<number> {
-    return await this.userService.updateUserById(id, data);
+  ): Promise<{ message: string }> {
+    const userUpdated = await this.userService.updateUserById(id, data);
+
+    if (userUpdated) {
+      return {
+        message: 'success',
+      };
+    } else {
+      return {
+        message: 'error',
+      };
+    }
   }
 
   @Delete(':id')

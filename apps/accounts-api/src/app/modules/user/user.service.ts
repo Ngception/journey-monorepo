@@ -102,8 +102,10 @@ export class UserService {
 
   async updateUserById(id: string, data: UpdateUserDto): Promise<number> {
     try {
+      const hash = await this.hashPassword(data.password);
+
       const { affected } = await this.repo.update(id, {
-        ...data,
+        password: hash,
         updated_at: new Date(),
       });
 

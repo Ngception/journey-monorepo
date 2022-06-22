@@ -133,7 +133,9 @@ describe('UserController', () => {
       const res = await userController.updateUserById('uuid', data);
 
       expect(userService.updateUserById).toHaveBeenCalledWith('uuid', data);
-      expect(res).toEqual(1);
+      expect(res).toEqual({
+        message: 'success',
+      });
     });
   });
 

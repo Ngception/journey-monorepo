@@ -16,6 +16,10 @@ export class AuthUtilService {
     return await bcrypt.hash(data, saltRounds);
   }
 
+  async compareEncryptedData(source, target): Promise<boolean> {
+    return await bcrypt.compare(source, target);
+  }
+
   async throwError(statusCode?: number, error?: string) {
     switch (statusCode) {
       case 401:

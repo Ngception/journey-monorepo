@@ -1,5 +1,6 @@
-import { Icon } from '@journey-monorepo/ui';
 import { FC, useState } from 'react';
+import { Icon } from '@journey-monorepo/ui';
+import { logoutUser, updateUser, useLogout, useUser } from '../../../../shared';
 
 import styles from './SecurityEditPassword.module.scss';
 
@@ -16,6 +17,8 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const [newPasswordVisibility, setNewPasswordVisibility] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { state: user } = useUser();
+  const handleLogout = useLogout();
 
   const invalidForm = !currentPassword || !newPassword;
   const setSubmitButtonClasses = `button ${styles['form-button']} ${
@@ -33,14 +36,27 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    const response = await updateUser({
+      user_id: user.user_id,
+      password: newPassword,
+    });
+
+    if (response.message === 'success') {
+      const { message } = await logoutUser();
+
+      if (message === 'success') {
+        handleLogout();
+      }
+    } else {
+      return;
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -54,6 +70,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
           <div className="field has-addons">
             <div className="control is-expanded">
               <input
+                data-testid="current-password-field"
                 className="input"
                 type={currentPasswordVisibility ? 'text' : 'password'}
                 placeholder="Enter current password"
@@ -90,6 +107,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
           <div className="field has-addons">
             <div className="control is-expanded">
               <input
+                data-testid="new-password-field"
                 className="input"
                 type={newPasswordVisibility ? 'text' : 'password'}
                 placeholder="Enter new password"
