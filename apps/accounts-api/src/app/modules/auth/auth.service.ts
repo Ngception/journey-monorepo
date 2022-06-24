@@ -35,7 +35,5 @@ export class AuthService {
         };
       }
     }
-
-    await this.authUtilService.throwError(401, 'Invalid login attempt.');
   }
 }

@@ -1,30 +1,30 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AuthService } from './modules/auth/auth.service';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Request as NestJSRequest,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateUserDto } from './modules/user/user.dto';
 import { AppService } from './app.service';
+import { LocalAuthGuard } from './modules/auth/guards';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private authService: AuthService
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
+  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(
     @Body() data: CreateUserDto,
-    @Res({ passthrough: true }) response: Response
-  ): Promise<{
-    message: string;
-    user?: {
-      user_id: string;
-      email: string;
-      created_at: Date;
-    };
-  } | void> {
-    const { user_id, access_token, created_at } =
-      await this.authService.validateUser(data);
+    @Res({ passthrough: true }) response: Response,
+    @NestJSRequest() request
+  ) {
+    const { user_id, access_token, created_at } = request.user;
 
     if (access_token) {
       response.cookie('user', access_token, {

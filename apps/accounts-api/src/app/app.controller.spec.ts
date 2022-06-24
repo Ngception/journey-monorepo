@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthService } from './modules/auth/auth.service';
+import { LocalAuthGuard } from './modules/auth/guards';
 import { User } from './modules/user/user.entity';
 import { UserService } from './modules/user/user.service';
 import { AuthUtilModule } from './shared/auth/auth-util.module';
@@ -12,12 +12,13 @@ import { AuthUtilModule } from './shared/auth/auth-util.module';
 describe('AppController', () => {
   let app: TestingModule;
   let appController: AppController;
-  let authService: AuthService;
 
   const responseObject = {
     status: 201,
     message: 'success',
   };
+
+  const date = new Date();
 
   const mockResponse: Partial<Response> = {
     status: jest.fn().mockImplementation().mockReturnValue(201),
@@ -31,6 +32,12 @@ describe('AppController', () => {
     signedCookies: {
       user: {},
     },
+    user: {
+      access_token: 'token',
+      user_id: 'uuid',
+      email: 'email',
+      created_at: date,
+    },
   };
 
   beforeEach(async () => {
@@ -39,17 +46,18 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [
         AppService,
-        AuthService,
         UserService,
         {
           provide: getRepositoryToken(User),
           useValue: Repository,
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(LocalAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     appController = app.get<AppController>(AppController);
-    authService = app.get<AuthService>(AuthService);
   });
 
   describe('login', () => {
@@ -59,25 +67,19 @@ describe('AppController', () => {
         password: 'password',
       };
 
-      const mockToken = {
-        access_token: 'token',
-      };
-
       const mockUserInfo = {
         user_id: 'uuid',
         email: testUser.email,
-        created_at: new Date(),
+        created_at: date,
       };
 
-      jest.spyOn(authService, 'validateUser').mockResolvedValue({
-        ...mockToken,
-        ...mockUserInfo,
-      });
-
-      const res = await appController.login(testUser, mockResponse as Response);
+      const res = await appController.login(
+        testUser,
+        mockResponse as Response,
+        mockRequest as Request
+      );
 
       expect(res).toEqual({ message: 'success', user: mockUserInfo });
-      expect(authService.validateUser).toHaveBeenCalledWith(testUser);
       expect(mockResponse.cookie).toHaveBeenCalled();
     });
   });
