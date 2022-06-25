@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './modules/user/user.dto';
 import { AppService } from './app.service';
-import { LocalAuthGuard } from './modules/auth/guards';
+import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
 
 @Controller()
 export class AppController {
@@ -72,6 +72,7 @@ export class AppController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('status')
   getStatus() {
     return this.appService.getStatus();

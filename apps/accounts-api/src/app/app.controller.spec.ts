@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LocalAuthGuard } from './modules/auth/guards';
+import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
 import { User } from './modules/user/user.entity';
 import { UserService } from './modules/user/user.service';
 import { AuthUtilModule } from './shared/auth/auth-util.module';
@@ -54,6 +54,8 @@ describe('AppController', () => {
       ],
     })
       .overrideGuard(LocalAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: () => true })
       .compile();
 
