@@ -9,6 +9,7 @@ import { UserService } from './user.service';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { Response } from 'express';
+import { JwtAuthGuard } from '../auth/guards';
 
 describe('UserController', () => {
   let userService: UserService;
@@ -60,7 +61,10 @@ describe('UserController', () => {
           },
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     userService = module.get<UserService>(UserService);
     userController = module.get<UserController>(UserController);
