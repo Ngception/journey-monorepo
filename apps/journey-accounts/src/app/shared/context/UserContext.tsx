@@ -8,7 +8,6 @@ import {
 
 export interface IUserContext {
   state: InitialUserStateInterface;
-  // dispatch: Dispatch<UserAction>;
   setUser: (userInfo: InitialUserStateInterface) => void;
   clearUser: () => void;
 }
