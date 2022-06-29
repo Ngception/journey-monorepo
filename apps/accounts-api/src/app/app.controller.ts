@@ -12,10 +12,14 @@ import {
 import { CreateUserDto } from './modules/user/user.dto';
 import { AppService } from './app.service';
 import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
+import { AuthService } from './modules/auth/auth.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private authService: AuthService
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -70,6 +74,21 @@ export class AppController {
         message: 'error',
       };
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('auth/status')
+  getAuthStatus(@NestJSRequest() request) {
+    const { user_id, email, created_at } = request.user;
+
+    return {
+      ...this.authService.getAuthStatus(),
+      user: {
+        user_id,
+        email,
+        created_at,
+      },
+    };
   }
 
   @UseGuards(JwtAuthGuard)

@@ -19,7 +19,7 @@ export const ProfileContainer: FC<ProfileContainerProps> = (
     setCreatedAt(formatDate(user.created_at));
   }, [auth.isLoggedIn]);
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date = new Date()) => {
     let dateObject = new Date(date);
 
     const offset = dateObject.getTimezoneOffset();

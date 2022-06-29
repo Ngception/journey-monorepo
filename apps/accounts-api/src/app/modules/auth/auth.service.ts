@@ -36,4 +36,8 @@ export class AuthService {
       }
     }
   }
+
+  getAuthStatus(): { message: string } {
+    return { message: 'OK' };
+  }
 }

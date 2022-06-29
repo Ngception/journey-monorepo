@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthService } from './modules/auth/auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
 import { User } from './modules/user/user.entity';
 import { UserService } from './modules/user/user.service';
@@ -47,6 +48,7 @@ describe('AppController', () => {
       providers: [
         AppService,
         UserService,
+        AuthService,
         {
           provide: getRepositoryToken(User),
           useValue: Repository,
@@ -95,6 +97,19 @@ describe('AppController', () => {
 
       expect(res).toEqual({ message: 'success' });
       expect(mockResponse.clearCookie).toHaveBeenCalled();
+    });
+  });
+
+  describe('getAuthStatus', () => {
+    it('should return auth status', () => {
+      expect(appController.getAuthStatus(mockRequest)).toEqual({
+        message: 'OK',
+        user: {
+          user_id: 'uuid',
+          email: 'email',
+          created_at: date,
+        },
+      });
     });
   });
 

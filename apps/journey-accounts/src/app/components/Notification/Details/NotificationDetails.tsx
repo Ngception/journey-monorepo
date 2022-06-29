@@ -15,6 +15,8 @@ export const NotificationDetails: FC<NotificationDetailsProps> = (
         return 'is-success';
       case 'error':
         return 'is-danger';
+      case 'info':
+        return 'is-info';
       default:
         return 'is-primary';
     }

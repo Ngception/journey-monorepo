@@ -27,3 +27,18 @@ export const logoutUser = async () => {
 
   return data;
 };
+
+export const verifyAuthStatus = async () => {
+  const {
+    data,
+  }: AxiosResponse<{
+    message: string;
+    user: {
+      user_id: string;
+      email: string;
+      created_at: Date;
+    };
+  }> = await axios.get(`${BASE_URL}/auth/status`, { withCredentials: true });
+
+  return data;
+};

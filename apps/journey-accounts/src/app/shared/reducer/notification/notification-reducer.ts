@@ -1,6 +1,6 @@
 export interface Notification {
   message: string;
-  type: 'success' | 'error';
+  type: 'success' | 'error' | 'info';
 }
 
 export interface NotificationAction {
