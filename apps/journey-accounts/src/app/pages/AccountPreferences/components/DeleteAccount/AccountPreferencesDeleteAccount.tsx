@@ -1,6 +1,11 @@
 import { FC, FormEvent, useRef, useState } from 'react';
 import { DialogContainer, Icon } from '@journey-monorepo/ui';
-import { deleteUser, useLogout, useUser } from '../../../../shared';
+import {
+  deleteUser,
+  useLogout,
+  useNotification,
+  useUser,
+} from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
 
@@ -15,6 +20,7 @@ export const AccountPreferencesDeleteAccount: FC<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { state: user } = useUser();
   const handleLogout = useLogout();
+  const { addNotification } = useNotification();
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -35,8 +41,16 @@ export const AccountPreferencesDeleteAccount: FC<
 
     if (response.message === 'success') {
       setIsDialogOpen(false);
+      addNotification({
+        message: 'Account has been successfully deleted.',
+        type: 'success',
+      });
       handleLogout();
     } else {
+      addNotification({
+        message: 'Something went wrong. Please try again later.',
+        type: 'error',
+      });
       return;
     }
 

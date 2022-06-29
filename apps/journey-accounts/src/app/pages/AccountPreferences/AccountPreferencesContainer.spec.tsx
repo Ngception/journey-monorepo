@@ -1,6 +1,6 @@
 import { MockRouter } from '@journey-monorepo/ui';
 import { render } from '@testing-library/react';
-import { AuthProvider, UserProvider } from '../../shared';
+import { AuthProvider, NotificationProvider, UserProvider } from '../../shared';
 
 import { AccountPreferencesContainer } from './AccountPreferencesContainer';
 
@@ -11,9 +11,11 @@ describe('AccountPreferencesContainer', () => {
     component = render(
       <MockRouter route={'/'}>
         <AuthProvider>
-          <UserProvider>
-            <AccountPreferencesContainer />
-          </UserProvider>
+          <NotificationProvider>
+            <UserProvider>
+              <AccountPreferencesContainer />
+            </UserProvider>
+          </NotificationProvider>
         </AuthProvider>
       </MockRouter>
     ).baseElement;

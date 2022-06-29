@@ -2,7 +2,12 @@
 import { MockRouter } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AuthProvider, updateUser, UserProvider } from '../../../../shared';
+import {
+  AuthProvider,
+  NotificationProvider,
+  updateUser,
+  UserProvider,
+} from '../../../../shared';
 import { SecurityEditPassword } from './SecurityEditPassword';
 
 // Mock utils module to be able mock certain methods
@@ -22,9 +27,11 @@ describe('SecurityEditPassword', () => {
     const renderResult: RenderResult = render(
       <MockRouter route={'/'}>
         <AuthProvider>
-          <UserProvider>
-            <SecurityEditPassword />
-          </UserProvider>
+          <NotificationProvider>
+            <UserProvider>
+              <SecurityEditPassword />
+            </UserProvider>
+          </NotificationProvider>
         </AuthProvider>
       </MockRouter>
     );

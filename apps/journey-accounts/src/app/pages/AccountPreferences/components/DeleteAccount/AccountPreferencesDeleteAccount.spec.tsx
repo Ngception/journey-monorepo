@@ -2,7 +2,12 @@
 import { MockRouter } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { AuthProvider, deleteUser, UserProvider } from '../../../../shared';
+import {
+  AuthProvider,
+  deleteUser,
+  NotificationProvider,
+  UserProvider,
+} from '../../../../shared';
 import { AccountPreferencesDeleteAccount } from './AccountPreferencesDeleteAccount';
 
 // Mock utils module to be able mock certain methods
@@ -18,9 +23,11 @@ describe('AccountPreferencesDeleteAccount', () => {
     const renderResult: RenderResult = render(
       <MockRouter route={'/'}>
         <AuthProvider>
-          <UserProvider>
-            <AccountPreferencesDeleteAccount />
-          </UserProvider>
+          <NotificationProvider>
+            <UserProvider>
+              <AccountPreferencesDeleteAccount />
+            </UserProvider>
+          </NotificationProvider>
         </AuthProvider>
       </MockRouter>
     );

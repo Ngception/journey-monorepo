@@ -1,6 +1,12 @@
 import { FC, useState } from 'react';
 import { Icon } from '@journey-monorepo/ui';
-import { logoutUser, updateUser, useLogout, useUser } from '../../../../shared';
+import {
+  logoutUser,
+  updateUser,
+  useLogout,
+  useUser,
+  useNotification,
+} from '../../../../shared';
 
 import styles from './SecurityEditPassword.module.scss';
 
@@ -19,6 +25,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { state: user } = useUser();
   const handleLogout = useLogout();
+  const { addNotification } = useNotification();
 
   const invalidForm = !currentPassword || !newPassword;
   const setSubmitButtonClasses = `button ${styles['form-button']} ${
@@ -50,9 +57,17 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
       const { message } = await logoutUser();
 
       if (message === 'success') {
+        addNotification({
+          message: 'Password changed. Please login again.',
+          type: 'success',
+        });
         handleLogout();
       }
     } else {
+      addNotification({
+        message: 'Something went wrong. Please try again later.',
+        type: 'error',
+      });
       return;
     }
 
