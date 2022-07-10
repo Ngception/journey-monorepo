@@ -11,6 +11,7 @@ Please make sure you have the following installed:
 - Yarn 3
 - Node.js >=16
 - Docker
+- Homebrew
 
 ## Setup
 
@@ -32,23 +33,29 @@ Then run:
   make create-dbs
 ```
 
+To setup apps to be served over HTTPS, the following installs [mkcert](https://github.com/FiloSottile/mkcert) with Homebrew and adds the certificate as trusted to the local system:
+
+```
+  make setup-ssl
+```
+
 ## Development
 
 All work is done on a feature branch based on the `main` branch. When finished, a pull request is opened for the feature branch.
 
-Spin up project databases:
+Start project databases:
 
 ```
   make start-dbs
 ```
 
-Spin up development servers for all apps:
+Start development servers for all apps:
 
 ```
   yarn start:all
 ```
 
-Spin up a development server for a specific app:
+Start development server for a specific app:
 
 ```
   APP=app-name yarn start

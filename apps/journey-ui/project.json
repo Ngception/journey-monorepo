@@ -53,7 +53,11 @@
         "buildTarget": "journey-ui:build",
         "hmr": true,
         "proxyConfig": "apps/journey-ui/proxy.conf.json",
-        "port": 4100
+        "port": 4100,
+        "host": "journey.dev",
+        "ssl": true,
+        "sslKey": "ssl/ssl.key",
+        "sslCert": "ssl/ssl.crt"
       },
       "configurations": {
         "development": {

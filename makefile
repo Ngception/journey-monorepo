@@ -1,6 +1,9 @@
 .PHONY: dbs-up dbs-down \
 dbs-start dbs-stop \
 
+setup-ssl:
+	sh scripts/setup-ssl.sh
+
 create-dbs:
 	docker-compose -f .docker/dev/docker-compose.yml up \
 	--remove-orphans
