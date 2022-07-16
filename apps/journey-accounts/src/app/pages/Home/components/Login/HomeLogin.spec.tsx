@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { render } from '@testing-library/react';
+import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MockRouter } from '@journey-monorepo/ui';
+import {
+  mockWindowLocation,
+  restoreWindowLocation,
+} from '@journey-monorepo/util';
 import { AuthProvider, loginUser, UserProvider } from '../../../../shared';
 import { HomeLogin } from './HomeLogin';
 
@@ -20,8 +24,14 @@ describe('HomeLogin', () => {
   let component: HTMLElement;
   let query: any;
 
+  const originalWindow = global.window;
+
+  beforeAll(() => {
+    mockWindowLocation();
+  });
+
   beforeEach(() => {
-    const renderResult = render(
+    const renderResult: RenderResult = render(
       <MockRouter route={'/'}>
         <AuthProvider>
           <UserProvider>
@@ -33,6 +43,10 @@ describe('HomeLogin', () => {
 
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;
+  });
+
+  afterAll(() => {
+    restoreWindowLocation(originalWindow);
   });
 
   it('should render', () => {

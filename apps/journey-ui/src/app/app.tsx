@@ -1,35 +1,23 @@
-import { lazy, Suspense } from 'react';
-import {
-  ErrorBoundary,
-  LayoutBody,
-  LayoutHeader,
-  Loader,
-} from '@journey-monorepo/ui';
+import { LayoutBody, LayoutHeader } from '@journey-monorepo/ui';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 import 'bulma/css/bulma.min.css';
-
-const TaskContainer = lazy(() =>
-  import('./components/Task/TaskContainer').then(({ TaskContainer }) => ({
-    default: TaskContainer,
-  }))
-);
+import { AuthProvider } from './shared/context/AuthContext';
+import { AppRoutes } from './app.routes';
 
 export function App() {
   return (
-    <>
-      <LayoutHeader>
-        <PrimaryNavbar />
-      </LayoutHeader>
-      <div className="column">
-        <LayoutBody>
-          <ErrorBoundary>
-            <Suspense fallback={<Loader />}>
-              <TaskContainer />
-            </Suspense>
-          </ErrorBoundary>
-        </LayoutBody>
-      </div>
-    </>
+    <div>
+      <AuthProvider>
+        <LayoutHeader>
+          <PrimaryNavbar />
+        </LayoutHeader>
+        <div className="column">
+          <LayoutBody>
+            <AppRoutes />
+          </LayoutBody>
+        </div>
+      </AuthProvider>
+    </div>
   );
 }
 

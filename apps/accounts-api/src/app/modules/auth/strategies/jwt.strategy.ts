@@ -8,11 +8,7 @@ import { UserService } from '../../user/user.service';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
     super({
-      jwtFromRequest: (req) => {
-        if (req?.signedCookies) {
-          return req.signedCookies['user'];
-        }
-      },
+      jwtFromRequest: (req) => req?.signedCookies['user'],
       ignoreExpiration: false,
       secretOrKey: jwtConstants.secret,
     });

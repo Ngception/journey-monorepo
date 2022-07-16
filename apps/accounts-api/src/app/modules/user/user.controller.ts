@@ -15,16 +15,17 @@ import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
-@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUserById(@Param('id') id: string): Promise<User | null> {
     return await this.userService.getUserById(id);
@@ -68,6 +69,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateUserById(
     @Param('id') id: string,
@@ -86,6 +88,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteUserById(@Param('id') id: string): Promise<{ message: string }> {
     const userDeleted = await this.userService.deleteUserById(id);

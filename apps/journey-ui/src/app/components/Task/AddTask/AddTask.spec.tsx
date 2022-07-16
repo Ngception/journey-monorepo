@@ -1,11 +1,13 @@
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { addTask } from '../../../shared/api/task.handler';
+import { addTask } from '../../../shared/handlers/api/task.handler';
 import { AddTask } from './AddTask';
 
 // Mock utils module to be able mock certain methods
-jest.mock('../../../shared/api/task.handler', () => {
-  const originalModule = jest.requireActual('../../../shared/api/task.handler');
+jest.mock('../../../shared/handlers/api/task.handler', () => {
+  const originalModule = jest.requireActual(
+    '../../../shared/handlers/api/task.handler'
+  );
 
   return {
     ...originalModule,

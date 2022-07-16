@@ -31,11 +31,14 @@ export class AppController {
     const { user_id, access_token, created_at } = request.user;
 
     if (access_token) {
+      const currentDate = new Date();
+
       response.cookie('user', access_token, {
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
         signed: true,
+        expires: new Date(currentDate.getTime() + 60 * 1000),
       });
 
       return {

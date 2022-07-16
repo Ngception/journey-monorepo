@@ -1,9 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
-import { ILoginUser } from '@journey-monorepo/util';
 
 const BASE_URL = process.env['NX_AAPI_BASE_URL'];
 
-export const loginUser = async (loginUserData: ILoginUser) => {
+export const verifyAuthStatus = async () => {
   const {
     data,
   }: AxiosResponse<{
@@ -13,7 +12,7 @@ export const loginUser = async (loginUserData: ILoginUser) => {
       email: string;
       created_at: Date;
     };
-  }> = await axios.post(`${BASE_URL}/auth/login`, loginUserData, {
+  }> = await axios.get(`${BASE_URL}/auth/status`, {
     withCredentials: true,
   });
 
@@ -28,21 +27,6 @@ export const logoutUser = async () => {
       withCredentials: true,
     }
   );
-
-  return data;
-};
-
-export const verifyAuthStatus = async () => {
-  const {
-    data,
-  }: AxiosResponse<{
-    message: string;
-    user: {
-      user_id: string;
-      email: string;
-      created_at: Date;
-    };
-  }> = await axios.get(`${BASE_URL}/auth/status`, { withCredentials: true });
 
   return data;
 };

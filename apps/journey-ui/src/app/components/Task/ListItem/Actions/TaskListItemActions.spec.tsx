@@ -1,5 +1,5 @@
-import { createTask } from '@journey-monorepo/util';
 import { render, RenderResult } from '@testing-library/react';
+import { createTask } from '@journey-monorepo/util';
 import { TaskListItemActions } from './TaskListItemActions';
 
 describe('TaskListItemActions', () => {
@@ -13,7 +13,6 @@ describe('TaskListItemActions', () => {
     const renderResult: RenderResult = render(
       <TaskListItemActions {...testProps} />
     );
-
     component = renderResult.baseElement;
   });
 

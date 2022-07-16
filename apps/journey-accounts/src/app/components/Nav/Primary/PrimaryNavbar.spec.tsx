@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MockRouter } from '@journey-monorepo/ui';
+import {
+  mockWindowLocation,
+  restoreWindowLocation,
+} from '@journey-monorepo/util';
 import { AuthProvider, logoutUser, useAuth } from '../../../shared';
 import { PrimaryNavbar } from './PrimaryNavbar';
 
@@ -21,6 +25,12 @@ describe('PrimaryNavbar', () => {
   let query: any;
   let rerender: any;
 
+  const originalWindow = global.window;
+
+  beforeAll(() => {
+    mockWindowLocation();
+  });
+
   beforeEach(() => {
     const renderResult = render(
       <AuthProvider>
@@ -33,6 +43,10 @@ describe('PrimaryNavbar', () => {
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;
     rerender = renderResult.rerender;
+  });
+
+  afterAll(() => {
+    restoreWindowLocation(originalWindow);
   });
 
   it('should render', () => {

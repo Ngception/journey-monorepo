@@ -1,5 +1,10 @@
 import { FC, FormEvent, useState } from 'react';
-import { Location, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Location,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { Icon } from '@journey-monorepo/ui';
 import {
   createUser,
@@ -28,6 +33,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
+  const [searchParams] = useSearchParams();
   const { login } = useAuth();
   const { setUser } = useUser();
 
@@ -58,8 +64,12 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
         // login handler
         const { message, user } = await loginUser(data);
         if (message === 'success') {
-          setUser(user);
-          navigateToAccount();
+          if (searchParams.get('site') === 'journey') {
+            window.location.href = `${process.env['NX_JOURNEY_UI_BASE_URL']}?user=${user.user_id}`;
+          } else {
+            setUser(user);
+            navigateToAccount();
+          }
         } else {
           return;
         }
@@ -68,8 +78,12 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
       if (authType === 'register') {
         const { message, user } = await createUser(data);
         if (message === 'success') {
-          setUser(user);
-          navigateToAccount();
+          if (searchParams.get('site') === 'journey') {
+            window.location.href = `${process.env['NX_JOURNEY_UI_BASE_URL']}?user=${user.user_id}`;
+          } else {
+            setUser(user);
+            navigateToAccount();
+          }
         } else {
           return;
         }

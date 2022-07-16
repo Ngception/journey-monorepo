@@ -37,7 +37,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
             <div className="buttons">
               <a
                 data-testid="back-to-board-button"
-                href="#"
+                href={`${process.env['NX_JOURNEY_UI_BASE_URL']}`}
                 className="button is-primary"
               >
                 <strong>Back to board</strong>

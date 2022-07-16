@@ -5,9 +5,9 @@ import { deleteTaskById } from '../../../../../shared';
 import { DeleteTaskAction } from './DeleteTaskAction';
 
 // Mock utils module to be able mock certain methods
-jest.mock('../../../../../shared/api/task.handler', () => {
+jest.mock('../../../../../shared/handlers/api/task.handler', () => {
   const originalModule = jest.requireActual(
-    '../../../../../shared/api/task.handler'
+    '../../../../../shared/handlers/api/task.handler'
   );
 
   return {
