@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import * as fromModules from './modules';
+import { modules } from './modules';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import * as fromModules from './modules';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    ...fromModules.modules,
+    ...modules,
   ],
   controllers: [AppController],
   providers: [AppService],
