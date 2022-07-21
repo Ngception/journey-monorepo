@@ -2,6 +2,7 @@ import { Loader } from '@journey-monorepo/ui';
 import { FC, useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { verifyAuthStatus } from '../../shared/handlers';
+import { useUser } from '../../shared/hooks';
 import { useAuth } from '../../shared/hooks/useAuth';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -10,6 +11,7 @@ interface AuthGuardProps {}
 export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const { state: auth, login } = useAuth();
+  const { setUser } = useUser();
   const effectCalled = useRef(false);
   const navigate = useNavigate();
 
@@ -21,8 +23,9 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
     try {
       const response = await verifyAuthStatus();
 
-      if (response.message === 'OK') {
+      if (response?.message === 'OK') {
         login();
+        setUser(response?.user);
         setLoading(false);
         navigate('/', { replace: true });
       }

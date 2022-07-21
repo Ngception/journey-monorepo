@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, RenderResult } from '@testing-library/react';
+import { UserProvider } from '../../shared';
 import { TaskContainer } from './TaskContainer';
 
 describe('TaskContainer', () => {
@@ -7,7 +8,11 @@ describe('TaskContainer', () => {
   let query: any;
 
   beforeEach(() => {
-    const renderResult: RenderResult = render(<TaskContainer />);
+    const renderResult: RenderResult = render(
+      <UserProvider>
+        <TaskContainer />
+      </UserProvider>
+    );
 
     component = renderResult.baseElement;
     query = renderResult.queryByText;

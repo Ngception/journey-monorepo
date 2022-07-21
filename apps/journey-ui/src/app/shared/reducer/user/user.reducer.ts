@@ -18,6 +18,7 @@ export const USER_ACTIONS = {
 export const userInitialState = {
   user_id: '',
   email: '',
+  created_at: new Date(),
 };
 
 export const userReducer = (state = userInitialState, action: UserAction) => {

@@ -7,7 +7,10 @@ export const getAllTasksByUserId = async (
   userId?: string
 ): Promise<ITask[] | []> => {
   const { data }: AxiosResponse<ITask[]> = await axios.get(
-    `${BASE_URL}/tasks?user=${userId}`
+    `${BASE_URL}/tasks?user=${userId}`,
+    {
+      withCredentials: true,
+    }
   );
 
   return data;
@@ -17,7 +20,10 @@ export const getAllTasksByUserId = async (
 export const addTask = async (newTaskData: any): Promise<string> => {
   const { data }: AxiosResponse<string> = await axios.post(
     `${BASE_URL}/tasks`,
-    newTaskData
+    newTaskData,
+    {
+      withCredentials: true,
+    }
   );
 
   return data;
@@ -26,7 +32,10 @@ export const addTask = async (newTaskData: any): Promise<string> => {
 export const updateTask = async (updatedTaskData: any): Promise<number> => {
   const { data }: AxiosResponse<number> = await axios.patch(
     `${BASE_URL}/tasks/${updatedTaskData.task_id}`,
-    updatedTaskData
+    updatedTaskData,
+    {
+      withCredentials: true,
+    }
   );
 
   return data;
@@ -34,7 +43,10 @@ export const updateTask = async (updatedTaskData: any): Promise<number> => {
 
 export const deleteTaskById = async (taskId: string): Promise<number> => {
   const { data }: AxiosResponse<number> = await axios.delete(
-    `${BASE_URL}/tasks/${taskId}`
+    `${BASE_URL}/tasks/${taskId}`,
+    {
+      withCredentials: true,
+    }
   );
 
   return data;

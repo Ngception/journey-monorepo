@@ -5,6 +5,7 @@ import { AddTask } from './AddTask/AddTask';
 import { TaskList } from './List/TaskList';
 
 import styles from './TaskContainer.module.scss';
+import { useUser } from '../../shared/hooks';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface TaskContainerProps {}
@@ -24,6 +25,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
     title: 'Done',
     items: [],
   });
+  const { state: user } = useUser();
 
   const effectCalled = useRef(false);
 
@@ -36,10 +38,6 @@ export const TaskContainer: FC<TaskContainerProps> = (
     }
   }, []);
 
-  // TODO: Placeholder to be replaced with logic to fetch user ID.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const userId: string = process.env['NX_TEST_USER_UUID']!;
-
   const taskLists = [toDoTasks, inProgressTasks, doneTasks];
 
   const taskListClasses = `column ${styles['task-list']}`;
@@ -48,7 +46,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
 
   const fetchTasks = async () => {
     try {
-      const tasks = await getAllTasksByUserId(userId);
+      const tasks = await getAllTasksByUserId(user.user_id);
 
       setToDoTasks(filterTasks('To Do', tasks));
       setInProgressTasks(filterTasks('In Progress', tasks));
@@ -81,7 +79,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
               </h2>
               <AddTask
                 title={list.title}
-                userId={userId}
+                userId={user.user_id}
                 fetchTasks={fetchTasks}
               />
             </div>

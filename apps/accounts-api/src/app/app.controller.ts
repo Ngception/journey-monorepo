@@ -34,11 +34,12 @@ export class AppController {
       const currentDate = new Date();
 
       response.cookie('user', access_token, {
+        domain: process.env['NX_COOKIE_DOMAIN'],
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
         signed: true,
-        expires: new Date(currentDate.getTime() + 60 * 1000),
+        expires: new Date(currentDate.getTime() + 300000),
       });
 
       return {
@@ -63,6 +64,7 @@ export class AppController {
   ) {
     if (request.signedCookies['user']) {
       response.clearCookie('user', {
+        domain: process.env['NX_COOKIE_DOMAIN'],
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
