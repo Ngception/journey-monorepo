@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Notification } from '../../../shared/reducer/notification/notification-reducer';
+import { Notification } from '../../../reducer/notification-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NotificationDetailsProps {

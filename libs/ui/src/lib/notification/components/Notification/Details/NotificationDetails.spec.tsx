@@ -1,5 +1,5 @@
 import { render, RenderResult } from '@testing-library/react';
-import { Notification } from '../../../shared';
+import { Notification } from '../../../reducer/notification-reducer';
 import { NotificationDetails } from './NotificationDetails';
 
 describe('NotificationDetails', () => {

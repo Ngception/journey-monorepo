@@ -1,12 +1,6 @@
 import { FC, useState } from 'react';
-import { Icon } from '@journey-monorepo/ui';
-import {
-  logoutUser,
-  updateUser,
-  useLogout,
-  useUser,
-  useNotification,
-} from '../../../../shared';
+import { Icon, useNotification } from '@journey-monorepo/ui';
+import { logoutUser, updateUser, useLogout, useUser } from '../../../../shared';
 
 import styles from './SecurityEditPassword.module.scss';
 

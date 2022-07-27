@@ -1,11 +1,6 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import { DialogContainer, Icon } from '@journey-monorepo/ui';
-import {
-  deleteUser,
-  useLogout,
-  useNotification,
-  useUser,
-} from '../../../../shared';
+import { DialogContainer, Icon, useNotification } from '@journey-monorepo/ui';
+import { deleteUser, useLogout, useUser } from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
 

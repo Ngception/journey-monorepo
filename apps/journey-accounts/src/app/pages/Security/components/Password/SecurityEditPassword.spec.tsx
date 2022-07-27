@@ -1,13 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MockRouter } from '@journey-monorepo/ui';
+import { MockRouter, NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  AuthProvider,
-  NotificationProvider,
-  updateUser,
-  UserProvider,
-} from '../../../../shared';
+import { AuthProvider, updateUser, UserProvider } from '../../../../shared';
 import { SecurityEditPassword } from './SecurityEditPassword';
 
 // Mock utils module to be able mock certain methods

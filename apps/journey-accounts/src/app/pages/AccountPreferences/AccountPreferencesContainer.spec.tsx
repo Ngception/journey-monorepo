@@ -1,6 +1,6 @@
-import { MockRouter } from '@journey-monorepo/ui';
+import { MockRouter, NotificationProvider } from '@journey-monorepo/ui';
 import { render } from '@testing-library/react';
-import { AuthProvider, NotificationProvider, UserProvider } from '../../shared';
+import { AuthProvider, UserProvider } from '../../shared';
 
 import { AccountPreferencesContainer } from './AccountPreferencesContainer';
 

@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useNotification, useUser, verifyAuthStatus } from '../../shared';
-import { useAuth } from '../../shared/hooks/useAuth';
+import { useNotification } from '@journey-monorepo/ui';
+import { useAuth, useUser, verifyAuthStatus } from '../../shared';
 
 type LocationProps = {
   state: {
