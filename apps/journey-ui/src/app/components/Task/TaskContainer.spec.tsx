@@ -1,8 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { UserProvider } from '../../shared';
 import { TaskContainer } from './TaskContainer';
 
+jest.mock('react-beautiful-dnd', () => ({
+  Droppable: ({ children }) =>
+    children(
+      {
+        draggableProps: {
+          style: {},
+        },
+        innerRef: jest.fn(),
+      },
+      {}
+    ),
+  Draggable: ({ children }) =>
+    children(
+      {
+        draggableProps: {
+          style: {},
+        },
+        innerRef: jest.fn(),
+      },
+      {}
+    ),
+  DragDropContext: ({ children }) => children,
+}));
 describe('TaskContainer', () => {
   let component: HTMLElement;
   let query: any;
@@ -10,7 +35,11 @@ describe('TaskContainer', () => {
   beforeEach(() => {
     const renderResult: RenderResult = render(
       <UserProvider>
-        <TaskContainer />
+        <NotificationProvider>
+          <DragDropContext onDragEnd={() => jest.fn()}>
+            <TaskContainer />
+          </DragDropContext>
+        </NotificationProvider>
       </UserProvider>
     );
 
