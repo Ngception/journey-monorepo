@@ -19,7 +19,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { state: user } = useUser();
   const handleLogout = useLogout();
-  const { addNotification } = useNotification();
+  const { showErrorNotification, showSuccessNotification } = useNotification();
 
   const invalidForm = !currentPassword || !newPassword;
   const setSubmitButtonClasses = `button ${styles['form-button']} ${
@@ -51,17 +51,11 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
       const { message } = await logoutUser();
 
       if (message === 'success') {
-        addNotification({
-          message: 'Password changed. Please login again.',
-          type: 'success',
-        });
+        showSuccessNotification('Password changed. Please login again.');
         handleLogout();
       }
     } else {
-      addNotification({
-        message: 'Something went wrong. Please try again later.',
-        type: 'error',
-      });
+      showErrorNotification('Something went wrong. Please try again later.');
       return;
     }
 

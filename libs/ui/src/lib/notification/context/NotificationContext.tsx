@@ -1,7 +1,6 @@
 import { createContext, FC, ReactNode, useReducer } from 'react';
 import {
   InitialNotificationStateInterface,
-  Notification,
   notificationInitialState,
   notificationReducer,
   NOTIFICATION_ACTIONS,
@@ -9,7 +8,9 @@ import {
 
 export interface INotificationContext {
   state: InitialNotificationStateInterface;
-  addNotification: (notification: Notification) => void;
+  showSuccessNotification: (message: string) => void;
+  showErrorNotification: (message: string) => void;
+  showInfoNotification: (message: string) => void;
   clearNotifications: () => void;
 }
 
@@ -33,10 +34,29 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
 
   const value = {
     state: initialState || (state as InitialNotificationStateInterface),
-    addNotification: (notification: Notification) =>
+    showSuccessNotification: (message: string) =>
       dispatch({
-        type: NOTIFICATION_ACTIONS.ADD_NOTIFICATION,
-        payload: notification,
+        type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
+        payload: {
+          message,
+          type: 'success',
+        },
+      }),
+    showErrorNotification: (message: string) =>
+      dispatch({
+        type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
+        payload: {
+          message,
+          type: 'error',
+        },
+      }),
+    showInfoNotification: (message: string) =>
+      dispatch({
+        type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
+        payload: {
+          message,
+          type: 'info',
+        },
       }),
     clearNotifications: () =>
       dispatch({ type: NOTIFICATION_ACTIONS.CLEAR_NOTIFICATIONS }),

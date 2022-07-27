@@ -8,14 +8,14 @@ describe('NotificationReducer', () => {
     messages: [],
   };
 
-  it('should return state for `ADD_NOTIFICATION` type', () => {
+  it('should return state for `SHOW_NOTIFICATION` type', () => {
     const payload = {
       message: 'message',
       type: 'success',
     };
 
     const newState = notificationReducer(initialState, {
-      type: NOTIFICATION_ACTIONS.ADD_NOTIFICATION,
+      type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
       payload,
     });
 

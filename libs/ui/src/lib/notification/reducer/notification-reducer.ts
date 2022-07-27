@@ -14,7 +14,7 @@ export interface InitialNotificationStateInterface {
 }
 
 export const NOTIFICATION_ACTIONS = {
-  ADD_NOTIFICATION: 'add notification',
+  SHOW_NOTIFICATION: 'show notification',
   CLEAR_NOTIFICATIONS: 'clear notifications',
 };
 
@@ -27,7 +27,7 @@ export const notificationReducer = (
   action: NotificationAction
 ) => {
   switch (action.type) {
-    case NOTIFICATION_ACTIONS.ADD_NOTIFICATION:
+    case NOTIFICATION_ACTIONS.SHOW_NOTIFICATION:
       return {
         messages: [...state.messages, action.payload],
       };

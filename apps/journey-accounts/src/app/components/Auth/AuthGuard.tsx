@@ -17,7 +17,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
   const { setUser } = useUser();
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
-  const { addNotification } = useNotification();
+  const { showInfoNotification } = useNotification();
   const effectCalled = useRef(false);
   const from = location.state?.from?.pathname || '/profile';
 
@@ -37,10 +37,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      addNotification({
-        message: 'Session timeout. Please login again.',
-        type: 'info',
-      });
+      showInfoNotification('Session timeout. Please login again.');
       logout();
     }
   };

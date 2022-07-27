@@ -15,7 +15,7 @@ export const AccountPreferencesDeleteAccount: FC<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { state: user } = useUser();
   const handleLogout = useLogout();
-  const { addNotification } = useNotification();
+  const { showErrorNotification, showSuccessNotification } = useNotification();
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -36,16 +36,10 @@ export const AccountPreferencesDeleteAccount: FC<
 
     if (response.message === 'success') {
       setIsDialogOpen(false);
-      addNotification({
-        message: 'Account has been successfully deleted.',
-        type: 'success',
-      });
+      showSuccessNotification('Account has been successfully deleted.');
       handleLogout();
     } else {
-      addNotification({
-        message: 'Something went wrong. Please try again later.',
-        type: 'error',
-      });
+      showErrorNotification('Something went wrong. Please try again later.');
       return;
     }
 
