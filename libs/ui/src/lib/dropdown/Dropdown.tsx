@@ -16,59 +16,38 @@ interface DropdownProps {
 
 export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
-  const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
-  const dropdownItemsRef = useRef<HTMLAnchorElement[]>([]);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    dropdownItemsRef.current = [];
-
-    document.addEventListener('mousedown', setClickedOutsideDropdownListener);
+    if (isDropdownVisible) {
+      document.addEventListener('mousedown', setClickedOutsideDropdownListener);
+    }
 
     return () =>
       document.removeEventListener(
         'mousedown',
         setClickedOutsideDropdownListener
       );
-  }, []);
+  }, [isDropdownVisible]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setClickedOutsideDropdownListener = (event: any) => {
-    event.preventDefault();
-
-    const clickedInsideDropdown =
-      dropdownItemsRef.current?.includes(event.target) ||
-      dropdownTriggerRef.current?.contains(event.target);
-
-    if (clickedInsideDropdown) {
-      return;
+    if (!dropdownRef.current?.contains(event.target)) {
+      setIsDropdownVisible(false);
     }
-
-    setIsDropdownVisible(false);
-  };
-
-  const addDropdownItemRef = (element: HTMLAnchorElement) => {
-    if (element && !dropdownItemsRef.current.includes(element)) {
-      dropdownItemsRef.current.push(element);
-    }
-  };
-
-  const attachTogglerToLastItem = (index: number) => {
-    const lastItem = props.items.length - 1;
-
-    if (index === lastItem) {
-      return setIsDropdownVisible;
-    }
-
-    return undefined;
   };
 
   return (
-    <div className="dropdown is-active" data-testid="dropdown">
+    <div
+      className="dropdown is-active"
+      data-testid="dropdown"
+      ref={dropdownRef}
+    >
       <DropdownTrigger
         text={props.text}
         icon={props.icon}
         clickHandler={() => setIsDropdownVisible(!isDropdownVisible)}
-        dropdownTriggerRef={dropdownTriggerRef}
         dropdownToggler={setIsDropdownVisible}
         dropdownLabel={props.label}
       />
@@ -78,10 +57,10 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
             {props.items.map((item, idx) => (
               <DropdownItem
                 item={item}
-                addDropdownItemRef={addDropdownItemRef}
                 key={item.label}
-                dropdownToggler={attachTogglerToLastItem(idx)}
+                dropdownToggler={setIsDropdownVisible}
                 dropdownLabel={props.label}
+                isLastItem={idx === props.items.length - 1 || undefined}
               />
             ))}
           </div>

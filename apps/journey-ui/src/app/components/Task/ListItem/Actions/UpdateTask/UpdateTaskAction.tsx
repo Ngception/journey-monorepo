@@ -1,17 +1,18 @@
-import { FC, MouseEvent, RefObject, useContext, useRef, useState } from 'react';
+import { FC, RefObject, useContext, useRef, useState } from 'react';
 import { DialogContainer } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { TaskContext, updateTask } from '../../../../../shared';
 
 interface UpdateTaskActionProps {
-  dropdownToggler: (status: boolean) => void;
   task: ITask;
+  isDialogOpen: boolean;
+  dialogToggler: (type: string) => void;
 }
 
 export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   props: UpdateTaskActionProps
 ) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [taskToUpdate, setTaskToUpdate] = useState<{
     content: string;
@@ -52,7 +53,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
       await ctx?.fetchTasks();
 
       setIsDialogOpen(false);
-      props.dropdownToggler(false);
+
       setIsLoading(false);
     } else {
       setIsLoading(false);
@@ -62,13 +63,8 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
     setIsLoading(false);
   };
 
-  const openDialog = (event: MouseEvent) => {
-    event.stopPropagation();
-    setIsDialogOpen(true);
-  };
-
   const closeDialog = () => {
-    props.dropdownToggler(false);
+    props.dialogToggler('');
     setIsDialogOpen(false);
     setTaskToUpdate({
       ...taskToUpdate,
@@ -77,16 +73,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   };
 
   return (
-    <>
-      <button
-        data-testid="open-dialog-button"
-        ref={updateTaskTrigger}
-        className="dropdown-item button is-black is-inverted"
-        type="button"
-        onClick={(event) => openDialog(event)}
-      >
-        Update
-      </button>
+    <div>
       {isDialogOpen && (
         <DialogContainer type="action" dialogProps={dialogProps}>
           <fieldset disabled={isLoading}>
@@ -112,6 +99,6 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
           </fieldset>
         </DialogContainer>
       )}
-    </>
+    </div>
   );
 };

@@ -1,12 +1,11 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { FC, RefObject } from 'react';
+import { FC } from 'react';
 import { Icon } from '../../../icon';
 
 interface DropdownTriggerProps {
   text?: string;
   icon?: string;
   clickHandler: () => void;
-  dropdownTriggerRef: RefObject<HTMLButtonElement>;
   dropdownToggler: (isDropdownVisible: boolean) => void;
   dropdownLabel: string;
 }
@@ -31,7 +30,6 @@ export const DropdownTrigger: FC<DropdownTriggerProps> = (
         aria-controls="dropdown-menu"
         aria-description={!props.text ? props.dropdownLabel : undefined}
         onClick={props.clickHandler}
-        ref={props.dropdownTriggerRef}
         onKeyDown={autoCloseDropdown}
       >
         {props.text && (

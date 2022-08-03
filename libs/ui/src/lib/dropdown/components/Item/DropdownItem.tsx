@@ -3,9 +3,9 @@ import { IDropdownItem } from '../../Dropdown';
 
 interface DropdownItemProps {
   item: IDropdownItem;
-  addDropdownItemRef: (element: HTMLAnchorElement) => void;
-  dropdownToggler?: (isDropdownVisible: boolean) => void;
+  dropdownToggler: (isDropdownVisible: boolean) => void;
   dropdownLabel: string;
+  isLastItem?: boolean;
 }
 
 export const DropdownItem: FC<DropdownItemProps> = (
@@ -17,6 +17,7 @@ export const DropdownItem: FC<DropdownItemProps> = (
   const handleClick = (event: any) => {
     event.preventDefault();
 
+    props.dropdownToggler(false);
     clickHandler();
   };
 
@@ -36,8 +37,7 @@ export const DropdownItem: FC<DropdownItemProps> = (
       className="dropdown-item"
       onClick={handleClick}
       key={label}
-      ref={props.addDropdownItemRef}
-      onKeyDown={props.dropdownToggler ? autoCloseDropdown : undefined}
+      onKeyDown={props.isLastItem ? autoCloseDropdown : undefined}
       aria-description={props.dropdownLabel}
     >
       {label}

@@ -23,6 +23,8 @@ describe('UpdateTaskAction', () => {
   const testProps = {
     dropdownToggler: jest.fn(),
     task: createTask(),
+    dialogToggler: jest.fn(),
+    isDialogOpen: true,
   };
 
   beforeEach(() => {

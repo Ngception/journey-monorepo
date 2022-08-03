@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useContext, useRef, useState } from 'react';
+import { FC, useContext, useRef, useState } from 'react';
 import { DialogContainer, Icon } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { deleteTaskById, TaskContext } from '../../../../../shared';
@@ -6,14 +6,15 @@ import { deleteTaskById, TaskContext } from '../../../../../shared';
 import styles from './DeleteTaskAction.module.scss';
 
 interface DeleteTaskActionProps {
-  dropdownToggler: (status: boolean) => void;
   task: ITask;
+  isDialogOpen: boolean;
+  dialogToggler: (type: string) => void;
 }
 
 export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   props: DeleteTaskActionProps
 ) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const ctx = useContext(TaskContext);
@@ -29,7 +30,6 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
         await ctx?.fetchTasks();
 
         setIsDialogOpen(false);
-        props.dropdownToggler(false);
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -41,13 +41,8 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
     }
   };
 
-  const openDialog = (event: MouseEvent) => {
-    event.stopPropagation();
-    setIsDialogOpen(true);
-  };
-
   const closeDialog = () => {
-    props.dropdownToggler(false);
+    props.dialogToggler('');
     setIsDialogOpen(false);
   };
 
@@ -65,16 +60,7 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   };
 
   return (
-    <>
-      <button
-        data-testid="open-dialog-button"
-        ref={deleteTaskTrigger}
-        className="dropdown-item button is-black is-inverted"
-        type="button"
-        onClick={(event) => openDialog(event)}
-      >
-        Delete
-      </button>
+    <div>
       {isDialogOpen && (
         <DialogContainer type="confirmation" dialogProps={dialogProps}>
           <div className={styles['delete-warning']}>
@@ -88,6 +74,6 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
           </div>
         </DialogContainer>
       )}
-    </>
+    </div>
   );
 };
