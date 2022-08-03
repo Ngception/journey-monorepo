@@ -1,5 +1,5 @@
 import { FC, MouseEvent, RefObject, useRef, useState } from 'react';
-import { Icon } from '@journey-monorepo/ui';
+import { Dropdown, Icon } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { UpdateTaskAction } from './UpdateTask/UpdateTaskAction';
 import { DeleteTaskAction } from './DeleteTask/DeleteTaskAction';
