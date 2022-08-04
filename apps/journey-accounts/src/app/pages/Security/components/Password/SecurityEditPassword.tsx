@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Icon, useNotification } from '@journey-monorepo/ui';
+import { Button, Icon, useNotification } from '@journey-monorepo/ui';
 import { logoutUser, updateUser, useLogout, useUser } from '../../../../shared';
 
 import styles from './SecurityEditPassword.module.scss';
@@ -22,9 +22,6 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const { showErrorNotification, showSuccessNotification } = useNotification();
 
   const invalidForm = !currentPassword || !newPassword;
-  const setSubmitButtonClasses = `button ${styles['form-button']} ${
-    invalidForm ? 'is-light' : 'is-link'
-  } ${isLoading ? 'is-loading' : undefined}`;
 
   const toggleVisibility = (field: string) => {
     switch (field) {
@@ -84,21 +81,19 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
               />
             </div>
             <div className="control">
-              <button
-                className="button"
-                type="button"
-                aria-label={
+              <Button
+                label={
                   currentPasswordVisibility
                     ? 'Hide current password'
                     : 'Show current password'
                 }
-                onClick={() => toggleVisibility('currentPassword')}
+                clickHandler={() => toggleVisibility('currentPassword')}
               >
                 <Icon
                   type="solid"
                   name={!currentPasswordVisibility ? 'eye' : 'eye-slash'}
                 />
-              </button>
+              </Button>
             </div>
           </div>
         </fieldset>
@@ -121,35 +116,36 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
               />
             </div>
             <div className="control">
-              <button
-                className="button"
-                type="button"
-                aria-label={
+              <Button
+                label={
                   newPasswordVisibility
                     ? 'Hide new password'
                     : 'Show new password'
                 }
-                onClick={() => toggleVisibility('newPassword')}
+                clickHandler={() => toggleVisibility('newPassword')}
               >
                 <Icon
                   type="solid"
                   name={!newPasswordVisibility ? 'eye' : 'eye-slash'}
                 />
-              </button>
+              </Button>
             </div>
           </div>
         </fieldset>
 
         <div className="field">
           <div className="control">
-            <button
-              data-testid="submit-button"
-              disabled={invalidForm || isLoading}
-              type="submit"
-              className={setSubmitButtonClasses}
-            >
-              Save changes
-            </button>
+            <div className={styles['form-button']}>
+              <Button
+                testId="submit-button"
+                color={invalidForm ? 'light' : 'link'}
+                shouldSubmit={true}
+                isDisabled={invalidForm || isLoading}
+                isLoading={isLoading}
+              >
+                <span>Save changes</span>
+              </Button>
+            </div>
           </div>
         </div>
       </form>

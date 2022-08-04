@@ -1,5 +1,6 @@
 import { FC, FormEvent, ReactNode, RefObject, useState } from 'react';
 import FocusTrap from 'focus-trap-react';
+import { Button } from '../../button';
 
 import styles from './ConfirmationDialog.module.scss';
 
@@ -23,9 +24,6 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
 ) => {
   const [confirmField, setConfirmField] = useState<string>('');
   const modalClasses = `modal ${props.isDialogOpen ? 'is-active' : undefined}`;
-  const confirmButtonClasses = `button ${
-    props.confirmButtonColor ? props.confirmButtonColor : 'is-success'
-  } ${props.isLoading ? 'is-loading' : undefined}`;
   const notificationClasses = `notification ${
     props.showWarning ? 'is-warning' : undefined
   } ${props.showDanger ? 'is-danger' : undefined}`;
@@ -78,23 +76,23 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
               </div>
             </section>
             <footer className="modal-card-foot">
-              <button
-                data-testid="confirm-button"
-                disabled={confirmField !== 'confirm' || props.isLoading}
-                className={confirmButtonClasses}
-                type="submit"
+              <Button
+                color={props.confirmButtonColor || 'success'}
+                testId="confirm-button"
+                isDisabled={confirmField !== 'confirm' || props.isLoading}
+                isLoading={props.isLoading}
+                shouldSubmit={true}
               >
-                {props.confirmButtonLabel || 'Confirm'}
-              </button>
-              <button
-                data-testid="cancel-button"
-                className="button"
-                type="button"
-                disabled={props.isLoading}
-                onClick={() => closeDialog()}
+                <span>{props.confirmButtonLabel || 'Confirm'}</span>
+              </Button>
+
+              <Button
+                testId="cancel-button"
+                isDisabled={props.isLoading}
+                clickHandler={() => closeDialog()}
               >
-                {props.cancelButtonLabel || 'Cancel'}
-              </button>
+                <span> {props.cancelButtonLabel || 'Cancel'}</span>
+              </Button>
             </footer>
           </form>
         </div>

@@ -1,5 +1,6 @@
 import { FC, FormEvent, ReactNode, RefObject } from 'react';
 import FocusTrap from 'focus-trap-react';
+import { Button } from '../../button';
 
 interface ActionDialogProps {
   title: string;
@@ -18,10 +19,6 @@ interface ActionDialogProps {
 export const ActionDialog: FC<ActionDialogProps> = (
   props: ActionDialogProps
 ) => {
-  const actionButtonClasses = `button ${
-    props.actionButtonColor ? props.actionButtonColor : 'is-primary'
-  } ${props.isLoading ? 'is-loading' : undefined}`;
-
   const closeDialog = () => {
     props.cancelHandler();
     props?.trigger?.current?.focus();
@@ -59,23 +56,23 @@ export const ActionDialog: FC<ActionDialogProps> = (
             </header>
             <section className="modal-card-body">{props.children}</section>
             <footer className="modal-card-foot">
-              <button
-                data-testid="action-button"
-                className={actionButtonClasses}
-                type="submit"
-                disabled={props.isActionDisabled}
+              <Button
+                testId="action-button"
+                color={props.actionButtonColor || 'primary'}
+                isDisabled={props.isActionDisabled}
+                isLoading={props.isLoading}
+                shouldSubmit={true}
               >
-                {props.actionButtonLabel || 'OK'}
-              </button>
-              <button
-                data-testid="cancel-button"
-                className="button"
-                type="button"
-                disabled={props.isLoading}
-                onClick={() => closeDialog()}
+                <span>{props.actionButtonLabel || 'OK'}</span>
+              </Button>
+
+              <Button
+                testId="cancel-button"
+                isDisabled={props.isLoading}
+                clickHandler={() => closeDialog()}
               >
-                {props.cancelButtonLabel || 'Cancel'}
-              </button>
+                <span>{props.cancelButtonLabel || 'Cancel'}</span>
+              </Button>
             </footer>
           </form>
         </div>

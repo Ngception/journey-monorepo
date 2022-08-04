@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from 'react';
-import { DialogContainer, Icon } from '@journey-monorepo/ui';
+import { Button, DialogContainer, Icon } from '@journey-monorepo/ui';
 import { addTask } from '../../../shared';
 
 interface AddTaskProps {
@@ -22,7 +22,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
     isActionDisabled: newTask.content === '' || isLoading,
     trigger: addTaskTrigger,
     actionButtonLabel: 'Add',
-    actionButtonColor: 'is-primary',
+    actionButtonColor: 'primary',
     actionHandler: () => saveNewTask(),
     cancelHandler: () => closeDialog(),
   };
@@ -67,15 +67,16 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
 
   return (
     <>
-      <button
-        data-testid="open-dialog-button"
-        className="button is-primary"
-        type="button"
-        onClick={() => openDialog(props.title)}
-        aria-label={`Add new ${props.title} task`}
+      <Button
+        testId="open-dialog-button"
+        color="primary"
+        label={`Add new ${props.title} task`}
+        clickHandler={() => openDialog(props.title)}
       >
-        <Icon type="solid" name="plus" />
-      </button>
+        <span>
+          <Icon type="solid" name="plus" />
+        </span>
+      </Button>
       {isDialogOpen && (
         <DialogContainer type="action" dialogProps={dialogProps}>
           <fieldset disabled={isLoading}>

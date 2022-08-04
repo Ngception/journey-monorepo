@@ -5,7 +5,7 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { Icon } from '@journey-monorepo/ui';
+import { Button, Icon } from '@journey-monorepo/ui';
 import {
   createUser,
   handleError,
@@ -13,6 +13,7 @@ import {
   useAuth,
   useUser,
 } from '../../../../shared';
+
 import styles from './HomeLogin.module.scss';
 
 type LocationProps = {
@@ -39,9 +40,6 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   const from = location.state?.from?.pathname || '/profile';
   const invalidForm = !email || !password;
-  const submitButtonClasses = `button ${isLoading ? 'is-loading' : undefined} ${
-    invalidForm ? 'is-light' : 'is-primary'
-  }`;
   const buttonGroupClasses = `field ${styles['button-group']}`;
 
   const handleSubmit = async (event: FormEvent) => {
@@ -145,44 +143,42 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
               </span>
             </div>
             <div className="control">
-              <button
-                className="button"
-                type="button"
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                aria-label={
-                  isPasswordVisible ? 'Hide Password' : 'Show password'
-                }
+              <Button
+                clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
+                label={isPasswordVisible ? 'Hide Password' : 'Show password'}
               >
                 <Icon
                   type="solid"
                   name={!isPasswordVisible ? 'eye' : 'eye-slash'}
                 />
-              </button>
+              </Button>
             </div>
           </div>
         </fieldset>
         <fieldset>
           <div className={buttonGroupClasses}>
             <div className="control">
-              <button
-                data-testid="submit-button"
-                disabled={invalidForm || isLoading}
-                type="submit"
-                className={submitButtonClasses}
+              <Button
+                testId="submit-button"
+                color={invalidForm ? 'light' : 'primary'}
+                isDisabled={invalidForm || isLoading}
+                isLoading={isLoading}
+                shouldSubmit={true}
               >
-                {authType === 'login' ? 'Login' : 'Register'}
-              </button>
+                <span>{authType === 'login' ? 'Login' : 'Register'}</span>
+              </Button>
             </div>
             <div className="control">
-              <button
-                data-testid="toggle-auth"
-                className="button is-link"
-                type="button"
-                disabled={isLoading}
-                onClick={() => toggleAuth()}
+              <Button
+                testId="toggle-auth"
+                color="link"
+                isDisabled={isLoading}
+                clickHandler={() => toggleAuth()}
               >
-                {authType === 'login' ? 'New user?' : 'Have an account?'}
-              </button>
+                <span>
+                  {authType === 'login' ? 'New user?' : 'Have an account?'}
+                </span>
+              </Button>
             </div>
           </div>
         </fieldset>

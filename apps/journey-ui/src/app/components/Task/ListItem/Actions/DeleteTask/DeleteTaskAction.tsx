@@ -54,7 +54,7 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
     isDialogOpen,
     isLoading,
     confirmButtonLabel: 'Delete',
-    confirmButtonColor: 'is-danger',
+    confirmButtonColor: 'danger',
     confirmHandler: deleteTask,
     cancelHandler: closeDialog,
   };

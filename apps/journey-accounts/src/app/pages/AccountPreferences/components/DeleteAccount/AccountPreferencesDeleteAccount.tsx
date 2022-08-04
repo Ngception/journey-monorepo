@@ -1,5 +1,10 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import { DialogContainer, Icon, useNotification } from '@journey-monorepo/ui';
+import {
+  Button,
+  DialogContainer,
+  Icon,
+  useNotification,
+} from '@journey-monorepo/ui';
 import { deleteUser, useLogout, useUser } from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
@@ -50,7 +55,7 @@ export const AccountPreferencesDeleteAccount: FC<
     title: 'Confirm account deletion',
     trigger: deleteAccountTrigger,
     showDanger: true,
-    confirmButtonColor: 'is-danger',
+    confirmButtonColor: 'danger',
     confirmHandler: (event: FormEvent) => handleConfirm(event),
     cancelHandler: () => closeDialog(),
     isDialogOpen: isDialogOpen,
@@ -72,15 +77,14 @@ export const AccountPreferencesDeleteAccount: FC<
         </div>
       </div>
       <div className={styles['actions']}>
-        <button
-          data-testid="delete-account-dialog-trigger"
-          ref={deleteAccountTrigger}
-          className="button is-danger"
-          type="button"
-          onClick={() => openDialog()}
+        <Button
+          testId="delete-account-dialog-trigger"
+          triggerRef={deleteAccountTrigger}
+          color="danger"
+          clickHandler={() => openDialog()}
         >
-          Delete account
-        </button>
+          <span>Delete account</span>
+        </Button>
       </div>
 
       {isDialogOpen && (

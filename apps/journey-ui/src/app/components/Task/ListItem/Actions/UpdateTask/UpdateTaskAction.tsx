@@ -32,7 +32,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
     isActionDisabled: taskToUpdate.content === '' || isLoading,
     trigger: updateTaskTrigger,
     actionButtonLabel: 'Update',
-    actionButtonColor: 'is-primary',
+    actionButtonColor: 'primary',
     actionHandler: () => saveUpdatedTask(),
     cancelHandler: () => closeDialog(),
   };
