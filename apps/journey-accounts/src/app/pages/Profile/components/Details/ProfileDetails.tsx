@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Icon } from '@journey-monorepo/ui';
 
 import styles from './ProfileDetails.module.scss';
@@ -12,19 +12,28 @@ interface ProfileDetailsProps {
 export const ProfileDetails: FC<ProfileDetailsProps> = (
   props: ProfileDetailsProps
 ) => {
-  const detailsCardClasses = `card ${styles['details-card']}`;
-
   return (
-    <div>
-      <h1>
-        <span className={styles['about-icon']}>
-          <Icon type="solid" name="user" />
-        </span>
-        About you{' '}
-      </h1>
-      <div className={detailsCardClasses}>
-        <h2>User: {props.email}</h2>
-        <h2>{`Account created on ${props.createdAt}`}</h2>
+    <div className={styles['profile-details']}>
+      <div className="card">
+        <div className="card-content">
+          <h2>
+            <span className={styles['profile-icons']}>
+              <Icon type="solid" name="envelope" />
+            </span>
+            Email
+          </h2>
+          <p className="">{props.email}</p>
+        </div>
+
+        <div className="card-content">
+          <h2>
+            <span className={styles['profile-icons']}>
+              <Icon type="solid" name="calendar" />
+            </span>
+            Account created
+          </h2>
+          <p>{props.createdAt}</p>
+        </div>
       </div>
     </div>
   );

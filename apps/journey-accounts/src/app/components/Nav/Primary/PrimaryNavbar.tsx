@@ -40,7 +40,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
                 href={`${process.env['NX_JOURNEY_UI_BASE_URL']}`}
                 className="button is-primary"
               >
-                <strong>Back to board</strong>
+                <strong>Go to board</strong>
               </a>
               <a
                 data-testid="logout-button"

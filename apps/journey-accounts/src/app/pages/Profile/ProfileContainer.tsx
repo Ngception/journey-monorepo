@@ -28,7 +28,9 @@ export const ProfileContainer: FC<ProfileContainerProps> = (
   };
 
   return (
-    <div className="container column is-three-fifths">
+    <div className="container column is-half">
+      <h1 className="title">Profile</h1>
+      <p>View information about you.</p>
       <ProfileDetails email={email} createdAt={createdAt} />
     </div>
   );

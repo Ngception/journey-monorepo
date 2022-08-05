@@ -1,3 +1,4 @@
+import { Icon } from '@journey-monorepo/ui';
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './AsideNavbar.module.scss';
@@ -20,7 +21,10 @@ export const AsideNavbar: FC<AsideNavbarProps> = (props: AsideNavbarProps) => {
             to="/profile"
             className={({ isActive }) => setActive(isActive)}
           >
-            Profile
+            <span className={styles['aside-icons']}>
+              <Icon type="solid" name="user" />
+            </span>
+            <span>Profile</span>
           </NavLink>
         </li>
         <li>
@@ -29,7 +33,10 @@ export const AsideNavbar: FC<AsideNavbarProps> = (props: AsideNavbarProps) => {
             to="/security"
             className={({ isActive }) => setActive(isActive)}
           >
-            Security
+            <span className={styles['aside-icons']}>
+              <Icon type="solid" name="lock" />
+            </span>
+            <span>Security</span>
           </NavLink>
         </li>
         <li>
@@ -38,7 +45,10 @@ export const AsideNavbar: FC<AsideNavbarProps> = (props: AsideNavbarProps) => {
             to="/account-preferences"
             className={({ isActive }) => setActive(isActive)}
           >
-            Account preferences
+            <span className={styles['aside-icons']}>
+              <Icon type="solid" name="gear" />
+            </span>
+            <span>Account preferences</span>
           </NavLink>
         </li>
       </ul>
