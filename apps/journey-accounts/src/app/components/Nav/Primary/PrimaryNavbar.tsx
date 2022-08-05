@@ -26,9 +26,9 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
   return (
     <nav className="navbar" role="navigation" aria-label="primary navigation">
       <div className="navbar-brand">
-        <a data-testid="brand-button" href="#" className="navbar-item">
-          Brand
-        </a>
+        <h1 data-testid="brand-button" className="navbar-item">
+          Journey
+        </h1>
       </div>
 
       {user.isLoggedIn && (

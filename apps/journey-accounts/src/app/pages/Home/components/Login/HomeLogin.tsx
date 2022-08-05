@@ -105,83 +105,79 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   };
 
   return (
-    <div>
+    <div className={styles['login-container']}>
       <form data-testid="login-form" onSubmit={(event) => handleSubmit(event)}>
-        <fieldset>
-          <div className="field">
-            <div className="control has-icons-left">
-              <input
-                data-testid="email-field"
-                className="input"
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Email"
-                aria-required="true"
-                onChange={(event) => setEmail(event.target.value)}
+        <div className="field">
+          <div className="control has-icons-left">
+            <input
+              data-testid="email-field"
+              className="input"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              aria-required="true"
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <span className="icon is-small is-left">
+              <Icon type="solid" name="envelope" />
+            </span>
+          </div>
+        </div>
+
+        <div className="field has-addons">
+          <div className="control has-icons-left is-expanded">
+            <input
+              data-testid="password-field"
+              className="input"
+              name="password"
+              type={isPasswordVisible ? 'text' : 'password'}
+              placeholder="Password"
+              aria-required="true"
+              onChange={(event) => setPassword(event?.target.value)}
+            />
+            <span className="icon is-small is-left">
+              <Icon type="solid" name="lock" />
+            </span>
+          </div>
+          <div className="control">
+            <Button
+              clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
+              label={isPasswordVisible ? 'Hide Password' : 'Show password'}
+            >
+              <Icon
+                type="solid"
+                name={!isPasswordVisible ? 'eye' : 'eye-slash'}
               />
-              <span className="icon is-small is-left">
-                <Icon type="solid" name="envelope" />
+            </Button>
+          </div>
+        </div>
+
+        <div className={`${buttonGroupClasses}`}>
+          <div className="control">
+            <Button
+              testId="submit-button"
+              color={invalidForm ? 'light' : 'primary'}
+              isDisabled={invalidForm || isLoading}
+              isLoading={isLoading}
+              shouldSubmit={true}
+            >
+              <span>{authType === 'login' ? 'Login' : 'Register'}</span>
+            </Button>
+          </div>
+          <div className="control">
+            <Button
+              testId="toggle-auth"
+              color="link"
+              isDisabled={isLoading}
+              clickHandler={() => toggleAuth()}
+            >
+              <span>
+                {authType === 'login' ? 'New user?' : 'Have an account?'}
               </span>
-            </div>
+            </Button>
           </div>
-        </fieldset>
-        <fieldset>
-          <div className="field has-addons">
-            <div className="control has-icons-left is-expanded">
-              <input
-                data-testid="password-field"
-                className="input"
-                name="password"
-                type={isPasswordVisible ? 'text' : 'password'}
-                placeholder="Password"
-                aria-required="true"
-                onChange={(event) => setPassword(event?.target.value)}
-              />
-              <span className="icon is-small is-left">
-                <Icon type="solid" name="lock" />
-              </span>
-            </div>
-            <div className="control">
-              <Button
-                clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
-                label={isPasswordVisible ? 'Hide Password' : 'Show password'}
-              >
-                <Icon
-                  type="solid"
-                  name={!isPasswordVisible ? 'eye' : 'eye-slash'}
-                />
-              </Button>
-            </div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div className={buttonGroupClasses}>
-            <div className="control">
-              <Button
-                testId="submit-button"
-                color={invalidForm ? 'light' : 'primary'}
-                isDisabled={invalidForm || isLoading}
-                isLoading={isLoading}
-                shouldSubmit={true}
-              >
-                <span>{authType === 'login' ? 'Login' : 'Register'}</span>
-              </Button>
-            </div>
-            <div className="control">
-              <Button
-                testId="toggle-auth"
-                color="link"
-                isDisabled={isLoading}
-                clickHandler={() => toggleAuth()}
-              >
-                <span>
-                  {authType === 'login' ? 'New user?' : 'Have an account?'}
-                </span>
-              </Button>
-            </div>
-          </div>
-        </fieldset>
+        </div>
       </form>
     </div>
   );

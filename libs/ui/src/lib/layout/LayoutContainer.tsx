@@ -3,6 +3,8 @@ import { LayoutAside } from './Aside/LayoutAside';
 import { LayoutBody } from './Body/LayoutBody';
 import { LayoutHeader } from './Header/LayoutHeader';
 
+import styles from './LayoutContainer.module.scss';
+
 interface LayoutContainerProps {
   aside?: ReactNode;
   primaryNavbar?: ReactNode;
@@ -23,10 +25,12 @@ export const LayoutContainer: FC<LayoutContainerProps> = (
             <div className="column is-one-fifth">
               <LayoutAside>{props.aside}</LayoutAside>
             </div>
-            <div className="column">{props.body}</div>
+            <div className={`column ${styles['content']}`}>{props.body}</div>
           </div>
         ) : (
-          <div data-testid="no-aside">{props.body}</div>
+          <div data-testid="no-aside" className={styles['content']}>
+            {props.body}
+          </div>
         )}
       </LayoutBody>
     </div>

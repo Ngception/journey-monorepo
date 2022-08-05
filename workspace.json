@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "accounts-api": "apps/accounts-api",
+    "assets": "libs/assets",
     "journey-accounts": "apps/journey-accounts",
     "journey-accounts-e2e": "apps/journey-accounts-e2e",
     "journey-api": "apps/journey-api",
