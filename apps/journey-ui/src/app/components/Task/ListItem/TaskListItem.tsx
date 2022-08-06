@@ -1,3 +1,4 @@
+import { Card, CardContent } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
@@ -18,24 +19,27 @@ export const TaskListItem: FC<TaskListItemProps> = (
 ) => {
   const [showDialog, setShowDialog] = useState<string>('');
 
-  const classes = `card ${styles['task-list-item']}`;
+  const classes = `${styles['task-list-item']}`;
 
   return (
     <>
       <Draggable draggableId={props.item.task_id} index={props.index}>
         {(provided) => (
           <div
-            className={classes}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <h2>{props.item.content}</h2>
-            <TaskListItemActions
-              task={props.item}
-              dialogToggler={setShowDialog}
-              showDialog={showDialog}
-            />
+            <Card>
+              <div className={classes}>
+                <h2>{props.item.content}</h2>
+                <TaskListItemActions
+                  task={props.item}
+                  dialogToggler={setShowDialog}
+                  showDialog={showDialog}
+                />
+              </div>
+            </Card>
           </div>
         )}
       </Draggable>

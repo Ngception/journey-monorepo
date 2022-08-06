@@ -7,6 +7,7 @@ import {
 } from '@journey-monorepo/assets';
 
 import styles from './HomeContainer.module.scss';
+import { Card, CardContent } from '@journey-monorepo/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HomeContainerProps {}
@@ -26,11 +27,15 @@ export const HomeContainer: FC<HomeContainerProps> = (
         <div className={styles['brand']}>
           <JourneyBrand />
         </div>
-        <div className={`${styles['login-card']} card`}>
-          <div className="card-content">
-            <h2 className="subtitle card-title">Login to start planning</h2>
-            <HomeLogin />
-          </div>
+        <div className={`${styles['login-card']}`}>
+          <Card>
+            <CardContent>
+              <div className="card-content">
+                <h2 className="subtitle card-title">Login to start planning</h2>
+                <HomeLogin />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
       <div className="is-flex is-justify-content-space-between">
