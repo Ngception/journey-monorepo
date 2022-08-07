@@ -1,7 +1,7 @@
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createTask } from '@journey-monorepo/util';
-import { deleteTaskById } from '../../../../../shared';
+import { deleteTaskById, TaskProvider } from '../../../../../shared';
 import { DeleteTaskAction } from './DeleteTaskAction';
 
 // Mock utils module to be able mock certain methods
@@ -21,7 +21,6 @@ describe('DeleteTaskAction', () => {
   let query: any;
 
   const testProps = {
-    dropdownToggler: jest.fn(),
     task: createTask(),
     dialogToggler: jest.fn(),
     isDialogOpen: true,
@@ -29,7 +28,9 @@ describe('DeleteTaskAction', () => {
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
-      <DeleteTaskAction {...testProps} />
+      <TaskProvider>
+        <DeleteTaskAction {...testProps} />
+      </TaskProvider>
     );
 
     component = renderResult.baseElement;
@@ -43,8 +44,6 @@ describe('DeleteTaskAction', () => {
   it('should submit', async () => {
     const mocked = { deleteTaskById };
     jest.spyOn(mocked, 'deleteTaskById').mockResolvedValue(1);
-
-    await userEvent.click(query('open-dialog-button'));
 
     const actionButton = query('confirm-button');
     expect(actionButton).toBeTruthy();

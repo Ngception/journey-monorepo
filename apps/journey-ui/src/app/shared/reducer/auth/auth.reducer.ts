@@ -24,7 +24,6 @@ export const authReducer = (state = authInitialState, action: AuthAction) => {
         isLoggedIn: true,
       };
     case AUTH_ACTIONS.LOGOUT:
-      return authInitialState;
     default:
       return state;
   }

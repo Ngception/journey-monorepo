@@ -1,7 +1,7 @@
-import { FC, RefObject, useContext, useRef, useState } from 'react';
+import { FC, RefObject, useRef, useState } from 'react';
 import { DialogContainer } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
-import { TaskContext, updateTask } from '../../../../../shared';
+import { updateTask, useTask } from '../../../../../shared';
 
 interface UpdateTaskActionProps {
   task: ITask;
@@ -23,7 +23,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateTaskTrigger: RefObject<any> = useRef(null);
-  const ctx = useContext(TaskContext);
+  const { state: task } = useTask();
 
   const dialogProps = {
     title: `Update task`,
@@ -50,7 +50,9 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
     const response = await updateTask(data);
 
     if (response) {
-      await ctx?.fetchTasks();
+      await task.fetchTasksHandler();
+
+      props.dialogToggler('');
 
       setIsDialogOpen(false);
 

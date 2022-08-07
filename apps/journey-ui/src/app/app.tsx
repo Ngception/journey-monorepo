@@ -7,7 +7,7 @@ import {
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 import { AuthProvider } from './shared/context/AuthContext';
 import { AppRoutes } from './app.routes';
-import { UserProvider } from './shared';
+import { TaskProvider, UserProvider } from './shared';
 
 import 'bulma/css/bulma.min.css';
 import styles from './app.module.scss';
@@ -18,17 +18,19 @@ export function App() {
       <AuthProvider>
         <NotificationProvider>
           <UserProvider>
-            <LayoutHeader>
-              <PrimaryNavbar />
-            </LayoutHeader>
-            <div className="column">
-              <LayoutBody>
-                <AppRoutes />
-              </LayoutBody>
-            </div>
-            <div className={styles['notification-container']}>
-              <NotificationContainer />
-            </div>
+            <TaskProvider>
+              <LayoutHeader>
+                <PrimaryNavbar />
+              </LayoutHeader>
+              <div className="column">
+                <LayoutBody>
+                  <AppRoutes />
+                </LayoutBody>
+              </div>
+              <div className={styles['notification-container']}>
+                <NotificationContainer />
+              </div>
+            </TaskProvider>
           </UserProvider>
         </NotificationProvider>
       </AuthProvider>

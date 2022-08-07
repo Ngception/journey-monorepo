@@ -6,7 +6,7 @@ import { AddTask } from './AddTask/AddTask';
 import { TaskList } from './List/TaskList';
 
 import styles from './TaskContainer.module.scss';
-import { useUser } from '../../shared/hooks';
+import { useTask, useUser } from '../../shared/hooks';
 import { useNotification } from '@journey-monorepo/ui';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -29,6 +29,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
   });
   const { state: user } = useUser();
   const { showErrorNotification } = useNotification();
+  const { setFetchTasksHandler } = useTask();
 
   const effectCalled = useRef(false);
 
@@ -38,6 +39,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
     } else {
       effectCalled.current = true;
       fetchTasks();
+      setFetchTasksHandler(fetchTasks);
     }
   }, []);
 
@@ -247,26 +249,26 @@ export const TaskContainer: FC<TaskContainerProps> = (
   return (
     <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
       <div className="columns container is-fluid">
-        <TaskContext.Provider value={{ fetchTasks }}>
-          {taskLists.map((list) => (
-            <div className={taskListClasses} key={list.title}>
-              <div className={styles['task-list-header']}>
-                <h2 className={taskListHeaderClasses}>
-                  <span className={taskListCountClasses}>
-                    {list.items.length}
-                  </span>
-                  {list.title}
-                </h2>
-                <AddTask
-                  title={list.title}
-                  userId={user.user_id}
-                  fetchTasks={fetchTasks}
-                />
-              </div>
-              <TaskList list={list} />
+        {/* <TaskContext.Provider value={{ fetchTasks }}> */}
+        {taskLists.map((list) => (
+          <div className={taskListClasses} key={list.title}>
+            <div className={styles['task-list-header']}>
+              <h2 className={taskListHeaderClasses}>
+                <span className={taskListCountClasses}>
+                  {list.items.length}
+                </span>
+                {list.title}
+              </h2>
+              <AddTask
+                title={list.title}
+                userId={user.user_id}
+                fetchTasks={fetchTasks}
+              />
             </div>
-          ))}
-        </TaskContext.Provider>
+            <TaskList list={list} />
+          </div>
+        ))}
+        {/* </TaskContext.Provider> */}
       </div>
     </DragDropContext>
   );

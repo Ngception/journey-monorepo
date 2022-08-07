@@ -1,7 +1,7 @@
-import { FC, useContext, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { DialogContainer, Icon } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
-import { deleteTaskById, TaskContext } from '../../../../../shared';
+import { deleteTaskById, useTask } from '../../../../../shared';
 
 import styles from './DeleteTaskAction.module.scss';
 
@@ -16,9 +16,8 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 ) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const ctx = useContext(TaskContext);
   const deleteTaskTrigger = useRef(null);
+  const { state: task } = useTask();
 
   const deleteTask = async () => {
     setIsLoading(true);
@@ -27,7 +26,9 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
       const response = await deleteTaskById(props.task.task_id);
 
       if (response) {
-        await ctx?.fetchTasks();
+        await task.fetchTasksHandler();
+
+        props.dialogToggler('');
 
         setIsDialogOpen(false);
         setIsLoading(false);
