@@ -1,9 +1,9 @@
 import { Dropdown } from '@journey-monorepo/ui';
 import { ITaskList } from '@journey-monorepo/util';
 import { Dispatch, FC } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
 import { useTask } from '../../../shared';
 import { AddTask } from '../AddTask/AddTask';
+import { TaskDragDropDroppable } from '../DragDrop/components';
 import { TaskListItem } from '../ListItem/TaskListItem';
 
 import styles from './TaskList.module.scss';
@@ -86,18 +86,13 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
         </div>
       </div>
       <div className={styles['task-list-item-droppable']}>
-        <Droppable droppableId={props.list.title}>
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {props.list.items.map((i, idx) => (
-                <div className={styles['task-list-item-wrapper']}>
-                  <TaskListItem item={i} key={i.task_id} index={idx} />
-                </div>
-              ))}
-              {provided.placeholder}
+        <TaskDragDropDroppable droppableId={props.list.title}>
+          {props.list.items.map((i, idx) => (
+            <div className={styles['task-list-item-wrapper']}>
+              <TaskListItem item={i} key={i.task_id} index={idx} />
             </div>
-          )}
-        </Droppable>
+          ))}
+        </TaskDragDropDroppable>
       </div>
     </>
   );
