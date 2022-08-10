@@ -29,6 +29,7 @@ export const TaskListItemActions: FC<TaskListItemActionsProps> = (
         label={'Task actions'}
         icon={'ellipsis-vertical'}
         items={items}
+        triggerColor={'white'}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { UserProvider } from '../../../shared';
 import { addTask } from '../../../shared/handlers/api/task.handler';
 import { AddTask } from './AddTask';
 
@@ -26,7 +27,11 @@ describe('AddTask', () => {
   };
 
   beforeEach(() => {
-    const renderResult: RenderResult = render(<AddTask {...testProps} />);
+    const renderResult: RenderResult = render(
+      <UserProvider>
+        <AddTask {...testProps} />
+      </UserProvider>
+    );
 
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;

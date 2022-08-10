@@ -1,0 +1,30 @@
+.task-list {
+  background: #f5f5f5;
+  border-radius: 10px;
+  margin: 1rem;
+}
+
+.task-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .task-list-header-buttons > button {
+    margin-right: 0.5rem;
+  }
+}
+
+.task-list-count {
+  margin-right: 0.5rem;
+}
+
+.task-list-item-droppable {
+  margin-top: 1rem;
+  height: 90%;
+  padding-bottom: 1rem;
+  overflow-y: scroll;
+}
+
+.task-list-item-wrapper {
+  padding: 0.5rem;
+}

@@ -96,7 +96,6 @@ describe('TaskService', () => {
       const createData = {
         ...data,
         created_at: new Date(),
-        updated_at: new Date(),
       };
 
       const res = await taskService.createTask(data);

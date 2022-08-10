@@ -12,6 +12,8 @@ interface DropdownProps {
   items: IDropdownItem[];
   text?: string;
   icon?: string;
+  triggerColor?: string;
+  testId?: string;
 }
 
 export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
@@ -40,13 +42,14 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
 
   return (
     <div
-      className="dropdown is-active"
-      data-testid="dropdown"
+      className="dropdown is-right is-active"
+      data-testid={props?.testId || 'dropdown'}
       ref={dropdownRef}
     >
       <DropdownTrigger
         text={props.text}
         icon={props.icon}
+        color={props.triggerColor}
         clickHandler={() => setIsDropdownVisible(!isDropdownVisible)}
         dropdownToggler={setIsDropdownVisible}
         dropdownLabel={props.label}

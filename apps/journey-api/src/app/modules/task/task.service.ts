@@ -49,7 +49,6 @@ export class TaskService {
       const newTask = this.repo.create({
         ...data,
         created_at: new Date(),
-        updated_at: new Date(),
       });
       const { identifiers } = await this.repo.insert(newTask);
 

@@ -1,10 +1,9 @@
 import { FC, useRef, useState } from 'react';
 import { Button, DialogContainer, Icon } from '@journey-monorepo/ui';
-import { addTask } from '../../../shared';
+import { addTask, useUser } from '../../../shared';
 
 interface AddTaskProps {
   title: string;
-  userId: string;
   fetchTasks: () => void;
 }
 
@@ -12,6 +11,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [newTask, setNewTask] = useState({ content: '', current_status: '' });
+  const { state: user } = useUser();
 
   const addTaskTrigger = useRef(null);
 
@@ -41,7 +41,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
     const data = {
       content: newTask.content,
       current_status: newTask.current_status.toLowerCase(),
-      user_id: props.userId,
+      user_id: user.user_id,
     };
     const response = await addTask(data);
 

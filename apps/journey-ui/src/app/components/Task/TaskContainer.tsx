@@ -1,8 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { ITask, ITaskList } from '@journey-monorepo/util';
-import { getAllTasksByUserId, TaskContext, updateTask } from '../../shared';
-import { AddTask } from './AddTask/AddTask';
+import { getAllTasksByUserId, updateTask } from '../../shared';
 import { TaskList } from './List/TaskList';
 
 import styles from './TaskContainer.module.scss';
@@ -29,7 +28,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
   });
   const { state: user } = useUser();
   const { showErrorNotification } = useNotification();
-  const { setFetchTasksHandler } = useTask();
+  const { state: task, setFetchTasksHandler, setTasks } = useTask();
 
   const effectCalled = useRef(false);
 
@@ -43,14 +42,19 @@ export const TaskContainer: FC<TaskContainerProps> = (
     }
   }, []);
 
+  useEffect(() => {
+    filterTasksBySearch();
+  }, [task.tasksSearchFilter]);
+
   const taskLists = [toDoTasks, inProgressTasks, doneTasks];
+  const taskListsSetters = [setToDoTasks, setInProgressTasks, setDoneTasks];
   const taskListClasses = `column ${styles['task-list']}`;
-  const taskListHeaderClasses = `${styles['task-list-header']}`;
-  const taskListCountClasses = `tag is-primary is-medium ${styles['task-list-count']}`;
 
   const fetchTasks = async () => {
     try {
       const tasks = await getAllTasksByUserId(user.user_id);
+
+      setTasks(tasks);
 
       setToDoTasks(filterTasks('To Do', tasks));
       setInProgressTasks(filterTasks('In Progress', tasks));
@@ -67,6 +71,36 @@ export const TaskContainer: FC<TaskContainerProps> = (
         (tasks) => tasks.current_status === title.toLowerCase()
       ),
     };
+  };
+
+  const filterTasksBySearch = () => {
+    const filter = task.tasksSearchFilter.toLowerCase();
+    const { tasks } = task;
+
+    if (!filter) {
+      if (
+        tasks.length ===
+        toDoTasks.items.length +
+          inProgressTasks.items.length +
+          doneTasks.items.length
+      ) {
+        return;
+      }
+
+      setToDoTasks(filterTasks('To Do', tasks));
+      setInProgressTasks(filterTasks('In Progress', tasks));
+      setDoneTasks(filterTasks('Done', tasks));
+
+      return;
+    }
+
+    const filteredTasks = tasks.filter((task) =>
+      task.content.toLowerCase().includes(filter)
+    );
+
+    setToDoTasks(filterTasks('To Do', filteredTasks));
+    setInProgressTasks(filterTasks('In Progress', filteredTasks));
+    setDoneTasks(filterTasks('Done', filteredTasks));
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -249,26 +283,11 @@ export const TaskContainer: FC<TaskContainerProps> = (
   return (
     <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
       <div className="columns container is-fluid">
-        {/* <TaskContext.Provider value={{ fetchTasks }}> */}
-        {taskLists.map((list) => (
+        {taskLists.map((list, idx) => (
           <div className={taskListClasses} key={list.title}>
-            <div className={styles['task-list-header']}>
-              <h2 className={taskListHeaderClasses}>
-                <span className={taskListCountClasses}>
-                  {list.items.length}
-                </span>
-                {list.title}
-              </h2>
-              <AddTask
-                title={list.title}
-                userId={user.user_id}
-                fetchTasks={fetchTasks}
-              />
-            </div>
-            <TaskList list={list} />
+            <TaskList list={list} listSetter={taskListsSetters[idx]} />
           </div>
         ))}
-        {/* </TaskContext.Provider> */}
       </div>
     </DragDropContext>
   );

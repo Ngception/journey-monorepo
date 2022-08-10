@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@journey-monorepo/ui';
+import { Card } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { FC, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
@@ -19,7 +19,13 @@ export const TaskListItem: FC<TaskListItemProps> = (
 ) => {
   const [showDialog, setShowDialog] = useState<string>('');
 
-  const classes = `${styles['task-list-item']}`;
+  const formatDate = (date: Date = new Date()) => {
+    let dateObject = new Date(date);
+
+    const offset = dateObject.getTimezoneOffset();
+    dateObject = new Date(dateObject.getTime() - offset * 60 * 1000);
+    return dateObject.toISOString().split('T')[0];
+  };
 
   return (
     <>
@@ -31,8 +37,21 @@ export const TaskListItem: FC<TaskListItemProps> = (
             {...provided.dragHandleProps}
           >
             <Card>
-              <div className={classes}>
-                <h2>{props.item.content}</h2>
+              <div
+                data-testid="task-list-item"
+                className={styles['task-list-item']}
+              >
+                <div>
+                  <h2>{props.item.content}</h2>
+                  <p className="tag is-info is-light">
+                    Created {formatDate(props.item.created_at)}
+                  </p>
+                  {props.item.updated_at && (
+                    <p className="tag is-info is-light">
+                      Last updated {formatDate(props.item.updated_at)}
+                    </p>
+                  )}
+                </div>
                 <TaskListItemActions
                   task={props.item}
                   dialogToggler={setShowDialog}

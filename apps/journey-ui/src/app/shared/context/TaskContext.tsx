@@ -10,6 +10,7 @@ import {
 export interface ITaskContext {
   state: InitialTaskStateInterface;
   setTasks: (tasks: ITask[]) => void;
+  setTasksSearchFilter: (filter: string) => void;
   setFetchTasksHandler: (handler: () => void) => void;
   clearTasks: () => void;
 }
@@ -31,6 +32,11 @@ export const TaskProvider: FC<TaskProviderProps> = ({
     state: initialState || (state as InitialTaskStateInterface),
     setTasks: (tasks: ITask[]) =>
       dispatch({ type: TASK_ACTIONS.SET_TASKS, payload: tasks }),
+    setTasksSearchFilter: (filter: string) =>
+      dispatch({
+        type: TASK_ACTIONS.SET_TASKS_SEARCH_FILTER,
+        payload: filter,
+      }),
     setFetchTasksHandler: (handler: () => void) =>
       dispatch({
         type: TASK_ACTIONS.SET_FETCH_TASKS_HANDLER,

@@ -8,17 +8,20 @@ export interface TaskAction {
 
 export interface InitialTaskStateInterface {
   tasks: ITask[];
+  tasksSearchFilter: string;
   fetchTasksHandler: () => void;
 }
 
 export const TASK_ACTIONS = {
   SET_TASKS: 'set tasks',
+  SET_TASKS_SEARCH_FILTER: 'set tasks search filter',
   SET_FETCH_TASKS_HANDLER: 'set fetch tasks handler',
   CLEAR_TASKS: 'clear tasks',
 };
 
 export const taskInitialState = {
   tasks: [],
+  tasksSearchFilter: '',
   fetchTasksHandler: null,
 };
 
@@ -28,6 +31,11 @@ export const taskReducer = (state = taskInitialState, action: TaskAction) => {
       return {
         ...state,
         tasks: action.payload,
+      };
+    case TASK_ACTIONS.SET_TASKS_SEARCH_FILTER:
+      return {
+        ...state,
+        tasksSearchFilter: action.payload,
       };
     case TASK_ACTIONS.SET_FETCH_TASKS_HANDLER:
       return {

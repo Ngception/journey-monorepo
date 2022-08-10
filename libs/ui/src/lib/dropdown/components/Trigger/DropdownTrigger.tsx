@@ -1,5 +1,6 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { FC } from 'react';
+import { COLORS } from '../../../constants';
 import { Icon } from '../../../icon';
 
 interface DropdownTriggerProps {
@@ -8,6 +9,7 @@ interface DropdownTriggerProps {
   clickHandler: () => void;
   dropdownToggler: (isDropdownVisible: boolean) => void;
   dropdownLabel: string;
+  color?: string;
 }
 
 export const DropdownTrigger: FC<DropdownTriggerProps> = (
@@ -21,11 +23,13 @@ export const DropdownTrigger: FC<DropdownTriggerProps> = (
     return;
   };
 
+  const buttonColor = props.color ? COLORS[props.color] : 'is-primary';
+
   return (
     <div className="dropdown-trigger">
       <button
         data-testid="dropdown-trigger"
-        className="button"
+        className={`button ${buttonColor}`}
         aria-haspopup="true"
         aria-controls="dropdown-menu"
         aria-description={!props.text ? props.dropdownLabel : undefined}
