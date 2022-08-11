@@ -5,14 +5,10 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import { Button, Icon } from '@journey-monorepo/ui';
-import {
-  createUser,
-  handleError,
-  loginUser,
-  useAuth,
-  useUser,
-} from '../../../../shared';
+import { AxiosError } from 'axios';
+import { HttpException } from '@nestjs/common';
+import { Button, Icon, Message, MessageBody } from '@journey-monorepo/ui';
+import { createUser, loginUser, useAuth, useUser } from '../../../../shared';
 
 import styles from './HomeLogin.module.scss';
 
@@ -31,6 +27,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
@@ -40,12 +37,12 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   const from = location.state?.from?.pathname || '/profile';
   const invalidForm = !email || !password;
-  const buttonGroupClasses = `field ${styles['button-group']}`;
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     setIsLoading(true);
+    setError('');
 
     const data = {
       email,
@@ -53,47 +50,45 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
     };
 
     try {
-      const navigateToAccount = () => {
-        login();
-        navigate(from, { replace: true });
-      };
+      let user;
 
       if (authType === 'login') {
-        // login handler
-        const { message, user } = await loginUser(data);
-        if (message === 'success') {
-          if (searchParams.get('site') === 'journey') {
-            window.location.href = `${process.env['NX_JOURNEY_UI_BASE_URL']}?user=${user.user_id}`;
-          } else {
-            setUser(user);
-            navigateToAccount();
-          }
-        } else {
-          return;
-        }
+        const response = await loginUser(data);
+        user = response.user;
+      } else {
+        const response = await createUser(data);
+        user = response.user;
       }
 
-      if (authType === 'register') {
-        const { message, user } = await createUser(data);
-        if (message === 'success') {
-          if (searchParams.get('site') === 'journey') {
-            window.location.href = `${process.env['NX_JOURNEY_UI_BASE_URL']}?user=${user.user_id}`;
-          } else {
-            setUser(user);
-            navigateToAccount();
-          }
-        } else {
-          return;
-        }
+      if (searchParams.get('site') === 'journey') {
+        window.location.href = `${process.env['NX_JOURNEY_UI_BASE_URL']}?user=${user.user_id}`;
+      } else {
+        setUser(user);
+        login();
+        navigate(from, { replace: true });
       }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log(handleError(err));
+      handleError(err);
     }
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    setIsLoading(false);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleError = (err: AxiosError<HttpException>) => {
+    switch (err?.response?.status) {
+      case 401:
+        setError('Login failed. Please check your credentials.');
+        break;
+      case 409:
+        setError('Account already exists. Please try logging in.');
+        break;
+      default:
+        setError('Something went wrong. Please try again later.');
+        break;
+    }
   };
 
   const toggleAuth = () => {
@@ -106,12 +101,21 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   return (
     <div className={styles['login-container']}>
+      {error && (
+        <div className={styles['login-error']} role="alert">
+          <Message testId="error-message" color="danger">
+            <MessageBody>
+              <p>{error}</p>
+            </MessageBody>
+          </Message>
+        </div>
+      )}
       <form data-testid="login-form" onSubmit={(event) => handleSubmit(event)}>
         <div className="field">
           <div className="control has-icons-left">
             <input
               data-testid="email-field"
-              className="input"
+              className={`input ${error ? 'is-danger' : ''}`}
               id="email"
               name="email"
               type="email"
@@ -129,7 +133,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
           <div className="control has-icons-left is-expanded">
             <input
               data-testid="password-field"
-              className="input"
+              className={`input ${error ? 'is-danger' : ''}`}
               name="password"
               type={isPasswordVisible ? 'text' : 'password'}
               placeholder="Password"
@@ -153,7 +157,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
           </div>
         </div>
 
-        <div className={`${buttonGroupClasses}`}>
+        <div className={`field ${styles['button-group']}`}>
           <div className="control">
             <Button
               testId="submit-button"
@@ -162,19 +166,22 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
               isLoading={isLoading}
               shouldSubmit={true}
             >
-              <span>{authType === 'login' ? 'Login' : 'Register'}</span>
+              {authType === 'login' ? 'Login' : 'Register'}
             </Button>
           </div>
           <div className="control">
             <Button
               testId="toggle-auth"
-              color="link"
+              color="info"
               isDisabled={isLoading}
               clickHandler={() => toggleAuth()}
+              description={
+                authType === 'login'
+                  ? 'Click to change to register new account'
+                  : 'Click to change to log into account'
+              }
             >
-              <span>
-                {authType === 'login' ? 'New user?' : 'Have an account?'}
-              </span>
+              {authType === 'login' ? 'New user' : 'Current user'}
             </Button>
           </div>
         </div>
