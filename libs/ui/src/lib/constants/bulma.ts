@@ -6,6 +6,7 @@ export const COLORS: Record<string, string> = {
   warning: 'is-warning',
   danger: 'is-danger',
   light: 'is-light',
+  white: 'is-white',
 };
 
 export const SIZES: Record<string, string> = {

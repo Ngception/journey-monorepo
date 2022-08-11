@@ -13,5 +13,6 @@ export * from './lib/error';
 export * from './lib/icon';
 export * from './lib/layout';
 export * from './lib/loader';
+export * from './lib/message';
 export * from './lib/notification';
 export * from './lib/testing';
