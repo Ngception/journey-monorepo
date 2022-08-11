@@ -33,7 +33,7 @@ export const NotificationDetails: FC<NotificationDetailsProps> = (
         className="delete"
         aria-label="Delete notification"
       ></button>
-      <p>{props.notification.message}</p>
+      <p role="alert">{props.notification.message}</p>
     </div>
   );
 };

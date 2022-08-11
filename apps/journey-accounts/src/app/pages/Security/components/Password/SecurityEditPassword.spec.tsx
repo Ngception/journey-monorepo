@@ -15,15 +15,20 @@ jest.mock('../../../../shared', () => {
   };
 });
 describe('SecurityEditPassword', () => {
-  let component: HTMLElement;
-  let query: any;
+  let component: HTMLElement, query: any, rerender: any;
+
+  const testUser = {
+    user_id: 'uuid',
+    email: 'email',
+    created_at: new Date(),
+  };
 
   beforeEach(() => {
-    const renderResult: RenderResult = render(
+    const securityEditPassword = (
       <MockRouter route={'/'}>
         <AuthProvider>
           <NotificationProvider>
-            <UserProvider>
+            <UserProvider initialState={testUser}>
               <SecurityEditPassword />
             </UserProvider>
           </NotificationProvider>
@@ -31,8 +36,11 @@ describe('SecurityEditPassword', () => {
       </MockRouter>
     );
 
+    const renderResult: RenderResult = render(securityEditPassword);
+
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;
+    rerender = () => renderResult.rerender(securityEditPassword);
   });
 
   it('should render', () => {
@@ -43,19 +51,32 @@ describe('SecurityEditPassword', () => {
     const mocked = { updateUser };
     jest.spyOn(mocked, 'updateUser');
 
-    const currentPasswordField = query('current-password-field');
     const newPasswordField = query('new-password-field');
-    const submitButton = query('submit-button');
+    const openConfirmDialogButton = query('open-confirm-dialog-button');
 
-    expect(submitButton.disabled).toEqual(true);
+    expect(openConfirmDialogButton.disabled).toEqual(true);
+    expect(query('confirm-change-password-dialog')).toBeNull();
 
-    await userEvent.type(currentPasswordField, 'currentPassword');
     await userEvent.type(newPasswordField, 'newPassword');
 
-    expect(submitButton.disabled).toEqual(false);
+    expect(openConfirmDialogButton.disabled).toEqual(false);
 
-    await userEvent.click(submitButton);
+    await userEvent.click(openConfirmDialogButton);
 
-    expect(mocked.updateUser).toHaveBeenCalled();
+    rerender();
+
+    const confirmField = query('confirm-field');
+    const dialogConfirmButton = query('confirm-button');
+
+    expect(query('confirm-change-password-dialog')).toBeTruthy();
+    expect(confirmField).toBeTruthy();
+
+    await userEvent.type(confirmField, 'confirm');
+    await userEvent.click(dialogConfirmButton);
+
+    expect(mocked.updateUser).toHaveBeenCalledWith({
+      user_id: 'uuid',
+      password: 'newPassword',
+    });
   });
 });
