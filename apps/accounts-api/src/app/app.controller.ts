@@ -70,15 +70,11 @@ export class AppController {
         secure: true,
         signed: true,
       });
-
-      return {
-        message: 'success',
-      };
-    } else {
-      return {
-        message: 'error',
-      };
     }
+
+    return {
+      message: 'success',
+    };
   }
 
   @UseGuards(JwtAuthGuard)

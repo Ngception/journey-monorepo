@@ -37,7 +37,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
   };
 
   const redirectToLogin = () => {
-    window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}/profile?site=journey`;
+    window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}`;
   };
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
