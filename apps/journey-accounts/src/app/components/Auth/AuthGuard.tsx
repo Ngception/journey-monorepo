@@ -1,7 +1,9 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useNotification } from '@journey-monorepo/ui';
+import { Loader, useNotification } from '@journey-monorepo/ui';
 import { useAuth, useUser, verifyAuthStatus } from '../../shared';
+import { AxiosError } from 'axios';
+import { HttpException } from '@nestjs/common';
 
 type LocationProps = {
   state: {
@@ -13,34 +15,16 @@ type LocationProps = {
 interface AuthGuardProps {}
 
 export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
-  const { state: auth, login, logout } = useAuth();
-  const { setUser } = useUser();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const effectCalled = useRef(false);
+
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
+  const { state: auth, login, logout } = useAuth();
+  const { setUser } = useUser();
   const { showInfoNotification } = useNotification();
-  const effectCalled = useRef(false);
+
   const from = location.state?.from?.pathname || '/profile';
-
-  const setAuthStatus = async () => {
-    if (auth.isLoggedIn) {
-      return;
-    }
-
-    try {
-      const response = await verifyAuthStatus();
-
-      if (response.message === 'OK') {
-        login();
-        setUser(response.user);
-        navigate(from, { replace: true });
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      showInfoNotification('Session timeout. Please login again.');
-      logout();
-    }
-  };
 
   useEffect(() => {
     if (effectCalled.current) {
@@ -51,9 +35,51 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
     }
   }, []);
 
-  return auth?.isLoggedIn ? (
-    <Outlet></Outlet>
+  const setAuthStatus = async () => {
+    if (auth.isLoggedIn) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await verifyAuthStatus();
+
+      login();
+      setUser(response.user);
+      navigate(from, { replace: true });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError(err);
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleError = (error: AxiosError<HttpException>) => {
+    switch (error?.response?.status) {
+      case 401:
+        showInfoNotification('Please login or create an account.');
+        break;
+      default:
+        showInfoNotification(
+          'Something went wrong. Please login and try again.'
+        );
+        break;
+    }
+
+    logout();
+  };
+
+  return isLoading ? (
+    <Loader />
   ) : (
-    <Navigate to="/" state={{ from: location }} replace />
+    <>
+      {auth?.isLoggedIn ? (
+        <Outlet></Outlet>
+      ) : (
+        <Navigate to="/" state={{ from: location }} replace />
+      )}
+    </>
   );
 };
