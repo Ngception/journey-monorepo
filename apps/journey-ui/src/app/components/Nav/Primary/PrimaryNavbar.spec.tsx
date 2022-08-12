@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, RenderResult } from '@testing-library/react';
 import {
+  createTasks,
   mockWindowLocation,
   restoreWindowLocation,
 } from '@journey-monorepo/util';
@@ -64,7 +65,13 @@ describe('PrimaryNavbar', () => {
     beforeEach(() => {
       rerender(
         <AuthProvider initialState={{ isLoggedIn: true }}>
-          <TaskProvider>
+          <TaskProvider
+            initialState={{
+              tasks: createTasks(),
+              fetchTasksHandler: jest.fn,
+              tasksSearchFilter: '',
+            }}
+          >
             <PrimaryNavbar />
           </TaskProvider>
         </AuthProvider>
@@ -81,6 +88,24 @@ describe('PrimaryNavbar', () => {
 
     it('should render logout button', () => {
       expect(query('navbar-logout-button')).toBeTruthy();
+    });
+
+    it('should not render search bar if there are no tasks', () => {
+      rerender(
+        <AuthProvider initialState={{ isLoggedIn: true }}>
+          <TaskProvider
+            initialState={{
+              tasks: [],
+              fetchTasksHandler: jest.fn,
+              tasksSearchFilter: '',
+            }}
+          >
+            <PrimaryNavbar />
+          </TaskProvider>
+        </AuthProvider>
+      );
+
+      expect(query('task-search-filter-input')).toBeNull();
     });
   });
 });

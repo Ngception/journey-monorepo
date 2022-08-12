@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useNotification, Notification } from '@journey-monorepo/ui';
+import { useNotification, Notification } from '../../';
 import { NotificationDetails } from './Details/NotificationDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
