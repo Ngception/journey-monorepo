@@ -22,7 +22,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
   const location = useLocation() as LocationProps;
   const { state: auth, login, logout } = useAuth();
   const { setUser } = useUser();
-  const { showInfoNotification } = useNotification();
+  const { showErrorNotification, showInfoNotification } = useNotification();
 
   const from = location.state?.from?.pathname || '/profile';
 
@@ -62,7 +62,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
         showInfoNotification('Please login or create an account.');
         break;
       default:
-        showInfoNotification(
+        showErrorNotification(
           'Something went wrong. Please login and try again.'
         );
         break;

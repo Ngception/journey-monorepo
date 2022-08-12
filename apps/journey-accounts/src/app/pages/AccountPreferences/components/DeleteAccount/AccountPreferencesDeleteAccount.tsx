@@ -5,7 +5,7 @@ import {
   Icon,
   useNotification,
 } from '@journey-monorepo/ui';
-import { deleteUser, useLogout, useUser } from '../../../../shared';
+import { deleteUser, useError, useLogout, useUser } from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
 
@@ -18,9 +18,11 @@ export const AccountPreferencesDeleteAccount: FC<
   const deleteAccountTrigger = useRef<HTMLButtonElement>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { state: user } = useUser();
   const handleLogout = useLogout();
-  const { showErrorNotification, showSuccessNotification } = useNotification();
+  const { showSuccessNotification } = useNotification();
+  const handleError = useError();
 
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -35,17 +37,17 @@ export const AccountPreferencesDeleteAccount: FC<
 
     setIsLoading(true);
 
-    const response = await deleteUser({
-      user_id: user.user_id,
-    });
+    try {
+      await deleteUser({
+        user_id: user.user_id,
+      });
 
-    if (response.message === 'success') {
       setIsDialogOpen(false);
       showSuccessNotification('Account has been successfully deleted.');
       handleLogout();
-    } else {
-      showErrorNotification('Something went wrong. Please try again later.');
-      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError(err);
     }
 
     setIsLoading(false);

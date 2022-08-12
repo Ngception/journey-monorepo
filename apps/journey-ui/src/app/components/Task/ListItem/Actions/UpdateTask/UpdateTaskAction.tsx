@@ -1,7 +1,7 @@
-import { FC, RefObject, useRef, useState } from 'react';
+import { FC, KeyboardEvent, RefObject, useRef, useState } from 'react';
 import { DialogContainer } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
-import { updateTask, useTask } from '../../../../../shared';
+import { updateTask, useError, useTask } from '../../../../../shared';
 
 interface UpdateTaskActionProps {
   task: ITask;
@@ -21,23 +21,14 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
     content: props.task.content,
     current_status: props.task.current_status,
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updateTaskTrigger: RefObject<any> = useRef(null);
+  const updateTaskTrigger: RefObject<HTMLButtonElement> = useRef(null);
+
   const { state: task } = useTask();
+  const handleError = useError();
 
-  const dialogProps = {
-    title: `Update task`,
-    isDialogOpen,
-    isLoading,
-    isActionDisabled: taskToUpdate.content === '' || isLoading,
-    trigger: updateTaskTrigger,
-    actionButtonLabel: 'Update',
-    actionButtonColor: 'primary',
-    actionHandler: () => saveUpdatedTask(),
-    cancelHandler: () => closeDialog(),
-  };
+  const saveUpdatedTask = async (event: KeyboardEvent) => {
+    event.preventDefault();
 
-  const saveUpdatedTask = async () => {
     setIsLoading(true);
 
     const data = {
@@ -47,19 +38,17 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
       updated_at: new Date(),
     };
 
-    const response = await updateTask(data);
-
-    if (response) {
+    try {
+      await updateTask(data);
       await task.fetchTasksHandler();
 
       props.dialogToggler('');
 
       setIsDialogOpen(false);
-
       setIsLoading(false);
-    } else {
-      setIsLoading(false);
-      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError(err);
     }
 
     setIsLoading(false);
@@ -72,6 +61,18 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
       ...taskToUpdate,
       content: props.task.content,
     });
+  };
+
+  const dialogProps = {
+    title: `Update task`,
+    isDialogOpen,
+    isLoading,
+    isActionDisabled: taskToUpdate.content === '' || isLoading,
+    trigger: updateTaskTrigger,
+    actionButtonLabel: 'Update',
+    actionButtonColor: 'primary',
+    actionHandler: saveUpdatedTask,
+    cancelHandler: closeDialog,
   };
 
   return (

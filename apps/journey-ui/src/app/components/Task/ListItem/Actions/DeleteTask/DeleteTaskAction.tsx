@@ -1,7 +1,7 @@
-import { FC, useRef, useState } from 'react';
+import { FC, KeyboardEvent, useRef, useState } from 'react';
 import { DialogContainer, Icon } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
-import { deleteTaskById, useTask } from '../../../../../shared';
+import { deleteTaskById, useError, useTask } from '../../../../../shared';
 
 import styles from './DeleteTaskAction.module.scss';
 
@@ -17,29 +17,29 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const deleteTaskTrigger = useRef(null);
-  const { state: task } = useTask();
 
-  const deleteTask = async () => {
+  const { state: task } = useTask();
+  const handleError = useError();
+
+  const deleteTask = async (event: KeyboardEvent) => {
+    event.preventDefault();
+
     setIsLoading(true);
 
     try {
-      const response = await deleteTaskById(props.task.task_id);
+      await deleteTaskById(props.task.task_id);
+      await task.fetchTasksHandler();
 
-      if (response) {
-        await task.fetchTasksHandler();
+      props.dialogToggler('');
 
-        props.dialogToggler('');
-
-        setIsDialogOpen(false);
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-        return;
-      }
-    } catch (err) {
+      setIsDialogOpen(false);
       setIsLoading(false);
-      return err;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError(err);
     }
+
+    setIsLoading(false);
   };
 
   const closeDialog = () => {

@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from 'react';
 import { Button, DialogContainer, Icon } from '@journey-monorepo/ui';
-import { addTask, useUser } from '../../../shared';
+import { addTask, useError, useUser } from '../../../shared';
 
 interface AddTaskProps {
   title: string;
@@ -11,21 +11,10 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [newTask, setNewTask] = useState({ content: '', current_status: '' });
-  const { state: user } = useUser();
-
   const addTaskTrigger = useRef(null);
 
-  const dialogProps = {
-    title: `Add new ${newTask.current_status} task`,
-    isDialogOpen,
-    isLoading,
-    isActionDisabled: newTask.content === '' || isLoading,
-    trigger: addTaskTrigger,
-    actionButtonLabel: 'Add',
-    actionButtonColor: 'primary',
-    actionHandler: () => saveNewTask(),
-    cancelHandler: () => closeDialog(),
-  };
+  const { state: user } = useUser();
+  const handleError = useError();
 
   const closeDialog = () => {
     setIsDialogOpen(false);
@@ -43,18 +32,18 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
       current_status: newTask.current_status.toLowerCase(),
       user_id: user.user_id,
     };
-    const response = await addTask(data);
 
-    if (response) {
+    try {
+      await addTask(data);
       await props.fetchTasks();
 
       setIsDialogOpen(false);
-
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError(err);
     }
+
+    setIsLoading(false);
   };
 
   const openDialog = (title: string) => {
@@ -63,6 +52,18 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
       current_status: title,
     });
     setIsDialogOpen(true);
+  };
+
+  const dialogProps = {
+    title: `Add new ${newTask.current_status} task`,
+    isDialogOpen,
+    isLoading,
+    isActionDisabled: newTask.content === '' || isLoading,
+    trigger: addTaskTrigger,
+    actionButtonLabel: 'Add',
+    actionButtonColor: 'primary',
+    actionHandler: saveNewTask,
+    cancelHandler: closeDialog,
   };
 
   return (

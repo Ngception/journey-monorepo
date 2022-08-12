@@ -1,3 +1,4 @@
+import { NotificationProvider } from '@journey-monorepo/ui';
 import { createTask } from '@journey-monorepo/util';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -29,13 +30,16 @@ describe('UpdateTaskAction', () => {
 
   const testState = {
     tasks: [],
+    tasksSearchFilter: '',
     fetchTasksHandler: jest.fn(),
   };
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
       <TaskProvider initialState={testState}>
-        <UpdateTaskAction {...testProps} />
+        <NotificationProvider>
+          <UpdateTaskAction {...testProps} />
+        </NotificationProvider>
       </TaskProvider>
     );
 

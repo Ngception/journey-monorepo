@@ -1,3 +1,4 @@
+import { NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserProvider } from '../../../shared';
@@ -29,7 +30,9 @@ describe('AddTask', () => {
   beforeEach(() => {
     const renderResult: RenderResult = render(
       <UserProvider>
-        <AddTask {...testProps} />
+        <NotificationProvider>
+          <AddTask {...testProps} />
+        </NotificationProvider>
       </UserProvider>
     );
 

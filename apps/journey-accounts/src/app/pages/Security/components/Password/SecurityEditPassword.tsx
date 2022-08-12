@@ -8,15 +8,12 @@ import {
 import {
   logoutUser,
   updateUser,
-  useAuth,
+  useError,
   useLogout,
   useUser,
 } from '../../../../shared';
 
 import styles from './SecurityEditPassword.module.scss';
-import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
-import { HttpException } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface SecurityEditPasswordProps {}
@@ -31,15 +28,10 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const changePasswordTrigger = useRef<HTMLButtonElement>(null);
 
-  const { logout } = useAuth();
-  const { state: user, clearUser } = useUser();
+  const { state: user } = useUser();
   const handleLogout = useLogout();
-  const {
-    showErrorNotification,
-    showInfoNotification,
-    showSuccessNotification,
-  } = useNotification();
-  const navigate = useNavigate();
+  const { showSuccessNotification } = useNotification();
+  const handleError = useError();
 
   const toggleVisibility = () => {
     setNewPasswordVisibility(!newPasswordVisibility);
@@ -65,21 +57,6 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
     }
 
     setIsLoading(false);
-  };
-
-  const handleError = (err: AxiosError<HttpException>) => {
-    switch (err?.response?.status) {
-      case 401:
-        setIsDialogOpen(false);
-        logout();
-        clearUser();
-        showInfoNotification('Session timeout. Please login again.');
-        navigate('/', { replace: false });
-        break;
-      default:
-        showErrorNotification('Something went wrong. Please try again later.');
-        break;
-    }
   };
 
   const confirmationDialogProps = {
