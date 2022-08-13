@@ -1,4 +1,8 @@
-import { MockRouter, NotificationProvider } from '@journey-monorepo/ui';
+import {
+  ErrorProvider,
+  MockRouter,
+  NotificationProvider,
+} from '@journey-monorepo/ui';
 import { render } from '@testing-library/react';
 import { AuthProvider, UserProvider } from '../../shared';
 
@@ -13,7 +17,9 @@ describe('AccountPreferencesContainer', () => {
         <AuthProvider>
           <NotificationProvider>
             <UserProvider>
-              <AccountPreferencesContainer />
+              <ErrorProvider>
+                <AccountPreferencesContainer />
+              </ErrorProvider>
             </UserProvider>
           </NotificationProvider>
         </AuthProvider>

@@ -2,12 +2,21 @@
 import { useNavigate } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MockRouter } from '@journey-monorepo/ui';
+import {
+  ErrorProvider,
+  MockRouter,
+  NotificationProvider,
+} from '@journey-monorepo/ui';
 import {
   mockWindowLocation,
   restoreWindowLocation,
 } from '@journey-monorepo/util';
-import { AuthProvider, logoutUser, useAuth } from '../../../shared';
+import {
+  AuthProvider,
+  logoutUser,
+  useAuth,
+  UserProvider,
+} from '../../../shared';
 import { PrimaryNavbar } from './PrimaryNavbar';
 
 jest.mock('react-router-dom', () => ({
@@ -34,9 +43,15 @@ describe('PrimaryNavbar', () => {
   beforeEach(() => {
     const renderResult = render(
       <AuthProvider>
-        <MockRouter route={'/'}>
-          <PrimaryNavbar />
-        </MockRouter>
+        <ErrorProvider>
+          <NotificationProvider>
+            <UserProvider>
+              <MockRouter route={'/'}>
+                <PrimaryNavbar />
+              </MockRouter>
+            </UserProvider>
+          </NotificationProvider>
+        </ErrorProvider>
       </AuthProvider>
     );
 
@@ -66,15 +81,21 @@ describe('PrimaryNavbar', () => {
     const mocked = { logoutUser, useAuth, useNavigate };
 
     rerender(
-      <MockRouter route={'/'}>
-        <AuthProvider
-          initialState={{
-            isLoggedIn: true,
-          }}
-        >
-          <PrimaryNavbar />
-        </AuthProvider>
-      </MockRouter>
+      <ErrorProvider>
+        <NotificationProvider>
+          <UserProvider>
+            <MockRouter route={'/'}>
+              <AuthProvider
+                initialState={{
+                  isLoggedIn: true,
+                }}
+              >
+                <PrimaryNavbar />
+              </AuthProvider>
+            </MockRouter>
+          </UserProvider>
+        </NotificationProvider>
+      </ErrorProvider>
     );
 
     const logoutButton = query('logout-button');
@@ -87,15 +108,21 @@ describe('PrimaryNavbar', () => {
 
   it('should render back to board button', () => {
     rerender(
-      <MockRouter route={'/'}>
-        <AuthProvider
-          initialState={{
-            isLoggedIn: true,
-          }}
-        >
-          <PrimaryNavbar />
-        </AuthProvider>
-      </MockRouter>
+      <ErrorProvider>
+        <NotificationProvider>
+          <UserProvider>
+            <MockRouter route={'/'}>
+              <AuthProvider
+                initialState={{
+                  isLoggedIn: true,
+                }}
+              >
+                <PrimaryNavbar />
+              </AuthProvider>
+            </MockRouter>
+          </UserProvider>
+        </NotificationProvider>
+      </ErrorProvider>
     );
 
     expect(query('back-to-board-button')).toBeTruthy();

@@ -1,6 +1,6 @@
 import { FC, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logoutUser, useAuth } from '../../../shared';
+import { logoutUser, useAuth, useError } from '../../../shared';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PrimaryNavbarProps {}
@@ -10,16 +10,19 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 ) => {
   const { state: user, logout } = useAuth();
   const navigate = useNavigate();
+  const handleError = useError();
 
   const handleLogout = async (event: FormEvent) => {
     event.preventDefault();
 
-    const { message } = await logoutUser();
-    if (message === 'success') {
+    try {
+      await logoutUser();
       logout();
       navigate('/', { replace: true });
-    } else {
-      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      logout();
+      handleError(err);
     }
   };
 

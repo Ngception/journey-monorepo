@@ -1,6 +1,9 @@
 import { AxiosError } from 'axios';
 import { HttpException } from '@nestjs/common';
-import { useNotification } from '@journey-monorepo/ui';
+import {
+  useError as UiLibUseError,
+  useNotification,
+} from '@journey-monorepo/ui';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { useUser } from './useUser';
@@ -8,8 +11,9 @@ import { useUser } from './useUser';
 export const useError = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { showErrorNotification, showInfoNotification } = useNotification();
+  const { showInfoNotification } = useNotification();
   const { clearUser } = useUser();
+  const { showGeneralError } = UiLibUseError();
 
   const handleError = (error: AxiosError<HttpException>) => {
     switch (error?.response?.status) {
@@ -20,9 +24,7 @@ export const useError = () => {
         navigate('/', { replace: false });
         break;
       default:
-        showErrorNotification(
-          'Something went wrong. Please try again or refresh the page.'
-        );
+        showGeneralError();
         break;
     }
   };

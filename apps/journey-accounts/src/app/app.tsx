@@ -1,4 +1,5 @@
 import {
+  ErrorProvider,
   LayoutHeader,
   NotificationContainer,
   NotificationProvider,
@@ -16,13 +17,15 @@ export function App() {
       <AuthProvider>
         <NotificationProvider>
           <UserProvider>
-            <LayoutHeader>
-              <PrimaryNavbar />
-            </LayoutHeader>
-            <AppRoutes />
-            <div className={styles['notification-container']}>
-              <NotificationContainer />
-            </div>
+            <ErrorProvider>
+              <LayoutHeader>
+                <PrimaryNavbar />
+              </LayoutHeader>
+              <AppRoutes />
+              <div className={styles['notification-container']}>
+                <NotificationContainer />
+              </div>
+            </ErrorProvider>
           </UserProvider>
         </NotificationProvider>
       </AuthProvider>

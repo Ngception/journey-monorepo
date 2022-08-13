@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MockRouter, NotificationProvider } from '@journey-monorepo/ui';
+import {
+  ErrorProvider,
+  MockRouter,
+  NotificationProvider,
+} from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AuthProvider, deleteUser, UserProvider } from '../../../../shared';
@@ -20,7 +24,9 @@ describe('AccountPreferencesDeleteAccount', () => {
         <AuthProvider>
           <NotificationProvider>
             <UserProvider>
-              <AccountPreferencesDeleteAccount />
+              <ErrorProvider>
+                <AccountPreferencesDeleteAccount />
+              </ErrorProvider>
             </UserProvider>
           </NotificationProvider>
         </AuthProvider>
