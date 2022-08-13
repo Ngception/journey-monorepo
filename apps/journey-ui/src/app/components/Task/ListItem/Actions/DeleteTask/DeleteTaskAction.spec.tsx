@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { createTask } from '@journey-monorepo/util';
 import { deleteTaskById, TaskProvider } from '../../../../../shared';
 import { DeleteTaskAction } from './DeleteTaskAction';
-import { NotificationProvider } from '@journey-monorepo/ui';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 
 // Mock utils module to be able mock certain methods
 jest.mock('../../../../../shared/handlers/api/task.handler', () => {
@@ -31,7 +31,9 @@ describe('DeleteTaskAction', () => {
     const renderResult: RenderResult = render(
       <TaskProvider>
         <NotificationProvider>
-          <DeleteTaskAction {...testProps} />
+          <ErrorProvider>
+            <DeleteTaskAction {...testProps} />
+          </ErrorProvider>
         </NotificationProvider>
       </TaskProvider>
     );

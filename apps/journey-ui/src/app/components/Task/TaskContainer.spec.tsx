@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NotificationProvider } from '@journey-monorepo/ui';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { TaskProvider, UserProvider } from '../../shared';
@@ -37,9 +37,11 @@ describe('TaskContainer', () => {
       <UserProvider>
         <NotificationProvider>
           <TaskProvider>
-            <DragDropContext onDragEnd={() => jest.fn()}>
-              <TaskContainer />
-            </DragDropContext>
+            <ErrorProvider>
+              <DragDropContext onDragEnd={() => jest.fn()}>
+                <TaskContainer />
+              </DragDropContext>
+            </ErrorProvider>
           </TaskProvider>
         </NotificationProvider>
       </UserProvider>

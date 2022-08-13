@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NotificationProvider } from '@journey-monorepo/ui';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { createTaskLists } from '@journey-monorepo/util';
 import { render, RenderResult } from '@testing-library/react';
 import { Droppable } from 'react-beautiful-dnd';
@@ -40,9 +40,11 @@ describe('TaskList', () => {
       <TaskProvider>
         <UserProvider>
           <NotificationProvider>
-            <Droppable droppableId={'id'}>
-              {() => <TaskList list={list} listSetter={jest.fn()} />}
-            </Droppable>
+            <ErrorProvider>
+              <Droppable droppableId={'id'}>
+                {() => <TaskList list={list} listSetter={jest.fn()} />}
+              </Droppable>
+            </ErrorProvider>
           </NotificationProvider>
         </UserProvider>
       </TaskProvider>

@@ -1,4 +1,4 @@
-import { NotificationProvider } from '@journey-monorepo/ui';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { createTask } from '@journey-monorepo/util';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -38,7 +38,9 @@ describe('UpdateTaskAction', () => {
     const renderResult: RenderResult = render(
       <TaskProvider initialState={testState}>
         <NotificationProvider>
-          <UpdateTaskAction {...testProps} />
+          <ErrorProvider>
+            <UpdateTaskAction {...testProps} />
+          </ErrorProvider>
         </NotificationProvider>
       </TaskProvider>
     );

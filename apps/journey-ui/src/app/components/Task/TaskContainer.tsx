@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { ITask, ITaskList } from '@journey-monorepo/util';
-import { Error } from '@journey-monorepo/ui';
+import { useError } from '@journey-monorepo/ui';
 import { getAllTasksByUserId, useTask, useUser } from '../../shared';
 import { TaskDragDrop } from './DragDrop/TaskDragDrop';
 import { TaskList } from './List/TaskList';
@@ -30,10 +30,10 @@ export const TaskContainer: FC<TaskContainerProps> = (
     title: 'Done',
     items: [],
   });
-  const [showError, setShowError] = useState<boolean>(false);
   const effectCalled = useRef(false);
   const { state: user } = useUser();
   const { state: task, setFetchTasksHandler, setTasks } = useTask();
+  const { showGeneralError } = useError();
 
   useEffect(() => {
     if (effectCalled.current) {
@@ -62,7 +62,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
       setInProgressTasks(filterTasks('In Progress', tasks));
       setDoneTasks(filterTasks('Done', tasks));
     } catch (err) {
-      setShowError(true);
+      showGeneralError();
     }
   };
 
@@ -135,20 +135,14 @@ export const TaskContainer: FC<TaskContainerProps> = (
   };
 
   return (
-    <div>
-      {showError ? (
-        <Error />
-      ) : (
-        <TaskDragDrop allTaskLists={combineTaskLists()}>
-          <div className="columns container is-fluid">
-            {taskLists.map((list, idx) => (
-              <div className={`column ${styles['task-list']}`} key={list.title}>
-                <TaskList list={list} listSetter={taskListsSetters[idx]} />
-              </div>
-            ))}
+    <TaskDragDrop allTaskLists={combineTaskLists()}>
+      <div className="columns container is-fluid">
+        {taskLists.map((list, idx) => (
+          <div className={`column ${styles['task-list']}`} key={list.title}>
+            <TaskList list={list} listSetter={taskListsSetters[idx]} />
           </div>
-        </TaskDragDrop>
-      )}
-    </div>
+        ))}
+      </div>
+    </TaskDragDrop>
   );
 };

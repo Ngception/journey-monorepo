@@ -1,4 +1,4 @@
-import { ErrorBoundary, Loader } from '@journey-monorepo/ui';
+import { ErrorBoundary, ErrorOutlet, Loader } from '@journey-monorepo/ui';
 import { FC, lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthGuard } from './components/Auth/AuthGuard';
@@ -15,18 +15,20 @@ interface AppRoutesProps {}
 export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
   return (
     <Routes>
-      <Route element={<AuthGuard />}>
-        <Route
-          path="/"
-          element={
-            <ErrorBoundary>
-              <Suspense fallback={<Loader />}>
-                <TaskContainer />
-              </Suspense>
-            </ErrorBoundary>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace={true} />}></Route>
+      <Route element={<ErrorOutlet />}>
+        <Route element={<AuthGuard />}>
+          <Route
+            path="/"
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<Loader />}>
+                  <TaskContainer />
+                </Suspense>
+              </ErrorBoundary>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace={true} />}></Route>
+        </Route>
       </Route>
     </Routes>
   );

@@ -1,9 +1,9 @@
 import { AxiosError } from 'axios';
 import { HttpException } from '@nestjs/common';
-import { useNotification } from '@journey-monorepo/ui';
+import { useError as UiLibUseError } from '@journey-monorepo/ui';
 
 export const useError = () => {
-  const { showErrorNotification } = useNotification();
+  const { showGeneralError } = UiLibUseError();
 
   const handleError = (error: AxiosError<HttpException>) => {
     switch (error?.response?.status) {
@@ -11,9 +11,7 @@ export const useError = () => {
         window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}?site=journey`;
         break;
       default:
-        showErrorNotification(
-          'Something went wrong. Please try again or refresh the page.'
-        );
+        showGeneralError();
         break;
     }
   };
