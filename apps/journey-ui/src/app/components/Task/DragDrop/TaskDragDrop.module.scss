@@ -1,0 +1,10 @@
+.is-loading {
+  pointer-events: none;
+  visibility: visible;
+  opacity: 0.5;
+}
+
+.not-loading {
+  pointer-events: initial;
+  opacity: 1;
+}

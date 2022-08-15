@@ -7,4 +7,5 @@ export class CreateTaskDto {
 export class UpdateTaskDto {
   content: string;
   current_status: 'to do' | 'in progress' | 'done';
+  position?: number;
 }

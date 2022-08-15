@@ -12,4 +12,5 @@ export interface ITask {
   user_id: string;
   created_at: Date;
   updated_at: Date | null;
+  position: number;
 }

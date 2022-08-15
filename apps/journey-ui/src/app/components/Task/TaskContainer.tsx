@@ -67,12 +67,18 @@ export const TaskContainer: FC<TaskContainerProps> = (
   };
 
   const filterTasks = (title: string, tasks: ITask[]): ITaskList => {
+    const filteredTasks = tasks.filter(
+      (tasks) => tasks.current_status === title.toLowerCase()
+    );
+
     return {
       title,
-      items: tasks.filter(
-        (tasks) => tasks.current_status === title.toLowerCase()
-      ),
+      items: sortTasksByPosition(filteredTasks),
     };
+  };
+
+  const sortTasksByPosition = (tasks: ITask[]) => {
+    return tasks.sort((a, b) => a.position - b.position);
   };
 
   const filterTasksBySearch = () => {

@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from 'react';
 import { Button, DialogContainer, Icon } from '@journey-monorepo/ui';
-import { addTask, useError, useUser } from '../../../shared';
+import { addTask, useError, useTask, useUser } from '../../../shared';
 
 interface AddTaskProps {
   title: string;
@@ -15,6 +15,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
 
   const { state: user } = useUser();
   const handleError = useError();
+  const { state: task } = useTask();
 
   const closeDialog = () => {
     setIsDialogOpen(false);
@@ -31,6 +32,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
       content: newTask.content,
       current_status: newTask.current_status.toLowerCase(),
       user_id: user.user_id,
+      position: task.tasks.length,
     };
 
     try {

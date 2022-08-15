@@ -1,7 +1,7 @@
 import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UserProvider } from '../../../shared';
+import { TaskProvider, UserProvider } from '../../../shared';
 import { addTask } from '../../../shared/handlers/api/task.handler';
 import { AddTask } from './AddTask';
 
@@ -32,7 +32,9 @@ describe('AddTask', () => {
       <UserProvider>
         <NotificationProvider>
           <ErrorProvider>
-            <AddTask {...testProps} />
+            <TaskProvider>
+              <AddTask {...testProps} />
+            </TaskProvider>
           </ErrorProvider>
         </NotificationProvider>
       </UserProvider>

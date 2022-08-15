@@ -19,4 +19,13 @@ export class Task {
 
   @Column({ nullable: true })
   updated_at: Date;
+
+  @Column({
+    type: 'integer',
+    transformer: {
+      to: (value) => value,
+      from: (value) => new Number(value),
+    },
+  })
+  position: number;
 }

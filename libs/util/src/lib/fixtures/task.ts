@@ -11,6 +11,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'a1',
         created_at: new Date(),
         updated_at: null,
+        position: 1,
       },
       {
         task_id: '456',
@@ -19,6 +20,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'a1',
         created_at: new Date(),
         updated_at: null,
+        position: 2,
       },
       {
         task_id: '789',
@@ -27,6 +29,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'a1',
         created_at: new Date(),
         updated_at: null,
+        position: 3,
       },
     ],
   },
@@ -40,6 +43,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'b2',
         created_at: new Date(),
         updated_at: null,
+        position: 4,
       },
       {
         task_id: 'def',
@@ -48,6 +52,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'b2',
         created_at: new Date(),
         updated_at: null,
+        position: 5,
       },
       {
         task_id: 'ghi',
@@ -56,6 +61,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'b2',
         created_at: new Date(),
         updated_at: null,
+        position: 6,
       },
     ],
   },
@@ -69,6 +75,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'c3',
         created_at: new Date(),
         updated_at: null,
+        position: 7,
       },
       {
         task_id: '2b3',
@@ -77,6 +84,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'c3',
         created_at: new Date(),
         updated_at: null,
+        position: 8,
       },
       {
         task_id: '3c4',
@@ -85,6 +93,7 @@ export const TasksListsFixtures: ITaskList[] = [
         user_id: 'c3',
         created_at: new Date(),
         updated_at: null,
+        position: 9,
       },
     ],
   },
@@ -98,6 +107,7 @@ export const TasksFixtures: ITask[] = [
     user_id: 'a1b2',
     created_at: new Date(),
     updated_at: null,
+    position: 1,
   },
   {
     task_id: '111',
@@ -106,6 +116,7 @@ export const TasksFixtures: ITask[] = [
     user_id: 'aabb',
     created_at: new Date(),
     updated_at: null,
+    position: 2,
   },
   {
     task_id: 'de2',
@@ -114,5 +125,6 @@ export const TasksFixtures: ITask[] = [
     user_id: 'zld9',
     created_at: new Date(),
     updated_at: null,
+    position: 3,
   },
 ];

@@ -1,9 +1,11 @@
 import { useNotification } from '@journey-monorepo/ui';
 import { ITask, ITaskStatus } from '@journey-monorepo/util';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { updateTask } from '../../../shared';
+import { updateTasks, useError } from '../../../shared';
 import { TaskList } from '../TaskContainer';
+
+import styles from './TaskDragDrop.module.scss';
 
 interface TaskDragDropProps {
   children: ReactNode;
@@ -13,7 +15,9 @@ interface TaskDragDropProps {
 export const TaskDragDrop: FC<TaskDragDropProps> = (
   props: TaskDragDropProps
 ) => {
-  const { showErrorNotification } = useNotification();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const handleError = useError();
+  const { showSuccessNotification } = useNotification();
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source } = result;
@@ -30,31 +34,51 @@ export const TaskDragDrop: FC<TaskDragDropProps> = (
     const oldListTitle: string = source?.droppableId;
     const newListTitle: string = destination?.droppableId;
 
+    setIsLoading(true);
+
     if (oldListTitle === newListTitle) {
       reorderTasksInPlace(result);
+      setIsLoading(false);
+      showSuccessNotification('Changes have been successfully saved.');
+
       return;
     }
 
     const task = updateOldTaskList(result);
+
     updateNewTaskList(task, result);
+    setIsLoading(false);
+    showSuccessNotification('Changes have been successfully saved.');
   };
 
   const reorderTasksInPlace = (result: DropResult) => {
     const { destination, source } = result;
+    const targetIndex = destination?.index as number;
 
     const reorder = (tasks: ITask[]) => {
-      const updatedList = tasks;
-      const task = updatedList[source.index];
+      let updatedList = tasks;
+      const originalTask = updatedList[source.index];
 
       updatedList.splice(source.index, 1);
-      updatedList.splice(destination?.index as number, 0, task);
+      updatedList.splice(targetIndex, 0, originalTask);
+
+      updatedList = updatedList.map((task, idx) => ({
+        ...task,
+        position: idx,
+      }));
 
       return updatedList;
     };
 
-    props.allTaskLists[source.droppableId].setter(
-      reorder(props.allTaskLists[source.droppableId].list)
-    );
+    const newList = reorder(props.allTaskLists[source.droppableId].list);
+
+    props.allTaskLists[source.droppableId].setter(newList);
+
+    updateTasks(newList)
+      .then()
+      .catch((err) => {
+        handleError(err);
+      });
   };
 
   const updateOldTaskList = (result: DropResult): ITask => {
@@ -67,6 +91,7 @@ export const TaskDragDrop: FC<TaskDragDropProps> = (
     updatedOldList = props.allTaskLists[oldListTitle].list.filter(
       (element: ITask) => element.task_id !== taskToBeDroppedId
     );
+
     const task = props.allTaskLists[oldListTitle].list[source.index];
 
     props.allTaskLists[oldListTitle].setter(updatedOldList);
@@ -78,28 +103,32 @@ export const TaskDragDrop: FC<TaskDragDropProps> = (
     const { destination } = result;
     const newListTitle = destination?.droppableId as string;
     const newListIndex = destination?.index as number;
-    const errorMessage = 'Something went wrong. Please try again later.';
 
     let updatedNewList: ITask[] = [];
 
     updatedNewList = props.allTaskLists[newListTitle].list;
     task.current_status = newListTitle?.toLowerCase() as ITaskStatus;
-    updatedNewList.splice(newListIndex, 0, task as ITask);
 
-    updateTask(task)
-      .then((res) => {
-        props.allTaskLists[newListTitle].setter(updatedNewList);
-      })
+    updatedNewList.splice(newListIndex, 0, task as ITask);
+    updatedNewList = updatedNewList.map((item, idx) => ({
+      ...item,
+      position: idx,
+    }));
+
+    props.allTaskLists[newListTitle].setter(updatedNewList);
+
+    updateTasks(updatedNewList)
+      .then()
       .catch((err) => {
-        if (err) {
-          showErrorNotification(errorMessage);
-        }
+        handleError(err);
       });
   };
 
   return (
-    <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
-      {props.children}
-    </DragDropContext>
+    <div className={isLoading ? styles['is-loading'] : styles['not-loading']}>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        {props.children}
+      </DragDropContext>
+    </div>
   );
 };

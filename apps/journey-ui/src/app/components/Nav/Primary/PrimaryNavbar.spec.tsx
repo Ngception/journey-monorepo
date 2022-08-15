@@ -8,6 +8,7 @@ import {
 import { AuthProvider, TaskProvider } from '../../../shared';
 
 import { PrimaryNavbar } from './PrimaryNavbar';
+import { ErrorProvider } from '@journey-monorepo/ui';
 
 describe('PrimaryNavbar', () => {
   let component: HTMLElement;
@@ -25,7 +26,9 @@ describe('PrimaryNavbar', () => {
     const renderResult: RenderResult = render(
       <AuthProvider>
         <TaskProvider>
-          <PrimaryNavbar />
+          <ErrorProvider>
+            <PrimaryNavbar />
+          </ErrorProvider>
         </TaskProvider>
       </AuthProvider>
     );
@@ -72,7 +75,9 @@ describe('PrimaryNavbar', () => {
               tasksSearchFilter: '',
             }}
           >
-            <PrimaryNavbar />
+            <ErrorProvider>
+              <PrimaryNavbar />
+            </ErrorProvider>
           </TaskProvider>
         </AuthProvider>
       );
@@ -100,7 +105,9 @@ describe('PrimaryNavbar', () => {
               tasksSearchFilter: '',
             }}
           >
-            <PrimaryNavbar />
+            <ErrorProvider>
+              <PrimaryNavbar />
+            </ErrorProvider>
           </TaskProvider>
         </AuthProvider>
       );

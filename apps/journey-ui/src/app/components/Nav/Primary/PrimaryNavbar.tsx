@@ -1,4 +1,4 @@
-import { Button, Icon } from '@journey-monorepo/ui';
+import { Button, Icon, useError } from '@journey-monorepo/ui';
 import {
   ChangeEvent,
   FC,
@@ -23,6 +23,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 
   const { state: auth, logout } = useAuth();
   const { state: task, setTasksSearchFilter } = useTask();
+  const { state: error } = useError();
 
   const handleLogout = async (event: FormEvent) => {
     event.preventDefault();
@@ -76,7 +77,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 
       {auth.isLoggedIn && (
         <>
-          {task.tasks.length > 0 && (
+          {!error.status && task.tasks.length > 0 && (
             <div className="navbar-item column is-one-third">
               <div className="field has-addons">
                 <div className={`control has-icons-right is-expanded`}>

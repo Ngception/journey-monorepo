@@ -63,8 +63,18 @@ export class TaskService {
     try {
       const { affected } = await this.repo.update(id, {
         ...data,
-        updated_at: new Date(),
       });
+
+      return affected;
+    } catch (err) {
+      this.throwError(err);
+      return;
+    }
+  }
+
+  async updateTasks(tasks) {
+    try {
+      const { affected } = await this.repo.save(tasks);
 
       return affected;
     } catch (err) {

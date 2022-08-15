@@ -1,4 +1,4 @@
-import { createTask } from '@journey-monorepo/util';
+import { createTask, createTasks } from '@journey-monorepo/util';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ describe('TaskService', () => {
   let taskRepository: Repository<Task>;
 
   const task = createTask();
+  const tasks = createTasks();
   const date = new Date().toString();
 
   beforeAll(async () => {
@@ -37,6 +38,9 @@ describe('TaskService', () => {
             createTask: jest.fn(),
             updateTaskById: jest.fn(),
             deleteTaskbyId: jest.fn(),
+            save: jest.fn().mockResolvedValue({
+              affected: tasks.length,
+            }),
           },
         },
       ],
@@ -121,6 +125,16 @@ describe('TaskService', () => {
 
       expect(res).toEqual(1);
       expect(taskRepository.update).toHaveBeenCalledWith('uuid', data);
+    });
+
+    it('should update multiple tasks', async () => {
+      jest.spyOn(taskService, 'updateTasks');
+      jest.spyOn(taskRepository, 'save');
+
+      const res = await taskService.updateTasks(tasks);
+
+      expect(res).toEqual(tasks.length);
+      expect(taskRepository.save).toHaveBeenCalledWith(tasks);
     });
   });
 
