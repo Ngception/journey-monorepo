@@ -1,4 +1,5 @@
 import { render, RenderResult } from '@testing-library/react';
+import { NotificationProvider } from '../../../context/NotificationContext';
 import { Notification } from '../../../reducer/notification-reducer';
 import { NotificationDetails } from './NotificationDetails';
 
@@ -14,7 +15,9 @@ describe('NotificationDetails', () => {
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
-      <NotificationDetails notification={mockNotification} />
+      <NotificationProvider>
+        <NotificationDetails notification={mockNotification} index={0} />
+      </NotificationProvider>
     );
 
     component = renderResult.baseElement;

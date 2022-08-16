@@ -1,5 +1,5 @@
 import { FC, KeyboardEvent, RefObject, useRef, useState } from 'react';
-import { DialogContainer } from '@journey-monorepo/ui';
+import { DialogContainer, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { updateTask, useError, useTask } from '../../../../../shared';
 
@@ -25,6 +25,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
 
   const { state: task } = useTask();
   const handleError = useError();
+  const { showSuccessNotification } = useNotification();
 
   const saveUpdatedTask = async (event: KeyboardEvent) => {
     event.preventDefault();
@@ -46,6 +47,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
 
       setIsDialogOpen(false);
       setIsLoading(false);
+      showSuccessNotification('Task has been updated.');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);

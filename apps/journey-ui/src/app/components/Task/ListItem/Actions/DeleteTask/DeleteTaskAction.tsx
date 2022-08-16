@@ -1,5 +1,5 @@
 import { FC, KeyboardEvent, useRef, useState } from 'react';
-import { DialogContainer, Icon } from '@journey-monorepo/ui';
+import { DialogContainer, Icon, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { deleteTaskById, useError, useTask } from '../../../../../shared';
 
@@ -20,6 +20,7 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 
   const { state: task } = useTask();
   const handleError = useError();
+  const { showSuccessNotification } = useNotification();
 
   const deleteTask = async (event: KeyboardEvent) => {
     event.preventDefault();
@@ -34,6 +35,8 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 
       setIsDialogOpen(false);
       setIsLoading(false);
+      showSuccessNotification('Task has been deleted.');
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
@@ -49,23 +52,21 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 
   const dialogProps = {
     title: 'Delete Task',
-    showWarning: true,
-    showDanger: true,
     trigger: deleteTaskTrigger,
     isDialogOpen,
     isLoading,
-    confirmButtonLabel: 'Delete',
-    confirmButtonColor: 'danger',
-    confirmHandler: deleteTask,
+    actionButtonLabel: 'Delete',
+    actionButtonColor: 'danger',
+    actionHandler: deleteTask,
     cancelHandler: closeDialog,
   };
 
   return (
     <div>
       {isDialogOpen && (
-        <DialogContainer type="confirmation" dialogProps={dialogProps}>
+        <DialogContainer type="action" dialogProps={dialogProps}>
           <div className={styles['delete-warning']}>
-            <span>
+            <span className="has-text-danger">
               <Icon type="solid" name="triangle-exclamation" />
             </span>
             <p>

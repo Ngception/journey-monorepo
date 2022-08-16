@@ -50,10 +50,9 @@ describe('DeleteTaskAction', () => {
     const mocked = { deleteTaskById };
     jest.spyOn(mocked, 'deleteTaskById').mockResolvedValue(1);
 
-    const actionButton = query('confirm-button');
+    const actionButton = query('action-button');
     expect(actionButton).toBeTruthy();
 
-    await userEvent.type(query('confirm-field'), 'confirm');
     await userEvent.click(actionButton);
 
     expect(deleteTaskById).toHaveBeenCalled();

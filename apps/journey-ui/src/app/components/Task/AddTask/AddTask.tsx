@@ -1,5 +1,10 @@
 import { FC, useRef, useState } from 'react';
-import { Button, DialogContainer, Icon } from '@journey-monorepo/ui';
+import {
+  Button,
+  DialogContainer,
+  Icon,
+  useNotification,
+} from '@journey-monorepo/ui';
 import { addTask, useError, useTask, useUser } from '../../../shared';
 
 interface AddTaskProps {
@@ -16,6 +21,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
   const { state: user } = useUser();
   const handleError = useError();
   const { state: task } = useTask();
+  const { showSuccessNotification } = useNotification();
 
   const closeDialog = () => {
     setIsDialogOpen(false);
@@ -40,6 +46,8 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
       await props.fetchTasks();
 
       setIsDialogOpen(false);
+      showSuccessNotification('New task has been added.');
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);

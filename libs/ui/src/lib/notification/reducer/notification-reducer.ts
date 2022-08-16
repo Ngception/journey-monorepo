@@ -1,4 +1,5 @@
 export interface Notification {
+  id: string;
   message: string;
   type: 'success' | 'error' | 'info';
 }
@@ -15,6 +16,7 @@ export interface InitialNotificationStateInterface {
 
 export const NOTIFICATION_ACTIONS = {
   SHOW_NOTIFICATION: 'show notification',
+  REMOVE_NOTIFICATION: 'remove notification',
   CLEAR_NOTIFICATIONS: 'clear notifications',
 };
 
@@ -30,6 +32,12 @@ export const notificationReducer = (
     case NOTIFICATION_ACTIONS.SHOW_NOTIFICATION:
       return {
         messages: [...state.messages, action.payload],
+      };
+    case NOTIFICATION_ACTIONS.REMOVE_NOTIFICATION:
+      return {
+        messages: [
+          ...state.messages.filter((message) => message.id !== action.payload),
+        ],
       };
     case NOTIFICATION_ACTIONS.CLEAR_NOTIFICATIONS:
       return notificationInitialState;

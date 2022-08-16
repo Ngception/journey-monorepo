@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useReducer } from 'react';
+import { createContext, FC, ReactNode, useId, useReducer } from 'react';
 import {
   InitialNotificationStateInterface,
   notificationInitialState,
@@ -11,6 +11,7 @@ export interface INotificationContext {
   showSuccessNotification: (message: string) => void;
   showErrorNotification: (message: string) => void;
   showInfoNotification: (message: string) => void;
+  removeNotification: (messageId: string) => void;
   clearNotifications: () => void;
 }
 
@@ -32,6 +33,8 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
     notificationInitialState
   );
 
+  const id = `${useId()}-${Math.floor(Math.random() * 100)}`;
+
   const value = {
     state: initialState || (state as InitialNotificationStateInterface),
     showSuccessNotification: (message: string) =>
@@ -39,6 +42,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
         type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
         payload: {
           message,
+          id,
           type: 'success',
         },
       }),
@@ -47,6 +51,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
         type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
         payload: {
           message,
+          id,
           type: 'error',
         },
       }),
@@ -55,8 +60,14 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
         type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
         payload: {
           message,
+          id,
           type: 'info',
         },
+      }),
+    removeNotification: (messageId: string) =>
+      dispatch({
+        type: NOTIFICATION_ACTIONS.REMOVE_NOTIFICATION,
+        payload: messageId,
       }),
     clearNotifications: () =>
       dispatch({ type: NOTIFICATION_ACTIONS.CLEAR_NOTIFICATIONS }),

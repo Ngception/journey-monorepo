@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useNotification, Notification } from '../../';
+import { useNotification } from '../../';
 import { NotificationDetails } from './Details/NotificationDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -9,41 +9,30 @@ export const NotificationContainer: FC<NotificationContainerProps> = (
   props: NotificationContainerProps
 ) => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<Notification[]>(
-    [] as Notification[]
-  );
-  const { state, clearNotifications } = useNotification();
+  const { state } = useNotification();
 
   useEffect(() => {
     bindNotifications();
-    cleanupNotifications();
-  }, [state.messages]);
+  }, [state.messages.length]);
 
   const bindNotifications = () => {
     if (!state.messages.length) {
+      setShowNotifications(false);
       return;
     }
 
-    setNotifications(state.messages);
     setShowNotifications(true);
-  };
-
-  const cleanupNotifications = () => {
-    setTimeout(() => {
-      if (!state.messages.length) {
-        return;
-      }
-
-      setShowNotifications(false);
-      clearNotifications();
-    }, 5000);
   };
 
   return (
     <div>
       {showNotifications &&
-        notifications.map((notification, idx) => (
-          <NotificationDetails key={idx} notification={notification} />
+        state.messages.map((notification, idx) => (
+          <NotificationDetails
+            key={idx}
+            notification={notification}
+            index={idx}
+          />
         ))}
     </div>
   );
