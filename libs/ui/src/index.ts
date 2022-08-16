@@ -16,3 +16,4 @@ export * from './lib/loader';
 export * from './lib/message';
 export * from './lib/notification';
 export * from './lib/testing';
+export * from './lib/transition';
