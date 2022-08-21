@@ -30,9 +30,16 @@ export const notificationReducer = (
 ) => {
   switch (action.type) {
     case NOTIFICATION_ACTIONS.SHOW_NOTIFICATION:
-      return {
-        messages: [...state.messages, action.payload],
-      };
+      if (state.messages.length > 5) {
+        return {
+          messages: [...state.messages.slice(4), action.payload],
+        };
+      } else {
+        return {
+          messages: [...state.messages, action.payload],
+        };
+      }
+
     case NOTIFICATION_ACTIONS.REMOVE_NOTIFICATION:
       return {
         messages: [

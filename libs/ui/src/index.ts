@@ -4,6 +4,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 
 library.add(far, fas);
 
+export * from './lib/animate';
 export * from './lib/button';
 export * from './lib/card';
 export * from './lib/constants';
@@ -16,4 +17,3 @@ export * from './lib/loader';
 export * from './lib/message';
 export * from './lib/notification';
 export * from './lib/testing';
-export * from './lib/transition';

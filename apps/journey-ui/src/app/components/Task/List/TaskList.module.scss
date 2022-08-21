@@ -23,6 +23,15 @@
   height: 90%;
   padding-bottom: 1rem;
   overflow-y: scroll;
+
+  > div {
+    height: 100%;
+  }
+
+  .placeholder {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .task-list-item-wrapper {

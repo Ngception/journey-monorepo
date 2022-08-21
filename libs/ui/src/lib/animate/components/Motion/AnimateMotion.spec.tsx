@@ -1,14 +1,13 @@
 import { render } from '@testing-library/react';
-import { SwitchTransition } from './SwitchTransition';
+import { AnimateMotion } from './AnimateMotion';
 
-describe('SwitchTransition', () => {
+describe('AnimateMotion', () => {
   it('should render', () => {
     const component = render(
-      <SwitchTransition>
+      <AnimateMotion>
         <div></div>
-      </SwitchTransition>
-    );
-
+      </AnimateMotion>
+    ).baseElement;
     expect(component).toBeTruthy();
   });
 });

@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import { FC, ReactNode } from 'react';
 import { ActionDialog } from './Action/ActionDialog';
 import { ConfirmationDialog } from './Confirmation/ConfirmationDialog';
@@ -14,17 +15,25 @@ interface DialogContainerProps {
 export const DialogContainer: FC<DialogContainerProps> = (
   props: DialogContainerProps
 ) => {
-  switch (props.type) {
-    case 'action':
-      return (
-        <ActionDialog {...props.dialogProps}>{props.children}</ActionDialog>
-      );
-    case 'confirmation':
-    default:
-      return (
-        <ConfirmationDialog {...props.dialogProps}>
-          {props.children}
-        </ConfirmationDialog>
-      );
-  }
+  const renderDialog = () => {
+    switch (props.type) {
+      case 'action':
+        return (
+          <ActionDialog {...props.dialogProps}>{props.children}</ActionDialog>
+        );
+      case 'confirmation':
+      default:
+        return (
+          <ConfirmationDialog {...props.dialogProps}>
+            {props.children}
+          </ConfirmationDialog>
+        );
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {props.dialogProps?.isDialogOpen && renderDialog()}
+    </AnimatePresence>
+  );
 };

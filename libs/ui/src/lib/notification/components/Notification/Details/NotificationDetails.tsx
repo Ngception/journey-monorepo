@@ -2,6 +2,8 @@ import { FC, MouseEvent, useEffect } from 'react';
 import { useNotification } from '../../../hook/useNotification';
 import { Notification } from '../../../reducer/notification-reducer';
 
+import styles from './NotificationDetails.module.scss';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NotificationDetailsProps {
   notification: Notification;
@@ -38,12 +40,13 @@ export const NotificationDetails: FC<NotificationDetailsProps> = (
     removeNotification(props.notification.id);
   };
 
-  const notificationClasses = `notification ${getNotificationType(
-    props.notification.type
-  )}`;
-
   return (
-    <div data-testid="notification-details" className={notificationClasses}>
+    <div
+      data-testid="notification-details"
+      className={`notification ${getNotificationType(
+        props.notification.type
+      )} ${styles['notification-details']}`}
+    >
       <button
         type="button"
         className="delete"

@@ -89,22 +89,20 @@ export const AccountPreferencesDeleteAccount: FC<
         </Button>
       </div>
 
-      {isDialogOpen && (
-        <DialogContainer
-          type="confirmation"
-          dialogProps={confirmationDialogProps}
-        >
-          <div className={styles['dialog-content']}>
-            <span className="">
-              <Icon type="solid" name="triangle-exclamation" />
-            </span>
-            <p>
-              You are about to delete your account. Once confirmed, you will
-              lose access and this action cannot be undone.
-            </p>
-          </div>
-        </DialogContainer>
-      )}
+      <DialogContainer
+        type="confirmation"
+        dialogProps={confirmationDialogProps}
+      >
+        <div className={styles['dialog-content']}>
+          <span className="">
+            <Icon type="solid" name="triangle-exclamation" />
+          </span>
+          <p>
+            You are about to delete your account. Once confirmed, you will lose
+            access and this action cannot be undone.
+          </p>
+        </div>
+      </DialogContainer>
     </div>
   );
 };

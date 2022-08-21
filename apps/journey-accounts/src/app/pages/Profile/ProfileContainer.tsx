@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { useAuth, useUser } from '../../shared';
 import { ProfileDetails } from './components/Details/ProfileDetails';
 
@@ -28,10 +29,12 @@ export const ProfileContainer: FC<ProfileContainerProps> = (
   };
 
   return (
-    <div className="container column is-half">
-      <h1 className="title">Profile</h1>
-      <p>View information about you.</p>
-      <ProfileDetails email={email} createdAt={createdAt} />
-    </div>
+    <AnimateMotion options={setFadeOptions('profile', 0.5)}>
+      <div className="container column is-half">
+        <h1 className="title">Profile</h1>
+        <p>View information about you.</p>
+        <ProfileDetails email={email} createdAt={createdAt} />
+      </div>
+    </AnimateMotion>
   );
 };

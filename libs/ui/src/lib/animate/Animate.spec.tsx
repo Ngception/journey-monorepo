@@ -1,14 +1,13 @@
 import { render } from '@testing-library/react';
-import { TransitionGroup } from './TransitionGroup';
+import { Animate } from './Animate';
 
-describe('TransitionGroup', () => {
+describe('Animate', () => {
   it('should render', () => {
     const component = render(
-      <TransitionGroup>
+      <Animate>
         <div></div>
-      </TransitionGroup>
-    );
-
+      </Animate>
+    ).baseElement;
     expect(component).toBeTruthy();
   });
 });

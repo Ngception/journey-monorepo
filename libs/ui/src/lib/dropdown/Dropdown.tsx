@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { DropdownItem, DropdownTrigger } from './components';
+import { setFadeOptions } from '../constants';
+import { Animate, AnimateMotion } from '../animate';
 
 export interface IDropdownItem {
   label: string;
@@ -40,6 +42,12 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
     }
   };
 
+  const motionOptions = {
+    ...setFadeOptions,
+    transition: { duration: 0.1 },
+    key: 'dropdown',
+  };
+
   return (
     <div
       className="dropdown is-right is-active"
@@ -54,21 +62,25 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
         dropdownToggler={setIsDropdownVisible}
         dropdownLabel={props.label}
       />
-      {isDropdownVisible && (
-        <div className="dropdown-menu" id="dropdown-menu" role="menu">
-          <div className="dropdown-content">
-            {props.items.map((item, idx) => (
-              <DropdownItem
-                item={item}
-                key={item.label}
-                dropdownToggler={setIsDropdownVisible}
-                dropdownLabel={props.label}
-                isLastItem={idx === props.items.length - 1 || undefined}
-              />
-            ))}
+      <Animate>
+        {isDropdownVisible && (
+          <div className="dropdown-menu" id="dropdown-menu" role="menu">
+            <AnimateMotion options={motionOptions}>
+              <div className="dropdown-content">
+                {props.items.map((item, idx) => (
+                  <DropdownItem
+                    item={item}
+                    key={item.label}
+                    dropdownToggler={setIsDropdownVisible}
+                    dropdownLabel={props.label}
+                    isLastItem={idx === props.items.length - 1 || undefined}
+                  />
+                ))}
+              </div>
+            </AnimateMotion>
           </div>
-        </div>
-      )}
+        )}
+      </Animate>
     </div>
   );
 };

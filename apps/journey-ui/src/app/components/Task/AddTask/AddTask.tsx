@@ -88,32 +88,30 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
           <Icon type="solid" name="plus" />
         </span>
       </Button>
-      {isDialogOpen && (
-        <DialogContainer type="action" dialogProps={dialogProps}>
-          <fieldset disabled={isLoading}>
-            <div className="field">
-              <label className="label is-sr-only" htmlFor="new-task-content">
-                Task Content
-              </label>
-              <textarea
-                className="textarea has-fixed-size"
-                data-testid="dialog-textarea"
-                id="new-task-content"
-                rows={5}
-                placeholder="Type content here."
-                aria-required="true"
-                aria-invalid={newTask.content === ''}
-                onChange={(event) =>
-                  setNewTask({
-                    ...newTask,
-                    content: event.target.value,
-                  })
-                }
-              />
-            </div>
-          </fieldset>
-        </DialogContainer>
-      )}
+      <DialogContainer type="action" dialogProps={dialogProps}>
+        <fieldset disabled={isLoading}>
+          <div className="field">
+            <label className="label is-sr-only" htmlFor="new-task-content">
+              Task Content
+            </label>
+            <textarea
+              className="textarea has-fixed-size"
+              data-testid="dialog-textarea"
+              id="new-task-content"
+              rows={5}
+              placeholder="Type content here."
+              aria-required="true"
+              aria-invalid={newTask.content === ''}
+              onChange={(event) =>
+                setNewTask({
+                  ...newTask,
+                  content: event.target.value,
+                })
+              }
+            />
+          </div>
+        </fieldset>
+      </DialogContainer>
     </>
   );
 };

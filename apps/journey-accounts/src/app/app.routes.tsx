@@ -5,7 +5,7 @@ import { HomeRoutes } from './pages/Home/Home.routes';
 import { ProfileRoutes } from './pages/Profile/Profile.routes';
 import { SecurityRoutes } from './pages/Security/Security.routes';
 import { AuthGuard } from './components/Auth/AuthGuard';
-import { ErrorOutlet, LayoutContainer } from '@journey-monorepo/ui';
+import { Animate, ErrorOutlet, LayoutContainer } from '@journey-monorepo/ui';
 import { AsideNavbar } from './components/Nav/Aside/AsideNavbar';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -20,7 +20,11 @@ export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
             element={
               <LayoutContainer
                 aside={<AsideNavbar />}
-                body={<Outlet></Outlet>}
+                body={
+                  <Animate>
+                    <Outlet></Outlet>
+                  </Animate>
+                }
               />
             }
           >

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, RenderResult } from '@testing-library/react';
 import { DialogContainer, DialogType } from './DialogContainer';
@@ -5,7 +6,9 @@ import { DialogContainer, DialogType } from './DialogContainer';
 describe('DialogContainer', () => {
   const testProps = {
     type: 'confirmation' as DialogType,
-    dialogProps: {},
+    dialogProps: {
+      isDialogOpen: true,
+    },
   };
 
   it('should render successfully', () => {

@@ -1,6 +1,11 @@
-import { Dropdown } from '@journey-monorepo/ui';
-import { ITaskList } from '@journey-monorepo/util';
 import { Dispatch, FC } from 'react';
+import {
+  Animate,
+  AnimateMotion,
+  Dropdown,
+  setFadeOptions,
+} from '@journey-monorepo/ui';
+import { ITaskList } from '@journey-monorepo/util';
 import { useTask } from '../../../shared';
 import { AddTask } from '../AddTask/AddTask';
 import { TaskDragDropDroppable } from '../DragDrop/components';
@@ -62,6 +67,12 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
     }
   };
 
+  const setMotionOptions = (key: number) => ({
+    ...setFadeOptions,
+    transition: { duration: 0.5 },
+    key,
+  });
+
   return (
     <>
       <div className={styles['task-list-header']}>
@@ -86,13 +97,24 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
         </div>
       </div>
       <div className={styles['task-list-item-droppable']}>
-        <TaskDragDropDroppable droppableId={props.list.title}>
-          {props.list.items.map((i, idx) => (
-            <div className={styles['task-list-item-wrapper']}>
-              <TaskListItem item={i} key={i.task_id} index={idx} />
-            </div>
-          ))}
-        </TaskDragDropDroppable>
+        <Animate>
+          <TaskDragDropDroppable droppableId={props.list.title}>
+            {props.list.items.length ? (
+              props.list.items.map((i, idx) => (
+                <AnimateMotion options={setMotionOptions(idx)}>
+                  <div
+                    className={styles['task-list-item-wrapper']}
+                    key={i.task_id}
+                  >
+                    <TaskListItem item={i} index={idx} />
+                  </div>
+                </AnimateMotion>
+              ))
+            ) : (
+              <div className={styles['placeholder']}></div>
+            )}
+          </TaskDragDropDroppable>
+        </Animate>
       </div>
     </>
   );

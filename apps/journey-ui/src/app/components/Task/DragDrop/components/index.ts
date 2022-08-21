@@ -1,2 +1,2 @@
 export * from './Draggable/TaskDragDropDraggable';
-export * from './Droppable/TaskDragDropDraggable';
+export * from './Droppable/TaskDragDropDroppable';

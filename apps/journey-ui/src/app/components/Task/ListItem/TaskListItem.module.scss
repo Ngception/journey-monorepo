@@ -3,13 +3,8 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 1rem;
-}
 
-.task-item-dates {
-  padding: 1rem;
-
-  p {
-    text-align: right;
-    font-size: 0.75rem;
+  .task-list-item-content {
+    margin: 0 0.5rem 0.5rem 0;
   }
 }

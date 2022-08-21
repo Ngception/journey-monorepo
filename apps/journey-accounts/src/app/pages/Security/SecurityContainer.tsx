@@ -1,3 +1,4 @@
+import { AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { FC } from 'react';
 import { SecurityEditPassword } from './components';
 
@@ -8,13 +9,15 @@ export const SecurityContainer: FC<SecurityContainerProps> = (
   props: SecurityContainerProps
 ) => {
   return (
-    <div>
-      <div className="container column is-half">
-        <h1 className="title">Security</h1>
-        <div>
-          <SecurityEditPassword />
+    <AnimateMotion options={setFadeOptions('security', 0.5)}>
+      <div>
+        <div className="container column is-half">
+          <h1 className="title">Security</h1>
+          <div>
+            <SecurityEditPassword />
+          </div>
         </div>
       </div>
-    </div>
+    </AnimateMotion>
   );
 };

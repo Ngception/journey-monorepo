@@ -121,26 +121,24 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
             >
               <span>Save changes</span>
             </Button>
-            {isDialogOpen && (
-              <DialogContainer
-                type="confirmation"
-                dialogProps={confirmationDialogProps}
+            <DialogContainer
+              type="confirmation"
+              dialogProps={confirmationDialogProps}
+            >
+              <div
+                data-testid="confirm-change-password-dialog"
+                className="is-flex is-justify-content-space-between"
               >
-                <div
-                  data-testid="confirm-change-password-dialog"
-                  className="is-flex is-justify-content-space-between"
-                >
-                  <span className={styles['notification-icon']}>
-                    <Icon type="solid" name="triangle-exclamation" />
-                  </span>
-                  <p>
-                    You are about to change your password. Once confirmed, you
-                    will be logged out and will need to log back in with your
-                    new password.
-                  </p>
-                </div>
-              </DialogContainer>
-            )}
+                <span className={styles['notification-icon']}>
+                  <Icon type="solid" name="triangle-exclamation" />
+                </span>
+                <p>
+                  You are about to change your password. Once confirmed, you
+                  will be logged out and will need to log back in with your new
+                  password.
+                </p>
+              </div>
+            </DialogContainer>
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useNotification } from '../../';
+import { setFadeOptions } from '../../../constants';
+import { Animate, AnimateMotion } from '../../../animate';
 import { NotificationDetails } from './Details/NotificationDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -26,14 +28,14 @@ export const NotificationContainer: FC<NotificationContainerProps> = (
 
   return (
     <div>
-      {showNotifications &&
-        state.messages.map((notification, idx) => (
-          <NotificationDetails
-            key={idx}
-            notification={notification}
-            index={idx}
-          />
-        ))}
+      <Animate>
+        {showNotifications &&
+          state.messages.map((notification, idx) => (
+            <AnimateMotion options={setFadeOptions(idx)}>
+              <NotificationDetails notification={notification} index={idx} />
+            </AnimateMotion>
+          ))}
+      </Animate>
     </div>
   );
 };

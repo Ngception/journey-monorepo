@@ -24,7 +24,7 @@ export function App() {
                 <LayoutHeader>
                   <PrimaryNavbar />
                 </LayoutHeader>
-                <div className="column">
+                <div className={`column ${styles['layout-body']}`}>
                   <LayoutBody>
                     <AppRoutes />
                   </LayoutBody>

@@ -38,15 +38,19 @@ export const TaskListItem: FC<TaskListItemProps> = (
             className={styles['task-list-item']}
           >
             <div>
-              <h2>{props.item.content}</h2>
-              <p className="tag is-info is-light">
-                Created {formatDate(props.item.created_at)}
+              <p className={styles['task-list-item-content']}>
+                {props.item.content}
               </p>
-              {props.item.updated_at && (
+              <div className={styles['task-list-item-dates']}>
                 <p className="tag is-info is-light">
-                  Last updated {formatDate(props.item.updated_at)}
+                  Created {formatDate(props.item.created_at)}
                 </p>
-              )}
+                {props.item.updated_at && (
+                  <p className="tag is-info is-light">
+                    Last updated {formatDate(props.item.updated_at)}
+                  </p>
+                )}
+              </div>
             </div>
             <TaskListItemActions
               task={props.item}
