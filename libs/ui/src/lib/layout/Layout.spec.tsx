@@ -1,16 +1,16 @@
 import { render } from '@testing-library/react';
 
-import { LayoutContainer } from './LayoutContainer';
+import { Layout } from './Layout';
 
-describe('LayoutContainer', () => {
+describe('Layout', () => {
   it('should render successfully', () => {
-    const component = render(<LayoutContainer />).baseElement;
+    const component = render(<Layout />).baseElement;
 
     expect(component).toBeTruthy();
   });
 
   it('should render with aside', () => {
-    const renderResult = render(<LayoutContainer aside={<p>Aside</p>} />);
+    const renderResult = render(<Layout aside={<p>Aside</p>} />);
     const component = renderResult.baseElement;
     const query = renderResult.queryByTestId;
 
@@ -19,7 +19,7 @@ describe('LayoutContainer', () => {
   });
 
   it('should render without aside', () => {
-    const renderResult = render(<LayoutContainer body={<p>Body</p>} />);
+    const renderResult = render(<Layout body={<p>Body</p>} />);
     const component = renderResult.baseElement;
     const query = renderResult.queryByTestId;
 

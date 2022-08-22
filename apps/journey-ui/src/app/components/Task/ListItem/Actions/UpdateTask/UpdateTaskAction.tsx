@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { DialogContainer, useNotification } from '@journey-monorepo/ui';
+import { Dialog, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { updateTask, useError, useTask } from '../../../../../shared';
 
@@ -90,7 +90,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
 
   return (
     <div>
-      <DialogContainer type="action" dialogProps={dialogProps}>
+      <Dialog type="action" dialogProps={dialogProps}>
         <fieldset disabled={isLoading}>
           <div className="field">
             <label className="label is-sr-only" htmlFor="task-content">
@@ -112,7 +112,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
             />
           </div>
         </fieldset>
-      </DialogContainer>
+      </Dialog>
     </div>
   );
 };

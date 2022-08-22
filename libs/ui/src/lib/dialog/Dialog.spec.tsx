@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, RenderResult } from '@testing-library/react';
-import { DialogContainer, DialogType } from './DialogContainer';
+import { Dialog, DialogType } from './Dialog';
 
-describe('DialogContainer', () => {
+describe('Dialog', () => {
   const testProps = {
     type: 'confirmation' as DialogType,
     dialogProps: {
@@ -13,9 +13,9 @@ describe('DialogContainer', () => {
 
   it('should render successfully', () => {
     const component: HTMLElement = render(
-      <DialogContainer {...testProps}>
+      <Dialog {...testProps}>
         <p>Test</p>
-      </DialogContainer>
+      </Dialog>
     ).baseElement;
 
     expect(component).toBeTruthy();
@@ -25,9 +25,9 @@ describe('DialogContainer', () => {
     testProps.type = 'action' as DialogType;
 
     const renderResult: RenderResult = render(
-      <DialogContainer {...testProps}>
+      <Dialog {...testProps}>
         <p>Test</p>
-      </DialogContainer>
+      </Dialog>
     );
 
     expect(renderResult.queryByTestId('action-button')).toBeTruthy();

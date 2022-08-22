@@ -1,7 +1,7 @@
 import {
   ErrorProvider,
   LayoutHeader,
-  NotificationContainer,
+  Notification,
   NotificationProvider,
 } from '@journey-monorepo/ui';
 import { AuthProvider, UserProvider } from './shared';
@@ -23,7 +23,7 @@ export function App() {
               </LayoutHeader>
               <AppRoutes />
               <div className={styles['notification-container']}>
-                <NotificationContainer />
+                <Notification />
               </div>
             </ErrorProvider>
           </UserProvider>

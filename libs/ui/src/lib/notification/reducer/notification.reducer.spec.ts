@@ -1,7 +1,7 @@
 import {
   notificationReducer,
   NOTIFICATION_ACTIONS,
-} from './notification-reducer';
+} from './notification.reducer';
 
 describe('NotificationReducer', () => {
   const initialState = {

@@ -1,4 +1,4 @@
-import { userReducer, USER_ACTIONS } from './user-reducer';
+import { userReducer, USER_ACTIONS } from './user.reducer';
 
 describe('UserReducer', () => {
   const initialState = {

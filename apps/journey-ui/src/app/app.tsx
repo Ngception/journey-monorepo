@@ -2,7 +2,7 @@ import {
   ErrorProvider,
   LayoutBody,
   LayoutHeader,
-  NotificationContainer,
+  Notification,
   NotificationProvider,
 } from '@journey-monorepo/ui';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
@@ -30,7 +30,7 @@ export function App() {
                   </LayoutBody>
                 </div>
                 <div className={styles['notification-container']}>
-                  <NotificationContainer />
+                  <Notification />
                 </div>
               </ErrorProvider>
             </TaskProvider>

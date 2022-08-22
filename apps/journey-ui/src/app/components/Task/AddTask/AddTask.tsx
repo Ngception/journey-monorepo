@@ -1,10 +1,5 @@
 import { FC, useRef, useState } from 'react';
-import {
-  Button,
-  DialogContainer,
-  Icon,
-  useNotification,
-} from '@journey-monorepo/ui';
+import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import { addTask, useError, useTask, useUser } from '../../../shared';
 
 interface AddTaskProps {
@@ -88,7 +83,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
           <Icon type="solid" name="plus" />
         </span>
       </Button>
-      <DialogContainer type="action" dialogProps={dialogProps}>
+      <Dialog type="action" dialogProps={dialogProps}>
         <fieldset disabled={isLoading}>
           <div className="field">
             <label className="label is-sr-only" htmlFor="new-task-content">
@@ -111,7 +106,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
             />
           </div>
         </fieldset>
-      </DialogContainer>
+      </Dialog>
     </>
   );
 };

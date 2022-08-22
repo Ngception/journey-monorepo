@@ -1,4 +1,4 @@
-export interface Notification {
+export interface INotification {
   id: string;
   message: string;
   type: 'success' | 'error' | 'info';
@@ -11,7 +11,7 @@ export interface NotificationAction {
 }
 
 export interface InitialNotificationStateInterface {
-  messages: Notification[];
+  messages: INotification[];
 }
 
 export const NOTIFICATION_ACTIONS = {
@@ -21,7 +21,7 @@ export const NOTIFICATION_ACTIONS = {
 };
 
 export const notificationInitialState = {
-  messages: [] as Notification[],
+  messages: [] as INotification[],
 };
 
 export const notificationReducer = (

@@ -1,14 +1,14 @@
 import { render, RenderResult } from '@testing-library/react';
 import { NotificationProvider } from '../../context/NotificationContext';
-import { NotificationContainer } from './NotificationContainer';
+import { Notification } from './Notification';
 
-describe('NotificationContainer', () => {
+describe('Notification', () => {
   let component: HTMLElement;
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
       <NotificationProvider>
-        <NotificationContainer />
+        <Notification />
       </NotificationProvider>
     );
 

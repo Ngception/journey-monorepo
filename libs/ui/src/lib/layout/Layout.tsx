@@ -3,17 +3,15 @@ import { LayoutAside } from './Aside/LayoutAside';
 import { LayoutBody } from './Body/LayoutBody';
 import { LayoutHeader } from './Header/LayoutHeader';
 
-import styles from './LayoutContainer.module.scss';
+import styles from './Layout.module.scss';
 
-interface LayoutContainerProps {
+interface LayoutProps {
   aside?: ReactNode;
   primaryNavbar?: ReactNode;
   body?: ReactNode;
 }
 
-export const LayoutContainer: FC<LayoutContainerProps> = (
-  props: LayoutContainerProps
-) => {
+export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
   return (
     <div>
       {props.primaryNavbar && (

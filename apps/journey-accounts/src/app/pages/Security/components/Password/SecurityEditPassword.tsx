@@ -1,10 +1,5 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import {
-  Button,
-  DialogContainer,
-  Icon,
-  useNotification,
-} from '@journey-monorepo/ui';
+import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import {
   logoutUser,
   updateUser,
@@ -121,10 +116,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
             >
               <span>Save changes</span>
             </Button>
-            <DialogContainer
-              type="confirmation"
-              dialogProps={confirmationDialogProps}
-            >
+            <Dialog type="confirmation" dialogProps={confirmationDialogProps}>
               <div
                 data-testid="confirm-change-password-dialog"
                 className="is-flex is-justify-content-space-between"
@@ -138,7 +130,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
                   password.
                 </p>
               </div>
-            </DialogContainer>
+            </Dialog>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { render, RenderResult } from '@testing-library/react';
 import { NotificationProvider } from '../../../context/NotificationContext';
-import { Notification } from '../../../reducer/notification-reducer';
+import { INotification } from '../../../';
 import { NotificationDetails } from './NotificationDetails';
 
 describe('NotificationDetails', () => {
@@ -11,7 +11,7 @@ describe('NotificationDetails', () => {
   const mockNotification = {
     message: 'message',
     type: 'success',
-  } as Notification;
+  } as INotification;
 
   beforeEach(() => {
     const renderResult: RenderResult = render(

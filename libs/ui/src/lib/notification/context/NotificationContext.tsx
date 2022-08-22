@@ -4,7 +4,7 @@ import {
   notificationInitialState,
   notificationReducer,
   NOTIFICATION_ACTIONS,
-} from '../reducer/notification-reducer';
+} from '../reducer/notification.reducer';
 
 export interface INotificationContext {
   state: InitialNotificationStateInterface;

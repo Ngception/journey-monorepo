@@ -1,2 +1,2 @@
-export * from './auth/auth-reducer';
-export * from './user/user-reducer';
+export * from './auth/auth.reducer';
+export * from './user/user.reducer';

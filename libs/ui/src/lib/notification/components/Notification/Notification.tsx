@@ -1,14 +1,14 @@
 import { FC, useEffect, useState } from 'react';
-import { useNotification } from '../../';
+import { useNotification } from '../..';
 import { setFadeOptions } from '../../../constants';
 import { Animate, AnimateMotion } from '../../../animate';
 import { NotificationDetails } from './Details/NotificationDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface NotificationContainerProps {}
+interface NotificationProps {}
 
-export const NotificationContainer: FC<NotificationContainerProps> = (
-  props: NotificationContainerProps
+export const Notification: FC<NotificationProps> = (
+  props: NotificationProps
 ) => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const { state } = useNotification();

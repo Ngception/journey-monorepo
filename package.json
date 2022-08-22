@@ -12,6 +12,7 @@
     "build": "nx build",
     "test": "nx run-many --all --target=test",
     "test-branch": "nx affected:test",
+    "test-branch-failed": "nx affected:test --onlyFailures",
     "test-e2e-branch": "nx affected:e2e",
     "new-app": "nx g @nrwl/react:app $APP",
     "new-lib": "nx g @nrwl/react:lib $LIB"

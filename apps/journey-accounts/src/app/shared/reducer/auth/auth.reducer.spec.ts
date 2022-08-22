@@ -1,4 +1,4 @@
-import { AUTH_ACTIONS, authReducer } from './auth-reducer';
+import { AUTH_ACTIONS, authReducer } from './auth.reducer';
 
 describe('AuthReducer', () => {
   const initialState = {

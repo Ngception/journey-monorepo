@@ -1,10 +1,5 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import {
-  Button,
-  DialogContainer,
-  Icon,
-  useNotification,
-} from '@journey-monorepo/ui';
+import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import { deleteUser, useError, useLogout, useUser } from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
@@ -89,10 +84,7 @@ export const AccountPreferencesDeleteAccount: FC<
         </Button>
       </div>
 
-      <DialogContainer
-        type="confirmation"
-        dialogProps={confirmationDialogProps}
-      >
+      <Dialog type="confirmation" dialogProps={confirmationDialogProps}>
         <div className={styles['dialog-content']}>
           <span className="">
             <Icon type="solid" name="triangle-exclamation" />
@@ -102,7 +94,7 @@ export const AccountPreferencesDeleteAccount: FC<
             access and this action cannot be undone.
           </p>
         </div>
-      </DialogContainer>
+      </Dialog>
     </div>
   );
 };

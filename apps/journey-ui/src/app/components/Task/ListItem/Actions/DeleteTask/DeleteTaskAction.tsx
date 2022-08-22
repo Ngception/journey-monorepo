@@ -1,5 +1,5 @@
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { DialogContainer, Icon, useNotification } from '@journey-monorepo/ui';
+import { Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { deleteTaskById, useError, useTask } from '../../../../../shared';
 
@@ -67,7 +67,7 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 
   return (
     <div>
-      <DialogContainer type="action" dialogProps={dialogProps}>
+      <Dialog type="action" dialogProps={dialogProps}>
         <div className={styles['delete-warning']}>
           <span className="has-text-danger">
             <Icon type="solid" name="triangle-exclamation" />
@@ -77,7 +77,7 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
             undone.
           </p>
         </div>
-      </DialogContainer>
+      </Dialog>
     </div>
   );
 };

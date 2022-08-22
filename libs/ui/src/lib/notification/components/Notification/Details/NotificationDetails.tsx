@@ -1,12 +1,12 @@
 import { FC, MouseEvent, useEffect } from 'react';
 import { useNotification } from '../../../hook/useNotification';
-import { Notification } from '../../../reducer/notification-reducer';
+import { INotification } from '../../../reducer/notification.reducer';
 
 import styles from './NotificationDetails.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NotificationDetailsProps {
-  notification: Notification;
+  notification: INotification;
   index: number;
 }
 
