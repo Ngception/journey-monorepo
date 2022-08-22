@@ -1,10 +1,5 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import {
-  Button,
-  DialogContainer,
-  Icon,
-  useNotification,
-} from '@journey-monorepo/ui';
+import { Button, Icon, useDialog, useNotification } from '@journey-monorepo/ui';
 import {
   logoutUser,
   updateUser,
@@ -25,13 +20,13 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const [newPasswordVisibility, setNewPasswordVisibility] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const changePasswordTrigger = useRef<HTMLButtonElement>(null);
 
   const { state: user } = useUser();
   const handleLogout = useLogout();
   const { showSuccessNotification } = useNotification();
   const handleError = useError();
+  const { state: dialog, clearDialog, showConfirmationDialog } = useDialog();
 
   const toggleVisibility = () => {
     setNewPasswordVisibility(!newPasswordVisibility);
@@ -59,15 +54,34 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
     setIsLoading(false);
   };
 
-  const confirmationDialogProps = {
-    title: 'Confirm password change',
-    trigger: changePasswordTrigger,
-    showWarning: true,
-    confirmButtonColor: 'primary',
-    confirmHandler: (event: FormEvent) => handleSubmit(event),
-    cancelHandler: () => setIsDialogOpen(false),
-    isDialogOpen: isDialogOpen,
-    isLoading,
+  const openDialog = () => {
+    const content = (
+      <div
+        data-testid="confirm-change-password-dialog"
+        className="is-flex is-justify-content-space-between"
+      >
+        <span className={styles['notification-icon']}>
+          <Icon type="solid" name="triangle-exclamation" />
+        </span>
+        <p>
+          You are about to change your password. Once confirmed, you will be
+          logged out and will need to log back in with your new password.
+        </p>
+      </div>
+    );
+
+    const confirmationDialogProps = {
+      title: 'Confirm password change',
+      trigger: changePasswordTrigger,
+      showWarning: true,
+      confirmButtonColor: 'primary',
+      confirmHandler: (event: FormEvent) => handleSubmit(event),
+      cancelHandler: () => clearDialog(),
+      isDialogOpen: dialog.isActive,
+      isLoading,
+    };
+
+    showConfirmationDialog(content, confirmationDialogProps);
   };
 
   return (
@@ -117,28 +131,10 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
               color={!newPassword ? 'light' : 'link'}
               isDisabled={!newPassword || isLoading}
               isLoading={isLoading}
-              clickHandler={() => setIsDialogOpen(true)}
+              clickHandler={() => openDialog()}
             >
               <span>Save changes</span>
             </Button>
-            <DialogContainer
-              type="confirmation"
-              dialogProps={confirmationDialogProps}
-            >
-              <div
-                data-testid="confirm-change-password-dialog"
-                className="is-flex is-justify-content-space-between"
-              >
-                <span className={styles['notification-icon']}>
-                  <Icon type="solid" name="triangle-exclamation" />
-                </span>
-                <p>
-                  You are about to change your password. Once confirmed, you
-                  will be logged out and will need to log back in with your new
-                  password.
-                </p>
-              </div>
-            </DialogContainer>
           </div>
         </div>
       </div>

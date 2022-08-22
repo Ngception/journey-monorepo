@@ -9,8 +9,12 @@
   justify-content: space-between;
   align-items: center;
 
-  .task-list-header-buttons > button {
-    margin-right: 0.5rem;
+  .task-list-header-buttons {
+    display: flex;
+
+    > :first-child {
+      margin-right: 0.5rem;
+    }
   }
 }
 

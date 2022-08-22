@@ -1,4 +1,7 @@
 import {
+  DialogContainer,
+  // DialogContainer,
+  DialogProvider,
   ErrorProvider,
   LayoutHeader,
   NotificationContainer,
@@ -16,17 +19,20 @@ export function App() {
     <div className={styles['app-container']}>
       <AuthProvider>
         <NotificationProvider>
-          <UserProvider>
-            <ErrorProvider>
-              <LayoutHeader>
-                <PrimaryNavbar />
-              </LayoutHeader>
-              <AppRoutes />
-              <div className={styles['notification-container']}>
-                <NotificationContainer />
-              </div>
-            </ErrorProvider>
-          </UserProvider>
+          <DialogProvider>
+            <UserProvider>
+              <ErrorProvider>
+                <LayoutHeader>
+                  <PrimaryNavbar />
+                </LayoutHeader>
+                <AppRoutes />
+                <div className={styles['notification-container']}>
+                  <NotificationContainer />
+                </div>
+                <DialogContainer />
+              </ErrorProvider>
+            </UserProvider>
+          </DialogProvider>
         </NotificationProvider>
       </AuthProvider>
     </div>

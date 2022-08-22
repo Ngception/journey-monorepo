@@ -4,13 +4,13 @@ import { Button } from '../../button';
 import { setFadeOptions } from '../../constants';
 import { AnimateMotion } from '../../animate';
 
-interface ActionDialogProps {
+export interface ActionDialogProps {
   title: string;
   trigger?: RefObject<HTMLButtonElement>;
   isDialogOpen: boolean;
   isLoading?: boolean;
   isActionDisabled?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
   actionButtonLabel: string;
   actionButtonColor?: string;
   actionHandler: (event: FormEvent) => void;
@@ -40,7 +40,7 @@ export const ActionDialog: FC<ActionDialogProps> = (
         delayInitialFocus: false,
       }}
     >
-      <div data-testid="action-dialog" className="modal is-active">
+      <div data-testid="action-dialog" className={`modal is-active`}>
         <AnimateMotion options={setFadeOptions('action', 0.125)}>
           <div className="modal-background"></div>
           <div className="modal-card">

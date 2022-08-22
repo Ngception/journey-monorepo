@@ -17,7 +17,7 @@ jest.mock('../../../../../shared/handlers/api/task.handler', () => {
     updateTask: jest.fn(),
   };
 });
-describe('UpdateTaskAction', () => {
+xdescribe('UpdateTaskAction', () => {
   let component: HTMLElement;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let query: any;

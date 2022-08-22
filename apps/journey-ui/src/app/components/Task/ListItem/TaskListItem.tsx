@@ -60,7 +60,7 @@ export const TaskListItem: FC<TaskListItemProps> = (
           </div>
         </Card>
       </TaskDragDropDraggable>
-      {showDialog === 'update' && (
+      {/* {showDialog === 'update' && (
         <UpdateTaskAction
           isDialogOpen={showDialog === 'update'}
           task={props.item}
@@ -73,7 +73,7 @@ export const TaskListItem: FC<TaskListItemProps> = (
           task={props.item}
           dialogToggler={setShowDialog}
         />
-      )}
+      )} */}
     </>
   );
 };

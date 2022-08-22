@@ -6,14 +6,14 @@ import { setFadeOptions } from '../../constants';
 
 import styles from './ConfirmationDialog.module.scss';
 
-interface ConfirmationDialogProps {
+export interface ConfirmationDialogProps {
   title: string;
   showWarning?: boolean;
   showDanger?: boolean;
   trigger?: RefObject<HTMLButtonElement>;
   isDialogOpen: boolean;
   isLoading?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
   confirmButtonLabel?: string;
   confirmButtonColor?: string;
   confirmHandler: (event: FormEvent) => void;
@@ -25,7 +25,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
   props: ConfirmationDialogProps
 ) => {
   const [confirmField, setConfirmField] = useState<string>('');
-  const modalClasses = `modal ${props.isDialogOpen ? 'is-active' : undefined}`;
+
   const notificationClasses = `notification ${
     props.showWarning ? 'is-warning' : undefined
   } ${props.showDanger ? 'is-danger' : undefined}`;
@@ -43,7 +43,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
         delayInitialFocus: false,
       }}
     >
-      <div className={modalClasses}>
+      <div className={`modal is-active`}>
         <AnimateMotion options={setFadeOptions('confirmation', 0.125)}>
           <div className="modal-background"></div>
           <div className="modal-card">

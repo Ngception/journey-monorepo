@@ -1,10 +1,5 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import {
-  Button,
-  DialogContainer,
-  Icon,
-  useNotification,
-} from '@journey-monorepo/ui';
+import { Button, Icon, useDialog, useNotification } from '@journey-monorepo/ui';
 import { deleteUser, useError, useLogout, useUser } from '../../../../shared';
 
 import styles from './AccountPreferencesDeleteAccount.module.scss';
@@ -15,21 +10,40 @@ interface AccountPreferencesDeleteAccountProps {}
 export const AccountPreferencesDeleteAccount: FC<
   AccountPreferencesDeleteAccountProps
 > = (props: AccountPreferencesDeleteAccountProps) => {
-  const deleteAccountTrigger = useRef<HTMLButtonElement>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const deleteAccountTrigger = useRef<HTMLButtonElement>(null);
 
   const { state: user } = useUser();
   const handleLogout = useLogout();
   const { showSuccessNotification } = useNotification();
   const handleError = useError();
+  const { state: dialog, clearDialog, showConfirmationDialog } = useDialog();
 
   const openDialog = () => {
-    setIsDialogOpen(true);
-  };
+    const dialogContent = (
+      <div className={styles['dialog-content']}>
+        <span className="">
+          <Icon type="solid" name="triangle-exclamation" />
+        </span>
+        <p>
+          You are about to delete your account. Once confirmed, you will lose
+          access and this action cannot be undone.
+        </p>
+      </div>
+    );
 
-  const closeDialog = () => {
-    setIsDialogOpen(false);
+    const confirmationDialogProps = {
+      title: 'Confirm account deletion',
+      trigger: deleteAccountTrigger,
+      showDanger: true,
+      confirmButtonColor: 'danger',
+      confirmHandler: (event: FormEvent) => handleConfirm(event),
+      cancelHandler: () => clearDialog(),
+      isDialogOpen: dialog.isActive,
+      isLoading,
+    };
+
+    showConfirmationDialog(dialogContent, confirmationDialogProps);
   };
 
   const handleConfirm = async (event: FormEvent) => {
@@ -42,7 +56,7 @@ export const AccountPreferencesDeleteAccount: FC<
         user_id: user.user_id,
       });
 
-      setIsDialogOpen(false);
+      clearDialog();
       showSuccessNotification('Account has been successfully deleted.');
       handleLogout();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,17 +65,6 @@ export const AccountPreferencesDeleteAccount: FC<
     }
 
     setIsLoading(false);
-  };
-
-  const confirmationDialogProps = {
-    title: 'Confirm account deletion',
-    trigger: deleteAccountTrigger,
-    showDanger: true,
-    confirmButtonColor: 'danger',
-    confirmHandler: (event: FormEvent) => handleConfirm(event),
-    cancelHandler: () => closeDialog(),
-    isDialogOpen: isDialogOpen,
-    isLoading,
   };
 
   return (
@@ -88,21 +91,6 @@ export const AccountPreferencesDeleteAccount: FC<
           <span>Delete account</span>
         </Button>
       </div>
-
-      <DialogContainer
-        type="confirmation"
-        dialogProps={confirmationDialogProps}
-      >
-        <div className={styles['dialog-content']}>
-          <span className="">
-            <Icon type="solid" name="triangle-exclamation" />
-          </span>
-          <p>
-            You are about to delete your account. Once confirmed, you will lose
-            access and this action cannot be undone.
-          </p>
-        </div>
-      </DialogContainer>
     </div>
   );
 };

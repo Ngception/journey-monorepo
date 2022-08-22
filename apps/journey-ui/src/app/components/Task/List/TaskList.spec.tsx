@@ -29,7 +29,7 @@ jest.mock('react-beautiful-dnd', () => ({
     ),
   DragDropContext: ({ children }) => children,
 }));
-describe('TaskList', () => {
+xdescribe('TaskList', () => {
   let component: HTMLElement;
   let query: any;
   let queryAll: any;

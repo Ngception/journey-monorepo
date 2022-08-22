@@ -1,4 +1,6 @@
 import {
+  DialogContainer,
+  DialogProvider,
   ErrorProvider,
   LayoutBody,
   LayoutHeader,
@@ -18,23 +20,28 @@ export function App() {
     <div>
       <AuthProvider>
         <NotificationProvider>
-          <UserProvider>
-            <TaskProvider>
-              <ErrorProvider>
-                <LayoutHeader>
-                  <PrimaryNavbar />
-                </LayoutHeader>
-                <div className={`column ${styles['layout-body']}`}>
-                  <LayoutBody>
-                    <AppRoutes />
-                  </LayoutBody>
-                </div>
-                <div className={styles['notification-container']}>
-                  <NotificationContainer />
-                </div>
-              </ErrorProvider>
-            </TaskProvider>
-          </UserProvider>
+          <DialogProvider>
+            <UserProvider>
+              <TaskProvider>
+                <ErrorProvider>
+                  <LayoutHeader>
+                    <PrimaryNavbar />
+                  </LayoutHeader>
+                  <div className={`column ${styles['layout-body']}`}>
+                    <LayoutBody>
+                      <AppRoutes />
+                    </LayoutBody>
+                  </div>
+                  <div className={styles['notification-container']}>
+                    <NotificationContainer />
+                  </div>
+                  <div>
+                    <DialogContainer />
+                  </div>
+                </ErrorProvider>
+              </TaskProvider>
+            </UserProvider>
+          </DialogProvider>
         </NotificationProvider>
       </AuthProvider>
     </div>
