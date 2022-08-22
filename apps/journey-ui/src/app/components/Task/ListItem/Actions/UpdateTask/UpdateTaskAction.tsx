@@ -1,15 +1,18 @@
 import { FC, KeyboardEvent, RefObject, useRef, useState } from 'react';
-import { useDialog, useNotification } from '@journey-monorepo/ui';
+import { DialogContainer, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { updateTask, useError, useTask } from '../../../../../shared';
 
 interface UpdateTaskActionProps {
   task: ITask;
+  isDialogOpen: boolean;
+  dialogToggler: (type: string) => void;
 }
 
 export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   props: UpdateTaskActionProps
 ) => {
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [taskToUpdate, setTaskToUpdate] = useState<{
     content: string;
@@ -23,7 +26,6 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   const { state: task } = useTask();
   const handleError = useError();
   const { showSuccessNotification } = useNotification();
-  const { state: dialog, clearDialog } = useDialog();
 
   const saveUpdatedTask = async (event: KeyboardEvent) => {
     event.preventDefault();
@@ -41,8 +43,9 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
       await updateTask(data);
       await task.fetchTasksHandler();
 
-      clearDialog();
+      props.dialogToggler('');
 
+      setIsDialogOpen(false);
       setIsLoading(false);
       showSuccessNotification('Task has been updated.');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,8 +57,8 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   };
 
   const closeDialog = () => {
-    clearDialog();
-
+    props.dialogToggler('');
+    setIsDialogOpen(false);
     setTaskToUpdate({
       ...taskToUpdate,
       content: props.task.content,
@@ -64,7 +67,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
 
   const dialogProps = {
     title: `Update task`,
-    isDialogOpen: dialog.isActive,
+    isDialogOpen,
     isLoading,
     isActionDisabled: taskToUpdate.content === '' || isLoading,
     trigger: updateTaskTrigger,
@@ -76,27 +79,31 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
 
   return (
     <div>
-      <fieldset disabled={isLoading}>
-        <div className="field">
-          <label className="label is-sr-only" htmlFor="task-content">
-            Task Content
-          </label>
-          <textarea
-            className="textarea has-fixed-size"
-            data-testid="dialog-textarea"
-            id="task-content"
-            rows={5}
-            value={taskToUpdate.content}
-            aria-required="true"
-            onChange={(event) =>
-              setTaskToUpdate({
-                ...taskToUpdate,
-                content: event.target.value,
-              })
-            }
-          />
-        </div>
-      </fieldset>
+      {isDialogOpen && (
+        <DialogContainer type="action" dialogProps={dialogProps}>
+          <fieldset disabled={isLoading}>
+            <div className="field">
+              <label className="label is-sr-only" htmlFor="task-content">
+                Task Content
+              </label>
+              <textarea
+                className="textarea has-fixed-size"
+                data-testid="dialog-textarea"
+                id="task-content"
+                rows={5}
+                value={taskToUpdate.content}
+                aria-required="true"
+                onChange={(event) =>
+                  setTaskToUpdate({
+                    ...taskToUpdate,
+                    content: event.target.value,
+                  })
+                }
+              />
+            </div>
+          </fieldset>
+        </DialogContainer>
+      )}
     </div>
   );
 };

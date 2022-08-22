@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  DialogProvider,
-  ErrorProvider,
-  NotificationProvider,
-} from '@journey-monorepo/ui';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { TaskProvider, UserProvider } from '../../shared';
@@ -36,24 +32,15 @@ describe('TaskContainer', () => {
   let component: HTMLElement;
   let query: any;
 
-  const initialDialogState = {
-    type: 'action',
-    isActive: true,
-    content: <div></div>,
-    props: {},
-  };
-
   beforeEach(() => {
     const renderResult: RenderResult = render(
       <UserProvider>
         <NotificationProvider>
           <TaskProvider>
             <ErrorProvider>
-              <DialogProvider initialState={initialDialogState}>
-                <DragDropContext onDragEnd={() => jest.fn()}>
-                  <TaskContainer />
-                </DragDropContext>
-              </DialogProvider>
+              <DragDropContext onDragEnd={() => jest.fn()}>
+                <TaskContainer />
+              </DragDropContext>
             </ErrorProvider>
           </TaskProvider>
         </NotificationProvider>

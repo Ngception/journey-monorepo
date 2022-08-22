@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  DialogProvider,
   ErrorProvider,
   MockRouter,
   NotificationProvider,
@@ -15,7 +14,7 @@ jest.mock('../../../../shared', () => ({
   ...jest.requireActual('../../../../shared'),
   deleteUser: jest.fn().mockResolvedValue({ message: 'success' }),
 }));
-xdescribe('AccountPreferencesDeleteAccount', () => {
+describe('AccountPreferencesDeleteAccount', () => {
   let component: HTMLElement;
   let query: any;
 
@@ -26,9 +25,7 @@ xdescribe('AccountPreferencesDeleteAccount', () => {
           <NotificationProvider>
             <UserProvider>
               <ErrorProvider>
-                <DialogProvider>
-                  <AccountPreferencesDeleteAccount />
-                </DialogProvider>
+                <AccountPreferencesDeleteAccount />
               </ErrorProvider>
             </UserProvider>
           </NotificationProvider>

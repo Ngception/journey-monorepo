@@ -1,5 +1,4 @@
 import {
-  DialogProvider,
   ErrorProvider,
   MockRouter,
   NotificationProvider,
@@ -18,9 +17,7 @@ describe('SecurityContainer', () => {
           <NotificationProvider>
             <UserProvider>
               <ErrorProvider>
-                <DialogProvider>
-                  <SecurityContainer />
-                </DialogProvider>
+                <SecurityContainer />
               </ErrorProvider>
             </UserProvider>
           </NotificationProvider>

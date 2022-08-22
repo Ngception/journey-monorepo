@@ -1,5 +1,4 @@
 import {
-  DialogProvider,
   ErrorProvider,
   MockRouter,
   NotificationProvider,
@@ -19,9 +18,7 @@ describe('AccountPreferencesContainer', () => {
           <NotificationProvider>
             <UserProvider>
               <ErrorProvider>
-                <DialogProvider>
-                  <AccountPreferencesContainer />
-                </DialogProvider>
+                <AccountPreferencesContainer />
               </ErrorProvider>
             </UserProvider>
           </NotificationProvider>

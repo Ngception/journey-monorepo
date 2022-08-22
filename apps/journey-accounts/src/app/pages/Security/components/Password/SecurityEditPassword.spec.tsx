@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  DialogProvider,
   ErrorProvider,
   MockRouter,
   NotificationProvider,
@@ -19,7 +18,7 @@ jest.mock('../../../../shared', () => {
     updateUser: jest.fn().mockResolvedValue({ message: 'success' }),
   };
 });
-xdescribe('SecurityEditPassword', () => {
+describe('SecurityEditPassword', () => {
   let component: HTMLElement, query: any, rerender: any;
 
   const testUser = {
@@ -35,9 +34,7 @@ xdescribe('SecurityEditPassword', () => {
           <NotificationProvider>
             <UserProvider initialState={testUser}>
               <ErrorProvider>
-                <DialogProvider>
-                  <SecurityEditPassword />
-                </DialogProvider>
+                <SecurityEditPassword />
               </ErrorProvider>
             </UserProvider>
           </NotificationProvider>

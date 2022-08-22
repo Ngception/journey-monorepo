@@ -1,8 +1,4 @@
-import {
-  DialogProvider,
-  ErrorProvider,
-  NotificationProvider,
-} from '@journey-monorepo/ui';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TaskProvider, UserProvider } from '../../../shared';
@@ -20,7 +16,7 @@ jest.mock('../../../shared/handlers/api/task.handler', () => {
     addTask: jest.fn(),
   };
 });
-xdescribe('AddTask', () => {
+describe('AddTask', () => {
   let component: HTMLElement;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let query: any;
@@ -37,9 +33,7 @@ xdescribe('AddTask', () => {
         <NotificationProvider>
           <ErrorProvider>
             <TaskProvider>
-              <DialogProvider>
-                <AddTask {...testProps} />
-              </DialogProvider>
+              <AddTask {...testProps} />
             </TaskProvider>
           </ErrorProvider>
         </NotificationProvider>

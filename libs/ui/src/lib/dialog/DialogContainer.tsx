@@ -1,42 +1,39 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
-import { Animate } from '../animate';
+import { AnimatePresence } from 'framer-motion';
+import { FC, ReactNode } from 'react';
 import { ActionDialog } from './Action/ActionDialog';
 import { ConfirmationDialog } from './Confirmation/ConfirmationDialog';
-import { useDialog } from './hook/useDialog';
 
 export type DialogType = 'action' | 'confirmation';
 
 interface DialogContainerProps {
-  type?: DialogType;
+  type: DialogType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dialogProps?: any;
-  children?: ReactNode;
+  dialogProps: any;
+  children: ReactNode;
 }
 
 export const DialogContainer: FC<DialogContainerProps> = (
   props: DialogContainerProps
 ) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const { state: dialog } = useDialog();
-
-  useEffect(() => {
-    setIsDialogOpen(dialog.isActive);
-  }, [dialog.isActive]);
-
   const renderDialog = () => {
-    switch (dialog.type) {
+    switch (props.type) {
       case 'action':
-        return <ActionDialog {...dialog.props}>{dialog.content}</ActionDialog>;
-      case 'confirmation':
         return (
-          <ConfirmationDialog {...dialog.props}>
-            {dialog.content}
+          <ActionDialog {...props.dialogProps}>{props.children}</ActionDialog>
+        );
+      case 'confirmation':
+      default:
+        return (
+          <ConfirmationDialog {...props.dialogProps}>
+            {props.children}
           </ConfirmationDialog>
         );
-      default:
-        return null;
     }
   };
 
-  return <Animate>{isDialogOpen && renderDialog()}</Animate>;
+  return (
+    <AnimatePresence>
+      {props.dialogProps?.isDialogOpen && renderDialog()}
+    </AnimatePresence>
+  );
 };

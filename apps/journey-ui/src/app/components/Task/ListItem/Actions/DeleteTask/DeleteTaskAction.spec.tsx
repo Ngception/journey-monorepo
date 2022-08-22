@@ -16,7 +16,7 @@ jest.mock('../../../../../shared/handlers/api/task.handler', () => {
     deleteTaskById: jest.fn(),
   };
 });
-xdescribe('DeleteTaskAction', () => {
+describe('DeleteTaskAction', () => {
   let component: HTMLElement;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let query: any;
