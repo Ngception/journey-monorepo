@@ -1,6 +1,8 @@
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { createTasks } from '@journey-monorepo/util';
 import { render, RenderResult } from '@testing-library/react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { TaskProvider } from '../../../shared';
 import { TaskListItem } from './TaskListItem';
 
 jest.mock('react-beautiful-dnd', () => ({
@@ -32,9 +34,15 @@ describe('TaskListItem', () => {
   beforeEach(() => {
     const item = createTasks()[0];
     const renderResult: RenderResult = render(
-      <Draggable draggableId={'id'} index={1}>
-        {() => <TaskListItem item={item} index={1} />}
-      </Draggable>
+      <TaskProvider>
+        <ErrorProvider>
+          <NotificationProvider>
+            <Draggable draggableId={'id'} index={1}>
+              {() => <TaskListItem item={item} index={1} />}
+            </Draggable>
+          </NotificationProvider>
+        </ErrorProvider>
+      </TaskProvider>
     );
 
     component = renderResult.baseElement;

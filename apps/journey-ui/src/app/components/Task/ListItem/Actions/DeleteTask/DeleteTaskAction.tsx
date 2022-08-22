@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, useRef, useState } from 'react';
+import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { DialogContainer, Icon, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { deleteTaskById, useError, useTask } from '../../../../../shared';
@@ -21,6 +21,10 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   const { state: task } = useTask();
   const handleError = useError();
   const { showSuccessNotification } = useNotification();
+
+  useEffect(() => {
+    setIsDialogOpen(props.isDialogOpen);
+  }, [props.isDialogOpen]);
 
   const deleteTask = async (event: KeyboardEvent) => {
     event.preventDefault();
@@ -63,19 +67,17 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 
   return (
     <div>
-      {isDialogOpen && (
-        <DialogContainer type="action" dialogProps={dialogProps}>
-          <div className={styles['delete-warning']}>
-            <span className="has-text-danger">
-              <Icon type="solid" name="triangle-exclamation" />
-            </span>
-            <p>
-              Are you sure you want to delete this task? This action cannot be
-              undone.
-            </p>
-          </div>
-        </DialogContainer>
-      )}
+      <DialogContainer type="action" dialogProps={dialogProps}>
+        <div className={styles['delete-warning']}>
+          <span className="has-text-danger">
+            <Icon type="solid" name="triangle-exclamation" />
+          </span>
+          <p>
+            Are you sure you want to delete this task? This action cannot be
+            undone.
+          </p>
+        </div>
+      </DialogContainer>
     </div>
   );
 };

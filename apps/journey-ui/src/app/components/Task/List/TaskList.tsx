@@ -67,12 +67,6 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
     }
   };
 
-  const setMotionOptions = (key: number) => ({
-    ...setFadeOptions,
-    transition: { duration: 0.5 },
-    key,
-  });
-
   return (
     <>
       <div className={styles['task-list-header']}>
@@ -101,11 +95,8 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
           <TaskDragDropDroppable droppableId={props.list.title}>
             {props.list.items.length ? (
               props.list.items.map((i, idx) => (
-                <AnimateMotion options={setMotionOptions(idx)}>
-                  <div
-                    className={styles['task-list-item-wrapper']}
-                    key={i.task_id}
-                  >
+                <AnimateMotion options={setFadeOptions(idx)} key={i.task_id}>
+                  <div className={styles['task-list-item-wrapper']}>
                     <TaskListItem item={i} index={idx} />
                   </div>
                 </AnimateMotion>
