@@ -12,7 +12,7 @@ export const AccountPreferencesContainer: FC<
 > = (props: AccountPreferencesContainerProps) => {
   return (
     <AnimateMotion options={setFadeOptions('account', 0.5)}>
-      <div className="container column is-half">
+      <div className="container column is-4">
         <div>
           <h1 className="title">Account preferences</h1>
           <p>Control settings related to your account.</p>

@@ -13,24 +13,32 @@ interface LayoutProps {
 
 export const Layout: FC<LayoutProps> = (props: LayoutProps) => {
   return (
-    <div>
+    <>
       {props.primaryNavbar && (
         <LayoutHeader>{props.primaryNavbar}</LayoutHeader>
       )}
       <LayoutBody>
         {props.aside ? (
-          <div data-testid="with-aside" className="columns is-gapless">
-            <div className="column is-one-quarter">
+          <div
+            data-testid="with-aside"
+            className={`columns is-gapless ${styles['full-height']}`}
+          >
+            <div className="column is-2">
               <LayoutAside>{props.aside}</LayoutAside>
             </div>
-            <div className={`column ${styles['content']}`}>{props.body}</div>
+            <div className={`column ${styles['content']} main-content`}>
+              {props.body}
+            </div>
           </div>
         ) : (
-          <div data-testid="no-aside" className={styles['content']}>
+          <div
+            data-testid="no-aside"
+            className={`${styles['content']} ${styles['full-height']} main-content`}
+          >
             {props.body}
           </div>
         )}
       </LayoutBody>
-    </div>
+    </>
   );
 };

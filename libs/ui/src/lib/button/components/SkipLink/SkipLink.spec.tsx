@@ -1,39 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button } from './Button';
+import { SkipLink } from './SkipLink';
 
-describe('Button', () => {
+describe('SkipLink', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let component: HTMLElement, query: any;
 
   const testProps = {
-    shouldSubmit: false,
     clickHandler: jest.fn(),
   };
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
-      <Button {...testProps}>
-        <span>Click</span>
-      </Button>
+      <SkipLink {...testProps}>Click to skip</SkipLink>
     );
 
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;
   });
 
-  it('should render button', () => {
+  it('should render', () => {
     expect(component).toBeTruthy();
   });
 
   it('should call click handler when clicked', async () => {
     jest.spyOn(testProps, 'clickHandler');
 
-    const button = query('button');
+    const skipLink = query('skip-link');
 
-    expect(button).toBeTruthy();
+    expect(skipLink).toBeTruthy();
 
-    await userEvent.click(button);
+    await userEvent.click(skipLink);
 
     expect(testProps.clickHandler).toHaveBeenCalled();
   });

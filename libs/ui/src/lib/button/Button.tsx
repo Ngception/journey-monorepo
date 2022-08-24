@@ -48,7 +48,7 @@ export const Button: FC<ButtonProps> = (props: ButtonProps) => {
 
   return (
     <button
-      data-testid={props.testId || undefined}
+      data-testid={props.testId || 'button'}
       ref={props.triggerRef || undefined}
       className={buttonClasses}
       type={props.shouldSubmit ? 'submit' : 'button'}

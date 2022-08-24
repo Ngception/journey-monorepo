@@ -11,7 +11,10 @@ export const LayoutHeader: FC<LayoutHeaderProps> = (
   props: LayoutHeaderProps
 ) => {
   return (
-    <div className={styles['layout-header']} data-testid="layout-header">
+    <div
+      className={`layout-header ${styles['layout-header']}`}
+      data-testid="layout-header"
+    >
       {props.children}
     </div>
   );

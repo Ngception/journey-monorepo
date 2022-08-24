@@ -9,7 +9,10 @@ interface LayoutAsideProps {
 
 export const LayoutAside: FC<LayoutAsideProps> = (props: LayoutAsideProps) => {
   return (
-    <div className={styles['layout-aside']} data-testid="layout-aside">
+    <div
+      className={`layout-aside ${styles['layout-aside']}`}
+      data-testid="layout-aside"
+    >
       {props.children}
     </div>
   );

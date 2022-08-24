@@ -4,6 +4,7 @@ import {
   LayoutHeader,
   Notification,
   NotificationProvider,
+  SkipLink,
 } from '@journey-monorepo/ui';
 import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 import { AuthProvider } from './shared/context/AuthContext';
@@ -12,8 +13,32 @@ import { TaskProvider, UserProvider } from './shared';
 
 import 'bulma/css/bulma.min.css';
 import styles from './app.module.scss';
+import { useEffect } from 'react';
 
 export function App() {
+  useEffect(() => {
+    const header = document.querySelector('.layout-header') as HTMLElement;
+
+    header?.focus();
+  }, []);
+
+  const skipToMainContent = () => {
+    const content = document.querySelector('.columns');
+    const focusableSelectors =
+      'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    let focusableElements: NodeListOf<HTMLElement>;
+
+    if (content) {
+      focusableElements = content?.querySelectorAll(focusableSelectors);
+
+      if (focusableElements.length) {
+        focusableElements[0]?.focus();
+        return;
+      }
+    }
+  };
+
   return (
     <div>
       <AuthProvider>
@@ -22,6 +47,11 @@ export function App() {
             <TaskProvider>
               <ErrorProvider>
                 <LayoutHeader>
+                  <div className={styles['skip-link']}>
+                    <SkipLink clickHandler={skipToMainContent}>
+                      Skip to main content
+                    </SkipLink>
+                  </div>
                   <PrimaryNavbar />
                 </LayoutHeader>
                 <div className={`column ${styles['layout-body']}`}>

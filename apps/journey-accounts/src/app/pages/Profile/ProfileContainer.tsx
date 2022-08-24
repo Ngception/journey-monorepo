@@ -30,7 +30,7 @@ export const ProfileContainer: FC<ProfileContainerProps> = (
 
   return (
     <AnimateMotion options={setFadeOptions('profile', 0.5)}>
-      <div className="container column is-half">
+      <div className="container column is-4">
         <h1 className="title">Profile</h1>
         <p>View information about you.</p>
         <ProfileDetails email={email} createdAt={createdAt} />

@@ -11,7 +11,7 @@ export const SecurityContainer: FC<SecurityContainerProps> = (
   return (
     <AnimateMotion options={setFadeOptions('security', 0.5)}>
       <div>
-        <div className="container column is-half">
+        <div className="container column is-4">
           <h1 className="title">Security</h1>
           <div>
             <SecurityEditPassword />

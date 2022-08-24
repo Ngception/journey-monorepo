@@ -42,7 +42,7 @@ export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
         </Route>
       </Route>
 
-      <Route path="/" element={<HomeRoutes />} />
+      <Route path="/" element={<Layout body={<HomeRoutes />} />} />
       <Route path="*" element={<Navigate to="/" replace={true} />}></Route>
     </Routes>
   );
