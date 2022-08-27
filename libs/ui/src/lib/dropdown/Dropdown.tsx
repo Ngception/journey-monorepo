@@ -42,12 +42,6 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
     }
   };
 
-  const motionOptions = {
-    ...setFadeOptions,
-    transition: { duration: 0.1 },
-    key: 'dropdown',
-  };
-
   return (
     <div
       className="dropdown is-right is-active"
@@ -65,7 +59,7 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
       <Animate>
         {isDropdownVisible && (
           <div className="dropdown-menu" id="dropdown-menu" role="menu">
-            <AnimateMotion options={motionOptions}>
+            <AnimateMotion options={setFadeOptions('dropdown', 0.1)}>
               <div className="dropdown-content">
                 {props.items.map((item, idx) => (
                   <DropdownItem

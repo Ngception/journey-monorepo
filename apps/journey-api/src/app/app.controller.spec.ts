@@ -13,15 +13,6 @@ describe('AppController', () => {
     }).compile();
   });
 
-  describe('getData', () => {
-    it('should return "Welcome to journey-api!"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({
-        message: 'Welcome to journey-api!',
-      });
-    });
-  });
-
   describe('getStatus', () => {
     it('should return status', () => {
       const appController = app.get<AppController>(AppController);

@@ -45,7 +45,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
       const response = await verifyAuthStatus();
 
       login();
-      setUser(response.user);
+      setUser(response?.user);
       navigate(from, { replace: true });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

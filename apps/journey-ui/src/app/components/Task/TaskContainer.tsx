@@ -142,7 +142,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
 
   return (
     <TaskDragDrop allTaskLists={combineTaskLists()}>
-      <div className="columns container is-fluid">
+      <div className={`columns container ${styles['task-container']}`}>
         {taskLists.map((list, idx) => (
           <div className={`column ${styles['task-list']}`} key={list.title}>
             <TaskList list={list} listSetter={taskListsSetters[idx]} />

@@ -23,12 +23,11 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
     try {
       const response = await verifyAuthStatus();
 
-      if (response?.message === 'OK') {
-        login();
-        setUser(response?.user);
-        setLoading(false);
-        navigate('/', { replace: true });
-      }
+      login();
+      setUser(response?.user);
+      setLoading(false);
+      navigate('/', { replace: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       redirectToLogin();
     }

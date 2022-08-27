@@ -1,9 +1,14 @@
+.task-container {
+  margin: 0 auto;
+}
+
 .task-list {
   background: #f5f5f5;
   padding: 1rem;
   border-radius: 10px;
   margin: 1rem;
   height: 80vh;
+  // min-width: 525px;
 }
 
 .task-list-header {
