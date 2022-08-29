@@ -1,9 +1,9 @@
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { createTask } from '@journey-monorepo/util';
 import { deleteTaskById, TaskProvider } from '../../../../../shared';
 import { DeleteTaskAction } from './DeleteTaskAction';
-import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 
 // Mock utils module to be able mock certain methods
 jest.mock('../../../../../shared/handlers/api/task.handler', () => {

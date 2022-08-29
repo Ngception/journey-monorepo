@@ -31,7 +31,7 @@ export const Notification: FC<NotificationProps> = (
       <Animate>
         {showNotifications &&
           state.messages.map((notification, idx) => (
-            <AnimateMotion options={setFadeOptions(idx)}>
+            <AnimateMotion options={setFadeOptions(idx)} key={notification.id}>
               <NotificationDetails notification={notification} index={idx} />
             </AnimateMotion>
           ))}

@@ -66,7 +66,10 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   return (
     <div>
       <Dialog type="action" dialogProps={dialogProps}>
-        <div className={styles['delete-warning']}>
+        <div
+          data-testid="delete-task-action"
+          className={styles['delete-warning']}
+        >
           <span className="has-text-danger">
             <Icon type="solid" name="triangle-exclamation" />
           </span>

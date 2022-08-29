@@ -2,9 +2,8 @@ import { FC, useState } from 'react';
 import { Card } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { TaskDragDropDraggable } from '../DragDrop/components';
-import { DeleteTaskAction } from './Actions/DeleteTask/DeleteTaskAction';
 import { TaskListItemActions } from './Actions/TaskListItemActions';
-import { UpdateTaskAction } from './Actions/UpdateTask/UpdateTaskAction';
+import { TaskListItemActionsDialog } from './Actions/Dialog/TaskListItemActionsDialog';
 
 import styles from './TaskListItem.module.scss';
 
@@ -60,13 +59,8 @@ export const TaskListItem: FC<TaskListItemProps> = (
           </div>
         </Card>
       </TaskDragDropDraggable>
-      <UpdateTaskAction
-        isDialogOpen={showDialog === 'update'}
-        task={props.item}
-        dialogToggler={setShowDialog}
-      />
-      <DeleteTaskAction
-        isDialogOpen={showDialog === 'delete'}
+      <TaskListItemActionsDialog
+        dialogType={showDialog}
         task={props.item}
         dialogToggler={setShowDialog}
       />

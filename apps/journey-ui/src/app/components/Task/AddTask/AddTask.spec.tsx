@@ -1,8 +1,8 @@
-import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TaskProvider, UserProvider } from '../../../shared';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { addTask } from '../../../shared/handlers/api/task.handler';
+import { TaskProvider, UserProvider } from '../../../shared';
 import { AddTask } from './AddTask';
 
 // Mock utils module to be able mock certain methods

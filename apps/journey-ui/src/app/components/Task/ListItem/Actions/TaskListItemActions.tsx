@@ -14,6 +14,10 @@ export const TaskListItemActions: FC<TaskListItemActionsProps> = (
 ) => {
   const items = [
     {
+      label: 'Clone',
+      clickHandler: () => props.dialogToggler('clone'),
+    },
+    {
       label: 'Update',
       clickHandler: () => props.dialogToggler('update'),
     },

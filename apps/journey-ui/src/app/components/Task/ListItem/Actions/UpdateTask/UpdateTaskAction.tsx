@@ -90,7 +90,7 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   return (
     <div>
       <Dialog type="action" dialogProps={dialogProps}>
-        <fieldset disabled={isLoading}>
+        <fieldset data-testid="update-task-action" disabled={isLoading}>
           <div className="field">
             <label className="label is-sr-only" htmlFor="task-content">
               Task Content

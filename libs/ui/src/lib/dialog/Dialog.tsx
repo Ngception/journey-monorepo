@@ -20,12 +20,13 @@ export const Dialog: FC<DialogProps> = (props: DialogProps) => {
           <ActionDialog {...props.dialogProps}>{props.children}</ActionDialog>
         );
       case 'confirmation':
-      default:
         return (
           <ConfirmationDialog {...props.dialogProps}>
             {props.children}
           </ConfirmationDialog>
         );
+      default:
+        return null;
     }
   };
 
