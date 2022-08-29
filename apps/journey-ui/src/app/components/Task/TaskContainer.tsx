@@ -30,6 +30,8 @@ export const TaskContainer: FC<TaskContainerProps> = (
     title: 'Done',
     items: [],
   });
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const effectCalled = useRef(false);
   const { state: user } = useUser();
   const { state: task, setFetchTasksHandler, setTasks } = useTask();
@@ -64,6 +66,8 @@ export const TaskContainer: FC<TaskContainerProps> = (
     } catch (err) {
       showGeneralError();
     }
+
+    setIsLoading(false);
   };
 
   const filterTasks = (title: string, tasks: ITask[]): ITaskList => {
@@ -142,7 +146,11 @@ export const TaskContainer: FC<TaskContainerProps> = (
 
   return (
     <TaskDragDrop allTaskLists={combineTaskLists()}>
-      <div className={`columns container ${styles['task-container']}`}>
+      <div
+        className={`columns container ${styles['task-container']} ${
+          isLoading ? styles['is-loading'] : ''
+        }`}
+      >
         {taskLists.map((list, idx) => (
           <div className={`column ${styles['task-list']}`} key={list.title}>
             <TaskList list={list} listSetter={taskListsSetters[idx]} />

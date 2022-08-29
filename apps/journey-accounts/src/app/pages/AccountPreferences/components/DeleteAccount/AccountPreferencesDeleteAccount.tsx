@@ -43,9 +43,8 @@ export const AccountPreferencesDeleteAccount: FC<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const confirmationDialogProps = {

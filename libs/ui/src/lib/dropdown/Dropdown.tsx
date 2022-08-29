@@ -16,6 +16,7 @@ interface DropdownProps {
   icon?: string;
   triggerColor?: string;
   testId?: string;
+  isDisabled?: boolean;
 }
 
 export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
@@ -55,6 +56,7 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
         clickHandler={() => setIsDropdownVisible(!isDropdownVisible)}
         dropdownToggler={setIsDropdownVisible}
         dropdownLabel={props.label}
+        isDisabled={props.isDisabled as boolean}
       />
       <Animate>
         {isDropdownVisible && (

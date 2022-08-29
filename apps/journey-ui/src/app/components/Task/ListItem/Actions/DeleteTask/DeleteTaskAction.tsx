@@ -14,7 +14,7 @@ interface DeleteTaskActionProps {
 export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   props: DeleteTaskActionProps
 ) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const deleteTaskTrigger = useRef(null);
 
@@ -37,8 +37,6 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
 
       props.dialogToggler('');
 
-      setIsDialogOpen(false);
-      setIsLoading(false);
       showSuccessNotification('Task has been deleted.');
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

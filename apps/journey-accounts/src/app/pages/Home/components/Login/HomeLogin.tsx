@@ -71,9 +71,8 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

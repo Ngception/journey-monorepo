@@ -25,14 +25,24 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
   props: ConfirmationDialogProps
 ) => {
   const [confirmField, setConfirmField] = useState<string>('');
-  const modalClasses = `modal ${props.isDialogOpen ? 'is-active' : undefined}`;
-  const notificationClasses = `notification ${
-    props.showWarning ? 'is-warning' : undefined
-  } ${props.showDanger ? 'is-danger' : undefined}`;
 
   const closeDialog = () => {
     props.cancelHandler();
     props?.trigger?.current?.focus();
+  };
+
+  const setNotificationClasses = () => {
+    let classes = 'notification';
+
+    if (props.showWarning) {
+      classes += ' is-warning';
+    }
+
+    if (props.showDanger) {
+      classes += ' is-danger';
+    }
+
+    return classes;
   };
 
   return (
@@ -43,7 +53,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
         delayInitialFocus: false,
       }}
     >
-      <div className={modalClasses}>
+      <div className="modal is-active">
         <AnimateMotion options={setFadeOptions('confirmation', 0.125)}>
           <div className="modal-background"></div>
           <div className="modal-card">
@@ -61,7 +71,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
             </header>
             <form onSubmit={(event) => props.confirmHandler(event)}>
               <section className="modal-card-body">
-                <div className={notificationClasses}>{props.children}</div>
+                <div className={setNotificationClasses()}>{props.children}</div>
                 <div className={styles['confirm-field']}>
                   <label htmlFor="confirm-field">
                     Please type "confirm" to proceed.

@@ -10,6 +10,7 @@ interface DropdownTriggerProps {
   dropdownToggler: (isDropdownVisible: boolean) => void;
   dropdownLabel: string;
   color?: string;
+  isDisabled?: boolean;
 }
 
 export const DropdownTrigger: FC<DropdownTriggerProps> = (
@@ -35,6 +36,7 @@ export const DropdownTrigger: FC<DropdownTriggerProps> = (
         aria-description={!props.text ? props.dropdownLabel : undefined}
         onClick={props.clickHandler}
         onKeyDown={autoCloseDropdown}
+        disabled={props.isDisabled}
       >
         {props.text && (
           <span data-testid="dropdown-trigger-text">{props.text}</span>

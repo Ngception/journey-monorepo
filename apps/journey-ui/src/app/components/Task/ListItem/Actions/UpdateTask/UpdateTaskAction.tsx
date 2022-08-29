@@ -19,7 +19,7 @@ interface UpdateTaskActionProps {
 export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   props: UpdateTaskActionProps
 ) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(props.isDialogOpen);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [taskToUpdate, setTaskToUpdate] = useState<{
     content: string;
@@ -56,9 +56,8 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
 
       props.dialogToggler('');
 
-      setIsDialogOpen(false);
-      setIsLoading(false);
       showSuccessNotification('Task has been updated.');
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);

@@ -87,6 +87,7 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
             items={sortOptions}
             triggerColor="white"
             testId="sort-dropdown"
+            isDisabled={props.list.items.length <= 1}
           />
         </div>
       </div>

@@ -49,9 +49,8 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   const confirmationDialogProps = {
