@@ -19,11 +19,14 @@ export const TaskContext = createContext<ITaskContext | null>(null);
 
 interface TaskProviderProps {
   initialState?: InitialTaskStateInterface;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatchHandlers?: Record<string, (data?: any) => void>;
   children: ReactNode;
 }
 
 export const TaskProvider: FC<TaskProviderProps> = ({
   initialState,
+  dispatchHandlers,
   children,
 }) => {
   const [state, dispatch] = useReducer(taskReducer, taskInitialState);
@@ -43,6 +46,7 @@ export const TaskProvider: FC<TaskProviderProps> = ({
         payload: handler,
       }),
     clearTasks: () => dispatch({ type: TASK_ACTIONS.CLEAR_TASKS }),
+    ...(dispatchHandlers !== null && dispatchHandlers),
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

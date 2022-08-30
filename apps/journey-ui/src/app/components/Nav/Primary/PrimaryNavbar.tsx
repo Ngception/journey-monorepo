@@ -1,16 +1,6 @@
-import { Button, Icon, useError } from '@journey-monorepo/ui';
-import {
-  ChangeEvent,
-  FC,
-  FormEvent,
-  MouseEvent,
-  useRef,
-  useState,
-} from 'react';
-import { logoutUser } from '../../../shared';
-import { useAuth, useTask } from '../../../shared/hooks';
-
-import styles from './PrimaryNavbar.module.scss';
+import { FC, FormEvent } from 'react';
+import { logoutUser, useAuth, useError, useTask } from '../../../shared';
+import { TaskSearchBar } from '../../Task/Search/TaskSearchBar';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PrimaryNavbarProps {}
@@ -18,50 +8,26 @@ interface PrimaryNavbarProps {}
 export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
   props: PrimaryNavbarProps
 ) => {
-  const [searchFilter, setSearchFilter] = useState<string>('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const { state: auth, logout } = useAuth();
-  const { state: task, setTasksSearchFilter } = useTask();
-  const { state: error } = useError();
+  const { state: task } = useTask();
+  const handleError = useError();
 
   const handleLogout = async (event: FormEvent) => {
     event.preventDefault();
 
-    const { message } = await logoutUser();
-    if (message === 'success') {
+    try {
+      await logoutUser();
       logout();
       redirectToLogin();
-    } else {
-      return;
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      handleError(err);
     }
   };
 
   const redirectToLogin = () => {
     window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}`;
-  };
-
-  const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
-    setSearchFilter(event.target.value);
-  };
-
-  const handleSearchKeyUp = (event: any) => {
-    event.preventDefault();
-
-    if (event.key === 'Enter') {
-      setTasksSearchFilter(event.target.value);
-    }
-  };
-
-  const handleResetSearchFilter = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    setSearchFilter('');
-    setTasksSearchFilter('');
-
-    inputRef.current?.focus();
   };
 
   return (
@@ -77,42 +43,11 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 
       {auth.isLoggedIn && (
         <>
-          {!error.status && task.tasks.length > 0 && (
+          {task.tasks.length > 1 ? (
             <div className="navbar-item column is-one-third">
-              <div className="field has-addons">
-                <div className={`control has-icons-right is-expanded`}>
-                  <input
-                    data-testid="task-search-filter-input"
-                    ref={inputRef}
-                    className="input"
-                    type="text"
-                    onChange={handleSearchInput}
-                    placeholder="Search tasks"
-                    value={searchFilter}
-                    onKeyUp={handleSearchKeyUp}
-                  />
-                  {task.tasksSearchFilter && (
-                    <button
-                      className={`icon is-white is-small is-right ${styles['clear-filter-input']}`}
-                      tabIndex={0}
-                      onClick={handleResetSearchFilter}
-                      aria-label="Clear search and reset tasks"
-                    >
-                      <Icon type="solid" name="xmark" />
-                    </button>
-                  )}
-                </div>
-                <div className="control">
-                  <Button
-                    color="primary"
-                    clickHandler={() => setTasksSearchFilter(searchFilter)}
-                  >
-                    <p>Search</p>
-                  </Button>
-                </div>
-              </div>
+              <TaskSearchBar />
             </div>
-          )}
+          ) : null}
 
           <div className="navbar-end">
             <div className="navbar-item">

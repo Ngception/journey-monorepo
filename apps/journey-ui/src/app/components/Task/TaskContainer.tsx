@@ -86,7 +86,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
   };
 
   const filterTasksBySearch = () => {
-    const filter = task.tasksSearchFilter.toLowerCase();
+    const filter = task.tasksSearchFilter.toLowerCase().split(' ');
     const { tasks } = task;
 
     if (!filter) {
@@ -106,9 +106,9 @@ export const TaskContainer: FC<TaskContainerProps> = (
       return;
     }
 
-    const filteredTasks = tasks.filter((task) =>
-      task.content.toLowerCase().includes(filter)
-    );
+    const filteredTasks = tasks.filter((task) => {
+      return filter.some((term) => task.content.toLowerCase().includes(term));
+    });
 
     setToDoTasks(filterTasks('To Do', filteredTasks));
     setInProgressTasks(filterTasks('In Progress', filteredTasks));
