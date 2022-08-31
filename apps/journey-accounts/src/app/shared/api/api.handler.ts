@@ -26,7 +26,7 @@ export const createUser = async (createUserData: ICreateUser) => {
 };
 
 export const updateUser = async (updateUserData: IUpdateUser) => {
-  const { data }: AxiosResponse<{ message: string }> = await axios.patch(
+  const { data }: AxiosResponse<number> = await axios.patch(
     `${BASE_URL}/users/${updateUserData.user_id}`,
     {
       password: updateUserData.password,
@@ -40,7 +40,7 @@ export const updateUser = async (updateUserData: IUpdateUser) => {
 };
 
 export const deleteUser = async (deleteUserData: IDeleteUser) => {
-  const { data }: AxiosResponse<{ message: string }> = await axios.delete(
+  const { data }: AxiosResponse<number> = await axios.delete(
     `${BASE_URL}/users/${deleteUserData.user_id}`,
     {
       withCredentials: true,

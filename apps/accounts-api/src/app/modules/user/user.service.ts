@@ -44,15 +44,6 @@ export class UserService {
     }
   }
 
-  async getAllUsers(): Promise<User[]> {
-    try {
-      return await this.repo.find();
-    } catch (err) {
-      this.authUtilService.throwError();
-      return;
-    }
-  }
-
   async getUser(data) {
     try {
       return await this.repo.findOneBy(data);

@@ -20,12 +20,6 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  async getAllUsers(): Promise<User[]> {
-    return await this.userService.getAllUsers();
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUserById(@Param('id') id: string): Promise<User | null> {
     return await this.userService.getUserById(id);
@@ -78,33 +72,13 @@ export class UserController {
   async updateUserById(
     @Param('id') id: string,
     @Body() data: UpdateUserDto
-  ): Promise<{ message: string }> {
-    const userUpdated = await this.userService.updateUserById(id, data);
-
-    if (userUpdated) {
-      return {
-        message: 'success',
-      };
-    } else {
-      return {
-        message: 'error',
-      };
-    }
+  ): Promise<number> {
+    return await this.userService.updateUserById(id, data);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deleteUserById(@Param('id') id: string): Promise<{ message: string }> {
-    const userDeleted = await this.userService.deleteUserById(id);
-
-    if (userDeleted) {
-      return {
-        message: 'success',
-      };
-    } else {
-      return {
-        message: 'error',
-      };
-    }
+  async deleteUserById(@Param('id') id: string): Promise<number> {
+    return await this.userService.deleteUserById(id);
   }
 }

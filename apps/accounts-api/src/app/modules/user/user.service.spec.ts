@@ -55,16 +55,6 @@ describe('UserService', () => {
   });
 
   describe('GET', () => {
-    it('should get all users', async () => {
-      jest.spyOn(userService, 'getAllUsers');
-      jest.spyOn(userRepository, 'find');
-
-      const res = await userService.getAllUsers();
-
-      expect(res).toEqual([user]);
-      expect(userRepository.find).toHaveBeenCalled();
-    });
-
     it('should get a single user by id', async () => {
       jest.spyOn(userService, 'getUserById');
       jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(user);

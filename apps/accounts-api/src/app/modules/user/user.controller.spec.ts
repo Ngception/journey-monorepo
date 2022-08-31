@@ -76,15 +76,6 @@ describe('UserController', () => {
   });
 
   describe('GET', () => {
-    it('should get all users', async () => {
-      jest.spyOn(userService, 'getAllUsers');
-
-      const res = await userController.getAllUsers();
-
-      expect(userService.getAllUsers).toHaveBeenCalled();
-      expect(res).toEqual([user]);
-    });
-
     it('should get a single user by id', async () => {
       jest.spyOn(userService, 'getUserById');
       jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(user);
@@ -137,9 +128,7 @@ describe('UserController', () => {
       const res = await userController.updateUserById('uuid', data);
 
       expect(userService.updateUserById).toHaveBeenCalledWith('uuid', data);
-      expect(res).toEqual({
-        message: 'success',
-      });
+      expect(res).toEqual(1);
     });
   });
 
@@ -150,9 +139,7 @@ describe('UserController', () => {
       const res = await userController.deleteUserById('uuid');
 
       expect(userService.deleteUserById).toHaveBeenCalledWith('uuid');
-      expect(res).toEqual({
-        message: 'success',
-      });
+      expect(res).toEqual(1);
     });
   });
 });
