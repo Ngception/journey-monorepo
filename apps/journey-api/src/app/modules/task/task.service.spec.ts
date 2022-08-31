@@ -1,7 +1,7 @@
-import { createTask, createTasks } from '@journey-monorepo/util';
+import { Repository } from 'typeorm';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { createTask, createTasks } from '@journey-monorepo/util';
 import { Task } from './task.entity';
 import { TaskService } from './task.service';
 
@@ -38,6 +38,7 @@ describe('TaskService', () => {
             createTask: jest.fn(),
             updateTaskById: jest.fn(),
             deleteTaskbyId: jest.fn(),
+            deleteAllTasksById: jest.fn(),
             save: jest.fn().mockResolvedValue({
               affected: tasks.length,
             }),
@@ -147,6 +148,20 @@ describe('TaskService', () => {
 
       expect(res).toEqual(1);
       expect(taskRepository.delete).toHaveBeenCalledWith({ task_id: 'uuid' });
+    });
+
+    it('should delete multiple tasks by id', async () => {
+      const tasksIds = tasks.map((task) => task.task_id);
+
+      jest
+        .spyOn(taskService, 'deleteAllTasksById')
+        .mockResolvedValue(tasksIds.length);
+      jest.spyOn(taskRepository, 'delete');
+
+      const res = await taskService.deleteAllTasksById(tasksIds);
+
+      expect(res).toEqual(tasksIds.length);
+      expect(taskRepository.delete).toHaveBeenCalled();
     });
   });
 });

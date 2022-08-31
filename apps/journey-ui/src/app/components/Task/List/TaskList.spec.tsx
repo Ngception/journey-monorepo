@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Droppable } from 'react-beautiful-dnd';
+import { render, RenderResult } from '@testing-library/react';
 import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { createTaskLists } from '@journey-monorepo/util';
-import { render, RenderResult } from '@testing-library/react';
-import { Droppable } from 'react-beautiful-dnd';
 import { TaskProvider, UserProvider } from '../../../shared';
 import { TaskList } from './TaskList';
 
@@ -60,7 +60,11 @@ describe('TaskList', () => {
   });
 
   it('should render add task dialog button', () => {
-    expect(query('open-dialog-button')).toBeTruthy();
+    expect(query('open-add-task-dialog-button')).toBeTruthy();
+  });
+
+  it('should render delete all tasks dialog button', () => {
+    expect(query('open-delete-all-tasks-dialog-button')).toBeTruthy();
   });
 
   it('should render sort dropdown', () => {

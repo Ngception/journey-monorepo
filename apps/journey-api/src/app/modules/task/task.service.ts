@@ -93,4 +93,15 @@ export class TaskService {
       return;
     }
   }
+
+  async deleteAllTasksById(ids: string[]): Promise<number> {
+    try {
+      const { affected } = await this.repo.delete(ids);
+
+      return affected;
+    } catch (err) {
+      this.throwError(err);
+      return;
+    }
+  }
 }

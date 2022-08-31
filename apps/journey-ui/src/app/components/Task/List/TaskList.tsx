@@ -12,6 +12,7 @@ import { TaskDragDropDroppable } from '../DragDrop/components';
 import { TaskListItem } from '../ListItem/TaskListItem';
 
 import styles from './TaskList.module.scss';
+import { DeleteAllTasks } from '../DeleteAllTasks/DeleteAllTasks';
 
 interface TaskListProps {
   list: ITaskList;
@@ -80,6 +81,11 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
           <AddTask
             title={props.list.title}
             fetchTasks={task.fetchTasksHandler}
+          />
+          <DeleteAllTasks
+            title={props.list.title}
+            fetchTasks={task.fetchTasksHandler}
+            tasks={props.list.items}
           />
           <Dropdown
             label="Task list sort options"

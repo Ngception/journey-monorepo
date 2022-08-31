@@ -1,3 +1,4 @@
+import { Animate, AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { FC, FormEvent } from 'react';
 import { logoutUser, useAuth, useError, useTask } from '../../../shared';
 import { TaskSearchBar } from '../../Task/Search/TaskSearchBar';
@@ -45,7 +46,11 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
         <>
           {task.tasks.length > 1 ? (
             <div className="navbar-item column is-one-third">
-              <TaskSearchBar />
+              <Animate>
+                <AnimateMotion options={setFadeOptions('search', 0.125)}>
+                  <TaskSearchBar />
+                </AnimateMotion>
+              </Animate>
             </div>
           ) : null}
 

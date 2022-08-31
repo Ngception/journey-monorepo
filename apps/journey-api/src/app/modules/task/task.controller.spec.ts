@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createTask, createTasks } from '@journey-monorepo/util';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { createTask, createTasks } from '@journey-monorepo/util';
 import { TaskController } from './task.controller';
 import { Task } from './task.entity';
 import { TaskService } from './task.service';
@@ -38,6 +38,7 @@ describe('TaskController', () => {
             createTask: jest.fn(),
             updateTaskById: jest.fn(),
             deleteTaskbyId: jest.fn(),
+            deleteAllTasksById: jest.fn(),
             save: jest.fn().mockResolvedValue({
               affected: tasks.length,
             }),
@@ -120,6 +121,19 @@ describe('TaskController', () => {
 
       expect(taskService.deleteTaskById).toHaveBeenCalledWith('uuid');
       expect(res).toEqual(1);
+    });
+
+    it('should delete multiple tasks by id', async () => {
+      const tasksIds = tasks.map((task) => task.task_id);
+
+      jest
+        .spyOn(taskService, 'deleteAllTasksById')
+        .mockResolvedValue(tasksIds.length);
+
+      const res = await taskController.deleteAllTasksById(tasksIds);
+
+      expect(taskService.deleteAllTasksById).toHaveBeenCalledWith(tasksIds);
+      expect(res).toEqual(tasksIds.length);
     });
   });
 });

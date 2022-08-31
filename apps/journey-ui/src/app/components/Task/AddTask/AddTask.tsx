@@ -74,7 +74,7 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
   return (
     <>
       <Button
-        testId="open-dialog-button"
+        testId="open-add-task-dialog-button"
         color="primary"
         label={`Add new ${props.title} task`}
         clickHandler={() => openDialog(props.title)}

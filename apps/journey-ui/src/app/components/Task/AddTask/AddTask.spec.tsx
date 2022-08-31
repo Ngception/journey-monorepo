@@ -52,7 +52,7 @@ describe('AddTask', () => {
     const mocked = { addTask };
     jest.spyOn(mocked, 'addTask').mockResolvedValue('uuid');
 
-    await userEvent.click(query('open-dialog-button'));
+    await userEvent.click(query('open-add-task-dialog-button'));
 
     const actionButton = query('action-button');
     expect(actionButton).toBeTruthy();

@@ -63,3 +63,17 @@ export const deleteTaskById = async (taskId: string): Promise<number> => {
 
   return data;
 };
+
+export const deleteAllTasksById = async (
+  tasksToBeDeletedIds: string[]
+): Promise<number> => {
+  const { data }: AxiosResponse<number> = await axios.delete(
+    `${BASE_URL}/tasks`,
+    {
+      data: tasksToBeDeletedIds,
+      withCredentials: true,
+    }
+  );
+
+  return data;
+};
