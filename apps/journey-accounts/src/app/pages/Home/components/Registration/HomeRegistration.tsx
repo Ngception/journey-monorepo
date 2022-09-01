@@ -2,7 +2,13 @@ import { FC, FormEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { HttpException } from '@nestjs/common';
-import { Button, Icon, Message, MessageBody } from '@journey-monorepo/ui';
+import {
+  Button,
+  Icon,
+  Message,
+  MessageBody,
+  PasswordValidator,
+} from '@journey-monorepo/ui';
 import { createUser, useAuth, useQueryLink, useUser } from '../../../../shared';
 
 import styles from './HomeRegistration.module.scss';
@@ -21,6 +27,7 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
 ) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -32,7 +39,7 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
   const { getQueryParam, getQueryString } = useQueryLink();
 
   const from = location.state?.from?.pathname || '/profile';
-  const invalidForm = !email || !password;
+  const invalidForm = !email || !password || !isPasswordValid;
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -77,7 +84,7 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
 
   return (
     <div>
-      <h2 className="subtitle">Sign up to start planning</h2>
+      <h1 className="subtitle has-text-centered">Sign up to start planning</h1>
       {error && (
         <div className="my-4" role="alert">
           <Message testId="error-message" color="danger">
@@ -135,6 +142,13 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
               />
             </Button>
           </div>
+        </div>
+
+        <div className="my-3">
+          <PasswordValidator
+            password={password}
+            onValidPasswordHandler={setIsPasswordValid}
+          />
         </div>
 
         <div className="field">

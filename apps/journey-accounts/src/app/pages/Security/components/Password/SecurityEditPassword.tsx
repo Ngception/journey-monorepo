@@ -1,5 +1,11 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
+import {
+  Button,
+  Dialog,
+  Icon,
+  PasswordValidator,
+  useNotification,
+} from '@journey-monorepo/ui';
 import {
   logoutUser,
   updateUser,
@@ -17,8 +23,8 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   props: SecurityEditPasswordProps
 ) => {
   const [newPassword, setNewPassword] = useState<string>('');
-  const [newPasswordVisibility, setNewPasswordVisibility] =
-    useState<boolean>(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const changePasswordTrigger = useRef<HTMLButtonElement>(null);
@@ -28,8 +34,12 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   const { showSuccessNotification } = useNotification();
   const handleError = useError();
 
-  const toggleVisibility = () => {
-    setNewPasswordVisibility(!newPasswordVisibility);
+  const openDialog = () => {
+    if (!isPasswordValid) {
+      return;
+    }
+
+    setIsDialogOpen(true);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -46,6 +56,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
 
       showSuccessNotification('Password changed. Please login again.');
       handleLogout();
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
@@ -67,51 +78,52 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   return (
     <div>
       <h2 className="subtitle">Change your password</h2>
-      <div>
-        <label className="label" htmlFor="new-pw">
-          New Password <sup className="has-text-danger">*</sup>
-        </label>
-        <div className="field has-addons">
-          <div className="control is-expanded">
-            <input
-              data-testid="new-password-field"
-              className="input"
-              type={newPasswordVisibility ? 'text' : 'password'}
-              placeholder="Enter new password"
-              id="new-pw"
-              name="new"
-              aria-required="true"
-              onChange={(event) => setNewPassword(event.target.value)}
+      <label className="label" htmlFor="new-pw">
+        New Password <sup className="has-text-danger">*</sup>
+      </label>
+
+      <div className="field has-addons">
+        <div className="control is-expanded">
+          <input
+            data-testid="new-password-field"
+            className="input"
+            type={isPasswordVisible ? 'text' : 'password'}
+            placeholder="Enter new password"
+            id="new-pw"
+            name="new"
+            aria-required="true"
+            onChange={(event) => setNewPassword(event.target.value)}
+          />
+        </div>
+        <div className="control">
+          <Button
+            label={
+              isPasswordVisible ? 'Hide new password' : 'Show new password'
+            }
+            clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
+          >
+            <Icon
+              type="solid"
+              name={!isPasswordVisible ? 'eye' : 'eye-slash'}
             />
-          </div>
-          <div className="control">
-            <Button
-              label={
-                newPasswordVisibility
-                  ? 'Hide new password'
-                  : 'Show new password'
-              }
-              clickHandler={() => toggleVisibility()}
-            >
-              <Icon
-                type="solid"
-                name={!newPasswordVisibility ? 'eye' : 'eye-slash'}
-              />
-            </Button>
-          </div>
+          </Button>
         </div>
       </div>
 
+      <PasswordValidator
+        password={newPassword}
+        onValidPasswordHandler={setIsPasswordValid}
+      />
       <div className="field">
         <div className="control">
           <div className={styles['save-button']}>
             <Button
               triggerRef={changePasswordTrigger}
               testId="open-confirm-dialog-button"
-              color={!newPassword ? 'light' : 'link'}
-              isDisabled={!newPassword || isLoading}
+              color="link"
+              isDisabled={!isPasswordValid || isLoading}
               isLoading={isLoading}
-              clickHandler={() => setIsDialogOpen(true)}
+              clickHandler={openDialog}
             >
               <span>Save changes</span>
             </Button>

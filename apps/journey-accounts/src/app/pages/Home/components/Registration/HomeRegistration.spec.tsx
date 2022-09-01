@@ -38,7 +38,7 @@ describe('HomeRegistration', () => {
   };
   const testCredentials = {
     email: 'email',
-    password: 'password',
+    password: 'abcABC123!@#',
   };
 
   beforeAll(() => {
@@ -73,7 +73,7 @@ describe('HomeRegistration', () => {
     expect(query('register-form')).toBeTruthy();
   });
 
-  it('should register user', async () => {
+  it('should register user if password passes validation', async () => {
     jest.spyOn(mocked, 'createUser').mockResolvedValue({
       message: 'Success',
       user: createTestUser(),
@@ -83,13 +83,27 @@ describe('HomeRegistration', () => {
     const passwordField = query('password-field');
     const submitButton = query('submit-button');
 
-    await userEvent.type(emailField, 'email');
-    await userEvent.type(passwordField, 'password');
+    await userEvent.type(emailField, testCredentials.email);
+    await userEvent.type(passwordField, testCredentials.password);
     await userEvent.click(submitButton);
 
     rerender();
 
     expect(mocked.createUser).toHaveBeenCalledWith(testCredentials);
+    expect(query('error-message')).toBeNull();
+  });
+
+  it('should not allow registration if password fails validation', async () => {
+    const emailField = query('email-field');
+    const passwordField = query('password-field');
+    const submitButton = query('submit-button');
+
+    await userEvent.type(emailField, 'email');
+    await userEvent.type(passwordField, 'password');
+
+    rerender();
+
+    expect(submitButton.disabled).toEqual(true);
     expect(query('error-message')).toBeNull();
   });
 
@@ -102,8 +116,8 @@ describe('HomeRegistration', () => {
 
     expect(query('error-message')).toBeNull();
 
-    await userEvent.type(emailField, 'email');
-    await userEvent.type(passwordField, 'password');
+    await userEvent.type(emailField, testCredentials.email);
+    await userEvent.type(passwordField, testCredentials.password);
     await userEvent.click(submitButton);
 
     rerender();

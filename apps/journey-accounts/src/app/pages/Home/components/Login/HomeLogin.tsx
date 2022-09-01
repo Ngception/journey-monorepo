@@ -75,7 +75,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   return (
     <div>
-      <h2 className="subtitle">Login to start planning</h2>
+      <h1 className="subtitle has-text-centered">Login to start planning</h1>
       {error && (
         <div className="my-4" role="alert">
           <Message testId="error-message" color="danger">
