@@ -18,17 +18,15 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 
     try {
       await logoutUser();
-      logout();
-      redirectToLogin();
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
-    }
-  };
+    } finally {
+      logout();
 
-  const redirectToLogin = () => {
-    window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}`;
+      window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}/login`;
+    }
   };
 
   return (

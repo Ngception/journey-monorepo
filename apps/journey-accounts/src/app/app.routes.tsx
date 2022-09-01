@@ -14,6 +14,8 @@ interface AppRoutesProps {}
 export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
   return (
     <Routes>
+      <Route path="/*" element={<Layout body={<HomeRoutes />} />} />
+
       <Route element={<ErrorOutlet />}>
         <Route element={<AuthGuard />}>
           <Route
@@ -42,7 +44,6 @@ export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
         </Route>
       </Route>
 
-      <Route path="/" element={<Layout body={<HomeRoutes />} />} />
       <Route path="*" element={<Navigate to="/" replace={true} />}></Route>
     </Routes>
   );

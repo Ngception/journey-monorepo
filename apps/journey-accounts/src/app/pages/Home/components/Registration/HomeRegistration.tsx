@@ -1,11 +1,11 @@
 import { FC, FormEvent, useState } from 'react';
-import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { HttpException } from '@nestjs/common';
 import { Button, Icon, Message, MessageBody } from '@journey-monorepo/ui';
-import { loginUser, useAuth, useQueryLink, useUser } from '../../../../shared';
+import { createUser, useAuth, useQueryLink, useUser } from '../../../../shared';
 
-import styles from './HomeLogin.module.scss';
+import styles from './HomeRegistration.module.scss';
 
 type LocationProps = {
   state: {
@@ -14,9 +14,11 @@ type LocationProps = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface HomeLoginProps {}
+interface HomeRegistrationProps {}
 
-export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
+export const HomeRegistration: FC<HomeRegistrationProps> = (
+  props: HomeRegistrationProps
+) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -44,7 +46,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
     };
 
     try {
-      const { user } = await loginUser(data);
+      const { user } = await createUser(data);
 
       if (getQueryParam('site') === 'journey') {
         window.location.href = `${process.env['NX_JOURNEY_UI_BASE_URL']}?user=${user.user_id}`;
@@ -64,8 +66,8 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleError = (err: AxiosError<HttpException>) => {
     switch (err?.response?.status) {
-      case 401:
-        setError('Login failed. Please check your credentials.');
+      case 409:
+        setError('Invalid registration. Please try logging in.');
         break;
       default:
         setError('Something went wrong. Please try again later.');
@@ -75,7 +77,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   return (
     <div>
-      <h2 className="subtitle">Login to start planning</h2>
+      <h2 className="subtitle">Sign up to start planning</h2>
       {error && (
         <div className="my-4" role="alert">
           <Message testId="error-message" color="danger">
@@ -85,7 +87,10 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
           </Message>
         </div>
       )}
-      <form data-testid="login-form" onSubmit={(event) => handleSubmit(event)}>
+      <form
+        data-testid="register-form"
+        onSubmit={(event) => handleSubmit(event)}
+      >
         <div className="field">
           <div className="control has-icons-left">
             <input
@@ -142,21 +147,19 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
               shouldSubmit={true}
               fullWidth={true}
             >
-              Login
+              Register
             </Button>
           </div>
         </div>
-        <div
-          className={`has-text-centered mt-4 pt-2 ${styles['register-link']}`}
-        >
+        <div className={`has-text-centered mt-4 pt-2 ${styles['login-link']}`}>
           <Link
             to={{
-              pathname: '/register',
+              pathname: '/login',
               search: getQueryString('site', 'journey'),
             }}
-            aria-description="Click to navigate to registration page."
+            aria-description="Click to navigate to login page."
           >
-            Need a new account?
+            Already have an account?
           </Link>
         </div>
       </form>

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Outlet } from 'react-router-dom';
 import {
   AnimateMotion,
   Card,
@@ -10,7 +11,6 @@ import {
   JourneyBrand,
   ScrumBoard,
 } from '@journey-monorepo/assets';
-import { HomeLogin } from './components/Login/HomeLogin';
 
 import styles from './HomeContainer.module.scss';
 
@@ -21,33 +21,32 @@ export const HomeContainer: FC<HomeContainerProps> = (
   props: HomeContainerProps
 ) => {
   return (
-    <AnimateMotion options={setFadeOptions('login', 0.5)}>
+    <AnimateMotion options={setFadeOptions('home', 0.5)}>
       <div
         data-testid="home-container"
         className={`${styles['home-container']} is-flex is-flex-direction-column is-justify-content-space-between`}
       >
         <div
-          data-testid="home-login"
-          className={`${styles['home-login']} section`}
+          data-testid="home-content"
+          className={`${styles['home-content']} section`}
         >
           <div className={styles['brand']}>
             <JourneyBrand />
           </div>
-          <div className={`${styles['login-card']}`}>
+          <div className={`${styles['home-content-card']}`}>
             <Card>
               <CardContent>
                 <div className="card-content">
-                  <h2 className="subtitle card-title">
-                    Login to start planning
-                  </h2>
-                  <HomeLogin />
+                  <Outlet></Outlet>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
-        <div className="is-flex is-justify-content-space-between">
+        <div className={styles['scrum-board-graphic']}>
           <ScrumBoard height={'300px'} width={'300px'} />
+        </div>
+        <div className={styles['completed-tasks-graphic']}>
           <CompletedTasks height={'300px'} width={'300px'} />
         </div>
       </div>

@@ -15,6 +15,7 @@ interface ButtonProps {
   shouldSubmit?: boolean;
   triggerRef?: RefObject<HTMLButtonElement>;
   clickHandler?: () => void;
+  fullWidth?: boolean;
 }
 
 export const Button: FC<ButtonProps> = (props: ButtonProps) => {
@@ -39,6 +40,10 @@ export const Button: FC<ButtonProps> = (props: ButtonProps) => {
 
     if (props.isLoading) {
       buttonClasses += ' is-loading';
+    }
+
+    if (props.fullWidth) {
+      buttonClasses += ' is-fullwidth';
     }
 
     return buttonClasses;

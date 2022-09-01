@@ -34,7 +34,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props: AuthGuardProps) => {
   };
 
   const redirectToLogin = () => {
-    window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}?site=journey`;
+    window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}/login?site=journey`;
   };
 
   useEffect(() => {

@@ -7,13 +7,8 @@ import {
   mockWindowLocation,
   restoreWindowLocation,
 } from '@journey-monorepo/util';
-import {
-  AuthProvider,
-  createUser,
-  loginUser,
-  UserProvider,
-} from '../../../../shared';
-import { HomeLogin } from './HomeLogin';
+import { AuthProvider, createUser, UserProvider } from '../../../../shared';
+import { HomeRegistration } from './HomeRegistration';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -29,17 +24,17 @@ jest.mock('../../../shared/api/auth.handler', () => {
   return {
     ...authHandlers,
     ...apiHandlers,
-    loginUser: jest.fn(),
+    createUser: jest.fn(),
   };
 });
-describe('HomeLogin', () => {
+describe('HomeRegistration', () => {
   let component: HTMLElement;
   let query: any;
   let rerender: any;
 
   const originalWindow = global.window;
   const mocked = {
-    loginUser,
+    createUser,
   };
   const testCredentials = {
     email: 'email',
@@ -55,7 +50,7 @@ describe('HomeLogin', () => {
       <MockRouter route={'/'}>
         <AuthProvider>
           <UserProvider>
-            <HomeLogin />
+            <HomeRegistration />
           </UserProvider>
         </AuthProvider>
       </MockRouter>
@@ -75,11 +70,11 @@ describe('HomeLogin', () => {
 
   it('should render', () => {
     expect(component).toBeTruthy();
-    expect(query('login-form')).toBeTruthy();
+    expect(query('register-form')).toBeTruthy();
   });
 
-  it('should login user', async () => {
-    jest.spyOn(mocked, 'loginUser').mockResolvedValue({
+  it('should register user', async () => {
+    jest.spyOn(mocked, 'createUser').mockResolvedValue({
       message: 'Success',
       user: createTestUser(),
     });
@@ -94,12 +89,12 @@ describe('HomeLogin', () => {
 
     rerender();
 
-    expect(mocked.loginUser).toHaveBeenCalledWith(testCredentials);
+    expect(mocked.createUser).toHaveBeenCalledWith(testCredentials);
     expect(query('error-message')).toBeNull();
   });
 
-  it('should display error on failed login', async () => {
-    jest.spyOn(mocked, 'loginUser').mockRejectedValue(new Error());
+  it('should display error on failed registration', async () => {
+    jest.spyOn(mocked, 'createUser').mockRejectedValue(new Error());
 
     const emailField = query('email-field');
     const passwordField = query('password-field');
@@ -113,7 +108,7 @@ describe('HomeLogin', () => {
 
     rerender();
 
-    expect(mocked.loginUser).toHaveBeenCalledWith(testCredentials);
+    expect(mocked.createUser).toHaveBeenCalledWith(testCredentials);
     expect(query('error-message')).toBeTruthy();
   });
 });

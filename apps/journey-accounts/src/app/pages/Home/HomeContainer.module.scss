@@ -1,9 +1,10 @@
 .home-container {
   height: 100%;
+  position: relative;
 }
 
-.home-login {
-  width: 525px;
+.home-content {
+  min-width: 525px;
   margin: 0 auto;
 
   .brand {
@@ -11,7 +12,7 @@
     margin: 0 auto 2rem auto;
   }
 
-  .login-card {
+  .home-content-card {
     width: 100%;
     margin: 0 auto;
   }
@@ -19,4 +20,16 @@
   h2 {
     text-align: center;
   }
+}
+
+.scrum-board-graphic {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.completed-tasks-graphic {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
