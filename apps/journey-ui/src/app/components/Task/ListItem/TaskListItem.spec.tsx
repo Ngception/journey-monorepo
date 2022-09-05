@@ -1,7 +1,7 @@
+import { Draggable } from 'react-beautiful-dnd';
+import { render, RenderResult } from '@testing-library/react';
 import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { createTasks } from '@journey-monorepo/util';
-import { render, RenderResult } from '@testing-library/react';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { TaskProvider } from '../../../shared';
 import { TaskListItem } from './TaskListItem';
 

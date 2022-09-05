@@ -1,10 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { HttpException } from '@nestjs/common';
 import {
   useError as UiLibUseError,
   useNotification,
 } from '@journey-monorepo/ui';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from './useAuth';
 import { useUser } from './useUser';
 
@@ -20,7 +20,7 @@ export const useError = () => {
       case 401:
         logout();
         clearUser();
-        showInfoNotification('Session timeout. Please login again.');
+        showInfoNotification('Please login again.');
         navigate('/', { replace: false });
         break;
       default:

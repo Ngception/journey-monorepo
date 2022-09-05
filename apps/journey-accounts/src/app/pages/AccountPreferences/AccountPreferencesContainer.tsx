@@ -2,8 +2,6 @@ import { FC } from 'react';
 import { AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { AccountPreferencesDeleteAccount } from './components/DeleteAccount/AccountPreferencesDeleteAccount';
 
-import styles from './AccountPreferencesContainer.module.scss';
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AccountPreferencesContainerProps {}
 
@@ -17,7 +15,7 @@ export const AccountPreferencesContainer: FC<
           <h1 className="title">Account preferences</h1>
           <p>Control settings related to your account.</p>
         </div>
-        <div className={styles['delete-account-section']}>
+        <div className="my-5">
           <AccountPreferencesDeleteAccount />
         </div>
       </div>

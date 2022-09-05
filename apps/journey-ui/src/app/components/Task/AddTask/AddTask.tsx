@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, FormEvent, useRef, useState } from 'react';
 import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import { addTask, useError, useTask, useUser } from '../../../shared';
 
@@ -26,7 +26,13 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
     });
   };
 
-  const saveNewTask = async () => {
+  const saveNewTask = async (event: FormEvent) => {
+    event.preventDefault();
+
+    if (!newTask.content) {
+      return;
+    }
+
     setIsLoading(true);
 
     const data = {

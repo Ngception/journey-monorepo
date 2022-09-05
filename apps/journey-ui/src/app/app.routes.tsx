@@ -1,6 +1,6 @@
-import { ErrorBoundary, ErrorOutlet, Loader } from '@journey-monorepo/ui';
 import { FC, lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ErrorBoundary, ErrorOutlet, Loader } from '@journey-monorepo/ui';
 import { AuthGuard } from './components/Auth/AuthGuard';
 
 const TaskContainer = lazy(() =>

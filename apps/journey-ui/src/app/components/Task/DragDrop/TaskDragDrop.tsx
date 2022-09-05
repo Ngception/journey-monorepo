@@ -1,7 +1,7 @@
-import { useNotification } from '@journey-monorepo/ui';
-import { ITask, ITaskStatus } from '@journey-monorepo/util';
 import { FC, ReactNode, useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { useNotification } from '@journey-monorepo/ui';
+import { ITask, ITaskStatus } from '@journey-monorepo/util';
 import { updateTasks, useError } from '../../../shared';
 import { TaskList } from '../TaskContainer';
 

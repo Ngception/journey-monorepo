@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import { AuthProvider, UserProvider } from '../../shared';
-
 import { ProfileContainer } from './ProfileContainer';
 
 describe('ProfileContainer', () => {

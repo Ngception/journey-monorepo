@@ -1,4 +1,4 @@
-import { FC, FormEvent, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -42,8 +42,10 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
     setIsDialogOpen(true);
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    if (!isPasswordValid) {
+      return;
+    }
 
     setIsLoading(true);
 
@@ -69,9 +71,9 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
     trigger: changePasswordTrigger,
     showWarning: true,
     confirmButtonColor: 'primary',
-    confirmHandler: (event: FormEvent) => handleSubmit(event),
+    confirmHandler: handleSubmit,
     cancelHandler: () => setIsDialogOpen(false),
-    isDialogOpen: isDialogOpen,
+    isDialogOpen,
     isLoading,
   };
 

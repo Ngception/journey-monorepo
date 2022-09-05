@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { render, RenderResult } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   ErrorProvider,
   MockRouter,
   NotificationProvider,
 } from '@journey-monorepo/ui';
-import { render, RenderResult } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { AuthProvider, updateUser, UserProvider } from '../../../../shared';
 import { SecurityEditPassword } from './SecurityEditPassword';
 

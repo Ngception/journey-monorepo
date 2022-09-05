@@ -1,5 +1,5 @@
-import { AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { FC } from 'react';
+import { AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { SecurityEditPassword } from './components';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

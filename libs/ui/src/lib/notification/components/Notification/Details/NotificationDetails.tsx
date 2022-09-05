@@ -2,8 +2,6 @@ import { FC, MouseEvent, useEffect } from 'react';
 import { useNotification } from '../../../hook/useNotification';
 import { INotification } from '../../../reducer/notification.reducer';
 
-import styles from './NotificationDetails.module.scss';
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NotificationDetailsProps {
   notification: INotification;
@@ -45,7 +43,7 @@ export const NotificationDetails: FC<NotificationDetailsProps> = (
       data-testid="notification-details"
       className={`notification ${getNotificationType(
         props.notification.type
-      )} ${styles['notification-details']}`}
+      )} mx-2 my-2`}
     >
       <button
         type="button"

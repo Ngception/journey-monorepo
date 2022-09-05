@@ -5,10 +5,9 @@ import {
   mockWindowLocation,
   restoreWindowLocation,
 } from '@journey-monorepo/util';
-import { AuthProvider, TaskProvider } from '../../../shared';
-
-import { PrimaryNavbar } from './PrimaryNavbar';
 import { ErrorProvider } from '@journey-monorepo/ui';
+import { AuthProvider, TaskProvider } from '../../../shared';
+import { PrimaryNavbar } from './PrimaryNavbar';
 
 describe('PrimaryNavbar', () => {
   let component: HTMLElement;

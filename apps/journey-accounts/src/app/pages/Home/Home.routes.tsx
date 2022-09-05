@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { HomeAuthGuard } from '../../components/Auth/HomeAuthGuard';
 import { HomeLogin } from './components/Login/HomeLogin';
 import { HomeRegistration } from './components/Registration/HomeRegistration';
 import { HomeContainer } from './HomeContainer';
@@ -11,8 +12,10 @@ export const HomeRoutes: FC<HomeRoutesProps> = (props: HomeRoutesProps) => {
   return (
     <Routes>
       <Route element={<HomeContainer />}>
-        <Route path="/login/*" element={<HomeLogin />}></Route>
-        <Route path="/register/*" element={<HomeRegistration />}></Route>
+        <Route element={<HomeAuthGuard />}>
+          <Route path="/login/*" element={<HomeLogin />}></Route>
+          <Route path="/register/*" element={<HomeRegistration />}></Route>
+        </Route>
       </Route>
       <Route path="*" element={<Navigate to="/login" replace={true} />}></Route>
     </Routes>

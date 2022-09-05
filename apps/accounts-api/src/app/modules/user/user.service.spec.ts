@@ -1,11 +1,11 @@
+import { Repository } from 'typeorm';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { createUser } from '@journey-monorepo/util';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
+import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { User } from './user.entity';
 import { UserService } from './user.service';
-import { AuthUtilService } from '../../shared/auth/auth-util.service';
 
 describe('UserService', () => {
   let userService: UserService;

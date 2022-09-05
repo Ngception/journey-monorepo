@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   ErrorProvider,
   LayoutBody,
@@ -13,7 +14,6 @@ import { TaskProvider, UserProvider } from './shared';
 
 import 'bulma/css/bulma.min.css';
 import styles from './app.module.scss';
-import { useEffect } from 'react';
 
 export function App() {
   useEffect(() => {

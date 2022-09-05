@@ -31,6 +31,16 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
     props?.trigger?.current?.focus();
   };
 
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
+    if (confirmField !== 'confirm') {
+      return;
+    }
+
+    props.confirmHandler(event);
+  };
+
   const setNotificationClasses = () => {
     let classes = 'notification';
 
@@ -69,7 +79,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
                 onClick={() => closeDialog()}
               ></button>
             </header>
-            <form onSubmit={(event) => props.confirmHandler(event)}>
+            <form onSubmit={handleSubmit}>
               <section className="modal-card-body">
                 <div className={setNotificationClasses()}>{props.children}</div>
                 <div className={styles['confirm-field']}>

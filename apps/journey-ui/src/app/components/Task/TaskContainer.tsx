@@ -147,7 +147,7 @@ export const TaskContainer: FC<TaskContainerProps> = (
   return (
     <TaskDragDrop allTaskLists={combineTaskLists()}>
       <div
-        className={`columns container ${styles['task-container']} ${
+        className={`columns container my-0 mx-auto ${
           isLoading ? styles['is-loading'] : ''
         }`}
       >

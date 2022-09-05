@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import {
   Body,
   Controller,
@@ -9,7 +10,6 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/guards';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';

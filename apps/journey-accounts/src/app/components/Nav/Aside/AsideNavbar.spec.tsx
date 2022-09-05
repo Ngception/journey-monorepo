@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createMemoryHistory, MemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { createMemoryHistory, MemoryHistory } from 'history';
 import { AsideNavbar } from './AsideNavbar';
 
 describe('AsideNavbar', () => {

@@ -10,17 +10,14 @@ import { useTask } from '../../../shared';
 import { AddTask } from '../AddTask/AddTask';
 import { TaskDragDropDroppable } from '../DragDrop/components';
 import { TaskListItem } from '../ListItem/TaskListItem';
+import { DeleteAllTasks } from '../DeleteAllTasks/DeleteAllTasks';
 
 import styles from './TaskList.module.scss';
-import { DeleteAllTasks } from '../DeleteAllTasks/DeleteAllTasks';
 
 interface TaskListProps {
   list: ITaskList;
   listSetter: Dispatch<React.SetStateAction<ITaskList>>;
 }
-
-const taskListHeaderClasses = `${styles['task-list-header']}`;
-const taskListCountClasses = `tag is-primary is-medium ${styles['task-list-count']}`;
 
 export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
   const { state: task } = useTask();
@@ -70,23 +67,27 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
 
   return (
     <>
-      <div className={styles['task-list-header']}>
-        <h2 className={taskListHeaderClasses}>
-          <span className={taskListCountClasses}>
+      <div className="is-flex is-justify-content-space-between is-align-items-center">
+        <h2>
+          <span className="tag is-primary is-medium mr-2">
             {props.list.items.length}
           </span>
           {props.list.title}
         </h2>
-        <div className={styles['task-list-header-buttons']}>
-          <AddTask
-            title={props.list.title}
-            fetchTasks={task.fetchTasksHandler}
-          />
-          <DeleteAllTasks
-            title={props.list.title}
-            fetchTasks={task.fetchTasksHandler}
-            tasks={props.list.items}
-          />
+        <div className="is-flex">
+          <div className="mr-2">
+            <AddTask
+              title={props.list.title}
+              fetchTasks={task.fetchTasksHandler}
+            />
+          </div>
+          <div className="mr-2">
+            <DeleteAllTasks
+              title={props.list.title}
+              fetchTasks={task.fetchTasksHandler}
+              tasks={props.list.items}
+            />
+          </div>
           <Dropdown
             label="Task list sort options"
             icon="sort"
@@ -103,7 +104,7 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
             {props.list.items.length ? (
               props.list.items.map((i, idx) => (
                 <AnimateMotion options={setFadeOptions(idx)} key={i.task_id}>
-                  <div className={styles['task-list-item-wrapper']}>
+                  <div className="px-2 py-2">
                     <TaskListItem item={i} index={idx} />
                   </div>
                 </AnimateMotion>

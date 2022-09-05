@@ -3,8 +3,6 @@ import { Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { deleteTaskById, useError, useTask } from '../../../../../shared';
 
-import styles from './DeleteTaskAction.module.scss';
-
 interface DeleteTaskActionProps {
   task: ITask;
   isDialogOpen: boolean;
@@ -66,11 +64,8 @@ export const DeleteTaskAction: FC<DeleteTaskActionProps> = (
   return (
     <div>
       <Dialog type="action" dialogProps={dialogProps}>
-        <div
-          data-testid="delete-task-action"
-          className={styles['delete-warning']}
-        >
-          <span className="has-text-danger">
+        <div data-testid="delete-task-action" className="is-flex">
+          <span className="has-text-danger mr-2">
             <Icon type="solid" name="triangle-exclamation" />
           </span>
           <p>

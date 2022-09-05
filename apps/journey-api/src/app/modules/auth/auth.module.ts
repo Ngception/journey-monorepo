@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { JwtStrategy } from './strategies';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './strategies';
 
 const JWT_CONSTANTS = {
   secret: process.env['NX_JWT_SECRET_KEY'],

@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Response } from 'express';
 import { Repository } from 'typeorm';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
-import { UserController } from './user.controller';
-import { User } from './user.entity';
-import { UserService } from './user.service';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
-import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/guards';
+import { User } from './user.entity';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 describe('UserController', () => {
   let userService: UserService;

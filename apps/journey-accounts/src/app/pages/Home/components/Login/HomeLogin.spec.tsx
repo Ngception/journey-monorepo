@@ -7,12 +7,7 @@ import {
   mockWindowLocation,
   restoreWindowLocation,
 } from '@journey-monorepo/util';
-import {
-  AuthProvider,
-  createUser,
-  loginUser,
-  UserProvider,
-} from '../../../../shared';
+import { AuthProvider, loginUser, UserProvider } from '../../../../shared';
 import { HomeLogin } from './HomeLogin';
 
 jest.mock('react-router-dom', () => ({

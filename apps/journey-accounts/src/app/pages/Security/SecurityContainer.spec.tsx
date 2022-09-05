@@ -1,9 +1,9 @@
+import { render } from '@testing-library/react';
 import {
   ErrorProvider,
   MockRouter,
   NotificationProvider,
 } from '@journey-monorepo/ui';
-import { render } from '@testing-library/react';
 import { AuthProvider, UserProvider } from '../../shared';
 import { SecurityContainer } from './SecurityContainer';
 

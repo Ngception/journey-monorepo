@@ -1,6 +1,6 @@
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';

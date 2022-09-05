@@ -44,7 +44,7 @@ export const ActionDialog: FC<ActionDialogProps> = (
         <AnimateMotion options={setFadeOptions('action', 0.125)}>
           <div className="modal-background"></div>
           <div className="modal-card">
-            <form onSubmit={(event) => handleSubmit(event)}>
+            <form onSubmit={handleSubmit}>
               <header className="modal-card-head">
                 <h2 className="modal-card-title">{props.title}</h2>
                 <button

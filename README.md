@@ -2,7 +2,12 @@
 
 ## About
 
-This monorepo houses applications, services, and libraries related to the Journey project; a task management application. Journey's frontend is built using Typescript with React components and Bulma styling. Currently, there are plans to integrate GraphQL to communicate between the UI and backend services. The backend services themselves will be built with consideration towards one or a combination of languages that include Node.js, PHP, and Go.
+This monorepo houses applications, services, and libraries related to the Journey project; a task management application. Journey's frontend is built using Typescript with React components and Bulma styling. The backend services are built using Nestjs.
+
+This project is constantly being improved over time with plans for adding new features, apps, and services or translate existing ones using alternative libraries and languages that may include:
+
+- PHP, Go, and GraphQL
+- Angular and Vue
 
 ## Prerequisites
 

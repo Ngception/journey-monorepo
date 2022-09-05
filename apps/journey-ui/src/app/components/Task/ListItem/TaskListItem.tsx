@@ -34,12 +34,10 @@ export const TaskListItem: FC<TaskListItemProps> = (
         <Card>
           <div
             data-testid="task-list-item"
-            className={styles['task-list-item']}
+            className="is-flex is-justify-content-space-between is-align-items-flex-start px-4 py-4"
           >
             <div>
-              <p className={styles['task-list-item-content']}>
-                {props.item.content}
-              </p>
+              <p className="mr-2 mb-2">{props.item.content}</p>
               <div className={styles['task-list-item-dates']}>
                 <p className="tag is-info is-light">
                   Created {formatDate(props.item.created_at)}

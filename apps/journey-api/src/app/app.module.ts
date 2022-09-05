@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-
+import { modules } from './modules';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { modules } from './modules';
 
 @Module({
   imports: [

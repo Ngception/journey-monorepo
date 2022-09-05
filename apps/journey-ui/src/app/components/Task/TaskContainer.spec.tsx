@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
-import { render, RenderResult } from '@testing-library/react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { render, RenderResult } from '@testing-library/react';
+import { ErrorProvider, NotificationProvider } from '@journey-monorepo/ui';
 import { TaskProvider, UserProvider } from '../../shared';
 import { TaskContainer } from './TaskContainer';
 

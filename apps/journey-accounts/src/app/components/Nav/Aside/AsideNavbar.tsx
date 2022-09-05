@@ -1,6 +1,6 @@
-import { Icon } from '@journey-monorepo/ui';
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Icon } from '@journey-monorepo/ui';
 import styles from './AsideNavbar.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -21,7 +21,7 @@ export const AsideNavbar: FC<AsideNavbarProps> = (props: AsideNavbarProps) => {
             to="/profile"
             className={({ isActive }) => setActive(isActive)}
           >
-            <span className={styles['aside-icons']}>
+            <span className="mr-4">
               <Icon type="solid" name="user" />
             </span>
             <span>Profile</span>
@@ -33,7 +33,7 @@ export const AsideNavbar: FC<AsideNavbarProps> = (props: AsideNavbarProps) => {
             to="/security"
             className={({ isActive }) => setActive(isActive)}
           >
-            <span className={styles['aside-icons']}>
+            <span className="mr-4">
               <Icon type="solid" name="lock" />
             </span>
             <span>Security</span>
@@ -45,7 +45,7 @@ export const AsideNavbar: FC<AsideNavbarProps> = (props: AsideNavbarProps) => {
             to="/account-preferences"
             className={({ isActive }) => setActive(isActive)}
           >
-            <span className={styles['aside-icons']}>
+            <span className="mr-4">
               <Icon type="solid" name="gear" />
             </span>
             <span>Account preferences</span>

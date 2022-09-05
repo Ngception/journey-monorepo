@@ -1,6 +1,6 @@
+import { FC, FormEvent, useRef, useState } from 'react';
 import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
-import { FC, FormEvent, useRef, useState } from 'react';
 import { deleteAllTasksById, useError } from '../../../shared';
 
 interface DeleteAllTasksProps {
@@ -50,8 +50,8 @@ export const DeleteAllTasks: FC<DeleteAllTasksProps> = (
     trigger: deleteAllTasksTrigger,
     showDanger: true,
     confirmButtonColor: 'danger',
-    confirmHandler: (event: FormEvent) => handleConfirm(event),
-    cancelHandler: () => closeDialog(),
+    confirmHandler: handleConfirm,
+    cancelHandler: closeDialog,
     isDialogOpen,
     isLoading,
   };

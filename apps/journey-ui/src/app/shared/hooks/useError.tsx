@@ -8,7 +8,7 @@ export const useError = () => {
   const handleError = (error: AxiosError<HttpException>) => {
     switch (error?.response?.status) {
       case 401:
-        window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}?site=journey`;
+        window.location.href = `${process.env['NX_ACCOUNTS_UI_BASE_URL']}/login?site=journey`;
         break;
       default:
         showGeneralError();

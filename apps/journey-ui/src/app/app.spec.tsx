@@ -4,7 +4,6 @@ import {
   mockWindowLocation,
   restoreWindowLocation,
 } from '@journey-monorepo/util';
-
 import App from './app';
 
 describe('App', () => {

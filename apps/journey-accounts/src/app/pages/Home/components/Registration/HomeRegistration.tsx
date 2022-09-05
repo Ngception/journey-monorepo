@@ -44,6 +44,10 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    if (invalidForm) {
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 

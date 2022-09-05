@@ -1,5 +1,5 @@
-import { Button, Icon } from '@journey-monorepo/ui';
 import { ChangeEvent, FC, MouseEvent, useRef, useState } from 'react';
+import { Button, Icon } from '@journey-monorepo/ui';
 import { useTask } from '../../../shared';
 
 import styles from './TaskSearchBar.module.scss';

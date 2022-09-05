@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render } from '@testing-library/react';
+import { MockRouter } from '@journey-monorepo/ui';
 import { AuthProvider, UserProvider } from '../../shared';
 import { HomeContainer } from './HomeContainer';
-import { MockRouter } from '@journey-monorepo/ui';
 
 describe('HomeContainer', () => {
   let component: HTMLElement;

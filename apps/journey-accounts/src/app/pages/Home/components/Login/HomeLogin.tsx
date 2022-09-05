@@ -35,6 +35,10 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    if (invalidForm) {
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 

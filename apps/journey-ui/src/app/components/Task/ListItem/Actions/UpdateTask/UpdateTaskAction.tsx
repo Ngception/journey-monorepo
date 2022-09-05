@@ -41,6 +41,13 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
   const saveUpdatedTask = async (event: KeyboardEvent) => {
     event.preventDefault();
 
+    if (
+      taskToUpdate.content === '' ||
+      taskToUpdate.content === props.task.content
+    ) {
+      return;
+    }
+
     setIsLoading(true);
 
     const data = {
@@ -79,7 +86,10 @@ export const UpdateTaskAction: FC<UpdateTaskActionProps> = (
     title: `Update task`,
     isDialogOpen,
     isLoading,
-    isActionDisabled: taskToUpdate.content === '' || isLoading,
+    isActionDisabled:
+      taskToUpdate.content === '' ||
+      taskToUpdate.content === props.task.content ||
+      isLoading,
     trigger: updateTaskTrigger,
     actionButtonLabel: 'Update',
     actionButtonColor: 'primary',

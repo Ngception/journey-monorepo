@@ -1,5 +1,5 @@
-import { Animate, AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { FC, FormEvent } from 'react';
+import { Animate, AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import { logoutUser, useAuth, useError, useTask } from '../../../shared';
 import { TaskSearchBar } from '../../Task/Search/TaskSearchBar';
 

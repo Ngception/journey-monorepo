@@ -1,11 +1,11 @@
-import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Test } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
-import { User } from '../user/user.entity';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
+import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 

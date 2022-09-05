@@ -1,9 +1,9 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Loader, useNotification } from '@journey-monorepo/ui';
-import { useAuth, useUser, verifyAuthStatus } from '../../shared';
 import { AxiosError } from 'axios';
 import { HttpException } from '@nestjs/common';
+import { Loader, useNotification } from '@journey-monorepo/ui';
+import { useAuth, useUser, verifyAuthStatus } from '../../shared';
 
 type LocationProps = {
   state: {
