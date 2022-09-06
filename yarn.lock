@@ -3851,6 +3851,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^6.4.5":
+  version: 6.4.5
+  resolution: "@types/nodemailer@npm:6.4.5"
+  dependencies:
+    "@types/node": "*"
+  checksum: ecbe34a6eb5559bdca58115b5c03ff048896e14dc7ea6426b3fdfc03484764eb9e4100fcff37b96d012543ca47238c973d0f5bbfb1ab5a2d1f1f25d494714c59
+  languageName: node
+  linkType: hard
+
 "@types/npmlog@npm:^4.1.2":
   version: 4.1.4
   resolution: "@types/npmlog@npm:4.1.4"
@@ -9698,6 +9707,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/jest": 27.4.1
     "@types/node": 16.11.7
+    "@types/nodemailer": ^6.4.5
     "@types/passport-jwt": ^3.0.6
     "@types/passport-local": ^1.0.34
     "@types/react": 18.0.8
@@ -9725,6 +9735,7 @@ __metadata:
     jest: 27.5.1
     jsonwebtoken: ^8.5.1
     morgan: ^1.10.0
+    nodemailer: ^6.7.8
     nx: 14.1.7
     passport: ^0.6.0
     passport-jwt: ^4.0.0
@@ -10894,6 +10905,13 @@ __metadata:
   version: 2.0.6
   resolution: "node-releases@npm:2.0.6"
   checksum: e86a926dc9fbb3b41b4c4a89d998afdf140e20a4e8dbe6c0a807f7b2948b42ea97d7fd3ad4868041487b6e9ee98409829c6e4d84a734a4215dff060a7fbeb4bf
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^6.7.8":
+  version: 6.7.8
+  resolution: "nodemailer@npm:6.7.8"
+  checksum: 92d4a1d48813825989c7f5fc7cbcf5ba8d1a8acf8e10e420b4aa7670ade7abd0c543cc6cf8adf14e44c62552e26efb37b2a15a9af90a515fa90b40ffc71c433e
   languageName: node
   linkType: hard
 

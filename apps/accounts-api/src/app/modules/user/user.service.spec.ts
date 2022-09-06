@@ -4,6 +4,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
+import { EmailModule } from '../email/email.module';
+import { EmailService } from '../email/email.service';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -17,9 +19,10 @@ describe('UserService', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthUtilModule],
+      imports: [AuthUtilModule, EmailModule],
       providers: [
         UserService,
+        EmailService,
         {
           provide: getRepositoryToken(User),
           useValue: {

@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Response } from 'express';
 import { Repository } from 'typeorm';
+import { Response } from 'express';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
+import { EmailModule } from '../email/email.module';
+import { EmailService } from '../email/email.service';
 import { JwtAuthGuard } from '../auth/guards';
 import { User } from './user.entity';
 import { UserController } from './user.controller';
@@ -34,10 +36,11 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthUtilModule],
+      imports: [AuthUtilModule, EmailModule],
       controllers: [UserController],
       providers: [
         UserService,
+        EmailService,
         {
           provide: getRepositoryToken(User),
           useValue: {
@@ -70,6 +73,7 @@ describe('UserController', () => {
     userController = module.get<UserController>(UserController);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     authUtilService = module.get<AuthUtilService>(AuthUtilService);
+
     jest
       .spyOn(global, 'Date')
       .mockImplementation(() => date as unknown as string);
@@ -119,16 +123,18 @@ describe('UserController', () => {
 
   describe('PATCH', () => {
     it('should update a single user by id', async () => {
+      jest.restoreAllMocks();
       jest.spyOn(userService, 'updateUserById');
 
       const data = {
         password: 'newpassword',
+        date: new Date(),
       };
 
       const res = await userController.updateUserById('uuid', data);
 
-      expect(userService.updateUserById).toHaveBeenCalledWith('uuid', data);
       expect(res).toEqual(1);
+      expect(userService.updateUserById).toHaveBeenCalledWith('uuid', data);
     });
   });
 
@@ -138,8 +144,8 @@ describe('UserController', () => {
 
       const res = await userController.deleteUserById('uuid');
 
-      expect(userService.deleteUserById).toHaveBeenCalledWith('uuid');
       expect(res).toEqual(1);
+      expect(userService.deleteUserById).toHaveBeenCalledWith('uuid');
     });
   });
 });

@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthService } from './modules/auth/auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
+import { EmailModule } from './modules/email/email.module';
+import { EmailService } from './modules/email/email.service';
 import { User } from './modules/user/user.entity';
 import { UserService } from './modules/user/user.service';
 import { AuthUtilModule } from './shared/auth/auth-util.module';
@@ -43,12 +45,13 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
-      imports: [AuthUtilModule],
+      imports: [AuthUtilModule, EmailModule],
       controllers: [AppController],
       providers: [
         AppService,
         UserService,
         AuthService,
+        EmailService,
         {
           provide: getRepositoryToken(User),
           useValue: Repository,

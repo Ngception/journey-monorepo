@@ -7,6 +7,8 @@ import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
+import { EmailModule } from '../email/email.module';
+import { EmailService } from '../email/email.service';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -18,10 +20,11 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthUtilModule],
+      imports: [AuthUtilModule, EmailModule],
       providers: [
         AuthService,
         UserService,
+        EmailService,
         {
           provide: getRepositoryToken(User),
           useValue: Repository,

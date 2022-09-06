@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
+import { EmailService } from '../email/email.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 
@@ -9,7 +10,8 @@ import { User } from './user.entity';
 export class UserService {
   constructor(
     @InjectRepository(User) private repo: Repository<User>,
-    private authUtilService: AuthUtilService
+    private authUtilService: AuthUtilService,
+    private emailService: EmailService
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,6 +85,8 @@ export class UserService {
       email: data.email,
       user_id,
     });
+
+    this.emailService.sendWelcomeEmail(data.email);
 
     return {
       user_id,
