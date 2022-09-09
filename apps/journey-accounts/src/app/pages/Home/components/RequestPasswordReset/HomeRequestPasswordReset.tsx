@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import {
   AnimateMotion,
   Button,
+  Card,
+  CardContent,
   Icon,
   Message,
   MessageBody,
@@ -68,72 +70,76 @@ export const HomeRequestPasswordReset = (
 
   return (
     <AnimateMotion options={setFadeOptions('request-pw-reset', 0.5)}>
-      <div>
-        <h2 className="subtitle is-4">Reset Password</h2>
-        <div aria-live="polite">
-          {error && (
-            <div className="my-4" role="alert">
-              <Message testId="error-message" color="danger">
-                <MessageBody>
-                  <p>{error}</p>
-                </MessageBody>
-              </Message>
+      <Card>
+        <CardContent>
+          <div className="px-5 py-5">
+            <h2 className="subtitle is-4">Reset Password</h2>
+            <div aria-live="polite">
+              {error && (
+                <div className="my-4" role="alert">
+                  <Message testId="error-message" color="danger">
+                    <MessageBody>
+                      <p>{error}</p>
+                    </MessageBody>
+                  </Message>
+                </div>
+              )}
+              {confirmation && (
+                <div className="my-4" role="alert">
+                  <Message testId="success-message" color="success">
+                    <MessageBody>
+                      <p>{confirmation}</p>
+                    </MessageBody>
+                  </Message>
+                </div>
+              )}
             </div>
-          )}
-          {confirmation && (
-            <div className="my-4" role="alert">
-              <Message testId="success-message" color="success">
-                <MessageBody>
-                  <p>{confirmation}</p>
-                </MessageBody>
-              </Message>
-            </div>
-          )}
-        </div>
-        <p className="mb-4">
-          Enter your email address to receive a link to reset your password.
-        </p>
-        <form onSubmit={handleSubmit}>
-          <div className="field">
-            <div className="control has-icons-left">
-              <input
-                data-testid="email-field"
-                className="input"
-                type="email"
-                name="email"
-                placeholder="Email"
-                aria-required="true"
-                onChange={(event) => setEmail(event?.target.value)}
-              />
-              <span className="icon is-small is-left">
-                <Icon type="solid" name="envelope" />
+            <p className="mb-4">
+              Enter your email address to receive a link to reset your password.
+            </p>
+            <form onSubmit={handleSubmit}>
+              <div className="field">
+                <div className="control has-icons-left">
+                  <input
+                    data-testid="email-field"
+                    className="input"
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    aria-required="true"
+                    onChange={(event) => setEmail(event?.target.value)}
+                  />
+                  <span className="icon is-small is-left">
+                    <Icon type="solid" name="envelope" />
+                  </span>
+                </div>
+              </div>
+              <div className="field">
+                <div className="control">
+                  <Button
+                    color={!email ? 'light' : 'primary'}
+                    isDisabled={!email || isLoading}
+                    isLoading={isLoading}
+                    fullWidth={true}
+                    shouldSubmit={true}
+                    testId="submit-button"
+                  >
+                    Reset Password
+                  </Button>
+                </div>
+              </div>
+            </form>
+            <div
+              className={`has-text-centered mt-4 pt-4 ${styles['login-register-links']}`}
+            >
+              <span>
+                <Link to="/login">Login</Link> or{' '}
+                <Link to="/register">Register</Link>
               </span>
             </div>
           </div>
-          <div className="field">
-            <div className="control">
-              <Button
-                color={!email ? 'light' : 'primary'}
-                isDisabled={!email || isLoading}
-                isLoading={isLoading}
-                fullWidth={true}
-                shouldSubmit={true}
-                testId="submit-button"
-              >
-                Reset Password
-              </Button>
-            </div>
-          </div>
-        </form>
-        <div
-          className={`has-text-centered mt-4 pt-4 ${styles['login-register-links']}`}
-        >
-          <span>
-            <Link to="/login">Login</Link> or{' '}
-            <Link to="/register">Register</Link>
-          </span>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </AnimateMotion>
   );
 };

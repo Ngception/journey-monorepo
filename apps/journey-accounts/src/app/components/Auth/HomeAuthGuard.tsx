@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef } from 'react';
+import { Loader } from '@journey-monorepo/ui';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { verifyAuthStatus } from '../../shared';
 
@@ -8,6 +9,7 @@ interface HomeAuthGuardProps {}
 export const HomeAuthGuard: FC<HomeAuthGuardProps> = (
   props: HomeAuthGuardProps
 ) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const effectCalled = useRef(false);
   const navigate = useNavigate();
 
@@ -27,10 +29,13 @@ export const HomeAuthGuard: FC<HomeAuthGuardProps> = (
       if (response.user) {
         navigate('/profile', { replace: true });
       }
+
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       return;
     }
   };
 
-  return <Outlet></Outlet>;
+  return <div>{isLoading ? <Loader /> : <Outlet></Outlet>}</div>;
 };

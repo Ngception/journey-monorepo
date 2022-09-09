@@ -5,6 +5,8 @@ import { HttpException } from '@nestjs/common';
 import {
   AnimateMotion,
   Button,
+  Card,
+  CardContent,
   Icon,
   Message,
   MessageBody,
@@ -86,104 +88,112 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
 
   return (
     <AnimateMotion options={setFadeOptions('login', 0.5)}>
-      <div>
-        <h2 className="subtitle is-4 has-text-centered">
-          Login to start planning
-        </h2>
-        {error && (
-          <div className="my-4" role="alert">
-            <Message testId="error-message" color="danger">
-              <MessageBody>
-                <p>{error}</p>
-              </MessageBody>
-            </Message>
-          </div>
-        )}
-        <form
-          data-testid="login-form"
-          onSubmit={(event) => handleSubmit(event)}
-        >
-          <div className="field">
-            <div className="control has-icons-left">
-              <input
-                data-testid="email-field"
-                className={`input ${error ? 'is-danger' : ''}`}
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Email"
-                aria-required="true"
-                onChange={(event) => setEmail(event.target.value)}
-              />
-              <span className="icon is-small is-left">
-                <Icon type="solid" name="envelope" />
-              </span>
-            </div>
-          </div>
-
-          <div className="field has-addons">
-            <div className="control has-icons-left is-expanded">
-              <input
-                data-testid="password-field"
-                className={`input ${error ? 'is-danger' : ''}`}
-                name="password"
-                type={isPasswordVisible ? 'text' : 'password'}
-                placeholder="Password"
-                aria-required="true"
-                onChange={(event) => setPassword(event?.target.value)}
-              />
-              <span className="icon is-small is-left">
-                <Icon type="solid" name="lock" />
-              </span>
-            </div>
-            <div className="control">
-              <Button
-                clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
-                label={isPasswordVisible ? 'Hide Password' : 'Show password'}
-              >
-                <Icon
-                  type="solid"
-                  name={!isPasswordVisible ? 'eye' : 'eye-slash'}
-                />
-              </Button>
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="control">
-              <Button
-                testId="submit-button"
-                color={invalidForm ? 'light' : 'primary'}
-                isDisabled={invalidForm || isLoading}
-                isLoading={isLoading}
-                shouldSubmit={true}
-                fullWidth={true}
-              >
-                Login
-              </Button>
-            </div>
-          </div>
-          <div
-            className={`is-flex is-justify-content-space-between mt-4 pt-4 ${styles['register-link']}`}
-          >
-            <Link
-              to={{
-                pathname: '/register',
-                search: getQueryString('site', 'journey'),
-              }}
-              aria-description="Click to navigate to registration page."
+      <Card>
+        <CardContent>
+          <div className="px-5 py-5">
+            <h2 className="subtitle is-4 has-text-centered">
+              Login to start planning
+            </h2>
+            {error && (
+              <div className="my-4" role="alert">
+                <Message testId="error-message" color="danger">
+                  <MessageBody>
+                    <p>{error}</p>
+                  </MessageBody>
+                </Message>
+              </div>
+            )}
+            <form
+              data-testid="login-form"
+              onSubmit={(event) => handleSubmit(event)}
             >
-              Need a new account?
-            </Link>
-            <Link
-              to="forgot-password"
-              aria-description="Click to navigate to password reset page."
-            >
-              Forgot password?
-            </Link>
+              <div className="field">
+                <div className="control has-icons-left">
+                  <input
+                    data-testid="email-field"
+                    className={`input ${error ? 'is-danger' : ''}`}
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    aria-required="true"
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                  <span className="icon is-small is-left">
+                    <Icon type="solid" name="envelope" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="field has-addons">
+                <div className="control has-icons-left is-expanded">
+                  <input
+                    data-testid="password-field"
+                    className={`input ${error ? 'is-danger' : ''}`}
+                    name="password"
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    placeholder="Password"
+                    aria-required="true"
+                    onChange={(event) => setPassword(event?.target.value)}
+                  />
+                  <span className="icon is-small is-left">
+                    <Icon type="solid" name="lock" />
+                  </span>
+                </div>
+                <div className="control">
+                  <Button
+                    clickHandler={() =>
+                      setIsPasswordVisible(!isPasswordVisible)
+                    }
+                    label={
+                      isPasswordVisible ? 'Hide Password' : 'Show password'
+                    }
+                  >
+                    <Icon
+                      type="solid"
+                      name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+                    />
+                  </Button>
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="control">
+                  <Button
+                    testId="submit-button"
+                    color={invalidForm ? 'light' : 'primary'}
+                    isDisabled={invalidForm || isLoading}
+                    isLoading={isLoading}
+                    shouldSubmit={true}
+                    fullWidth={true}
+                  >
+                    Login
+                  </Button>
+                </div>
+              </div>
+              <div
+                className={`is-flex is-justify-content-space-between mt-4 pt-4 ${styles['register-link']}`}
+              >
+                <Link
+                  to={{
+                    pathname: '/register',
+                    search: getQueryString('site', 'journey'),
+                  }}
+                  aria-description="Click to navigate to registration page."
+                >
+                  Need a new account?
+                </Link>
+                <Link
+                  to="forgot-password"
+                  aria-description="Click to navigate to password reset page."
+                >
+                  Forgot password?
+                </Link>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
+        </CardContent>
+      </Card>
     </AnimateMotion>
   );
 };

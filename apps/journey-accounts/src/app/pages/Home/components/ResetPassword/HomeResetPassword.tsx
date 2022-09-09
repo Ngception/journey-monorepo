@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   AnimateMotion,
   Button,
+  Card,
+  CardContent,
   Icon,
   Message,
   MessageBody,
@@ -108,69 +110,77 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
 
   return (
     <AnimateMotion options={setFadeOptions('reset-password', 0.5)}>
-      <div>
-        <h2 className="subtitle is-4">New password</h2>
-        <div aria-live="polite">
-          {error && (
-            <div className="my-4" role="alert">
-              <Message testId="error-message" color="danger">
-                <MessageBody>
-                  <p>{error}</p>
-                </MessageBody>
-              </Message>
+      <Card>
+        <CardContent>
+          <div className="px-5 py-5">
+            <h2 className="subtitle is-4">New password</h2>
+            <div aria-live="polite">
+              {error && (
+                <div className="my-4" role="alert">
+                  <Message testId="error-message" color="danger">
+                    <MessageBody>
+                      <p>{error}</p>
+                    </MessageBody>
+                  </Message>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        <form onSubmit={(event) => handleSubmit(event)}>
-          <div className="field has-addons">
-            <div className="control has-icons-left is-expanded">
-              <input
-                data-testid="password-field"
-                className={`input ${error ? 'is-danger' : ''}`}
-                name="password"
-                type={isPasswordVisible ? 'text' : 'password'}
-                placeholder="Password"
-                aria-required="true"
-                onChange={(event) => setPassword(event?.target.value)}
-              />
-              <span className="icon is-small is-left">
-                <Icon type="solid" name="lock" />
-              </span>
-            </div>
-            <div className="control">
-              <Button
-                clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
-                label={isPasswordVisible ? 'Hide Password' : 'Show password'}
-              >
-                <Icon
-                  type="solid"
-                  name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+            <form onSubmit={(event) => handleSubmit(event)}>
+              <div className="field has-addons">
+                <div className="control has-icons-left is-expanded">
+                  <input
+                    data-testid="password-field"
+                    className={`input ${error ? 'is-danger' : ''}`}
+                    name="password"
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    placeholder="Password"
+                    aria-required="true"
+                    onChange={(event) => setPassword(event?.target.value)}
+                  />
+                  <span className="icon is-small is-left">
+                    <Icon type="solid" name="lock" />
+                  </span>
+                </div>
+                <div className="control">
+                  <Button
+                    clickHandler={() =>
+                      setIsPasswordVisible(!isPasswordVisible)
+                    }
+                    label={
+                      isPasswordVisible ? 'Hide Password' : 'Show password'
+                    }
+                  >
+                    <Icon
+                      type="solid"
+                      name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+                    />
+                  </Button>
+                </div>
+              </div>
+              <div className="my-3">
+                <PasswordValidator
+                  password={password}
+                  onValidPasswordHandler={setIsPasswordValid}
                 />
-              </Button>
-            </div>
+              </div>
+              <div className="field">
+                <div className="control">
+                  <Button
+                    testId="submit-button"
+                    color={!isPasswordValid ? 'light' : 'primary'}
+                    isDisabled={invalidForm || isLoading}
+                    isLoading={isLoading}
+                    shouldSubmit={true}
+                    fullWidth={true}
+                  >
+                    Save Password
+                  </Button>
+                </div>
+              </div>
+            </form>
           </div>
-          <div className="my-3">
-            <PasswordValidator
-              password={password}
-              onValidPasswordHandler={setIsPasswordValid}
-            />
-          </div>
-          <div className="field">
-            <div className="control">
-              <Button
-                testId="submit-button"
-                color={!isPasswordValid ? 'light' : 'primary'}
-                isDisabled={invalidForm || isLoading}
-                isLoading={isLoading}
-                shouldSubmit={true}
-                fullWidth={true}
-              >
-                Save Password
-              </Button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </CardContent>
+      </Card>
     </AnimateMotion>
   );
 };

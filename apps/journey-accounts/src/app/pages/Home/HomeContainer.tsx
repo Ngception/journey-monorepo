@@ -1,11 +1,6 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import {
-  AnimateMotion,
-  Card,
-  CardContent,
-  setFadeOptions,
-} from '@journey-monorepo/ui';
+import { AnimateMotion, setFadeOptions } from '@journey-monorepo/ui';
 import {
   CompletedTasks,
   JourneyBrand,
@@ -34,13 +29,7 @@ export const HomeContainer: FC<HomeContainerProps> = (
             <JourneyBrand />
           </div>
           <div className={`${styles['home-content-card']}`}>
-            <Card>
-              <CardContent>
-                <div className="card-content">
-                  <Outlet></Outlet>
-                </div>
-              </CardContent>
-            </Card>
+            <Outlet></Outlet>
           </div>
         </div>
         <div className={styles['scrum-board-graphic']}>
