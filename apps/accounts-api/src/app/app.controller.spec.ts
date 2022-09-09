@@ -2,19 +2,24 @@ import { Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { JwtService } from '@nestjs/jwt';
+import { AuthUtilService } from './shared/auth/auth-util.service';
 import { AuthService } from './modules/auth/auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
-import { EmailModule } from './modules/email/email.module';
 import { EmailService } from './modules/email/email.service';
 import { User } from './modules/user/user.entity';
 import { UserService } from './modules/user/user.service';
-import { AuthUtilModule } from './shared/auth/auth-util.module';
+import { ResetPasswordToken } from './modules/token/reset-password/reset-password.entity';
+import { UserAccessTokenService } from './modules/token/user-access/user-access.service';
+import { ResetPasswordTokenService } from './modules/token/reset-password/reset-password.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ControllerUtilService } from './shared/controller/controller.util.service';
 
 describe('AppController', () => {
-  let app: TestingModule;
-  let appController: AppController;
+  let app: TestingModule,
+    appController: AppController,
+    authService: AuthService;
 
   const responseObject = {
     status: 201,
@@ -45,15 +50,23 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
-      imports: [AuthUtilModule, EmailModule],
       controllers: [AppController],
       providers: [
         AppService,
         UserService,
         AuthService,
         EmailService,
+        AuthUtilService,
+        UserAccessTokenService,
+        ResetPasswordTokenService,
+        JwtService,
+        ControllerUtilService,
         {
           provide: getRepositoryToken(User),
+          useValue: Repository,
+        },
+        {
+          provide: getRepositoryToken(ResetPasswordToken),
           useValue: Repository,
         },
       ],
@@ -65,6 +78,7 @@ describe('AppController', () => {
       .compile();
 
     appController = app.get<AppController>(AppController);
+    authService = app.get<AuthService>(AuthService);
   });
 
   describe('login', () => {
@@ -88,6 +102,67 @@ describe('AppController', () => {
 
       expect(res).toEqual({ message: 'success', user: mockUserInfo });
       expect(mockResponse.cookie).toHaveBeenCalled();
+    });
+  });
+
+  describe('reset', () => {
+    it('should request password reset', async () => {
+      const mockData = {
+          email: 'hello@email.com',
+        },
+        mockStatus = {
+          status: 'OK',
+        };
+
+      jest
+        .spyOn(authService, 'sendPasswordResetLink')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(mockStatus);
+
+      const res = await appController.requestPasswordReset(mockData);
+
+      expect(res).toEqual(mockStatus);
+      expect(authService.sendPasswordResetLink).toHaveBeenCalledWith(mockData);
+    });
+
+    it('should verify reset token', async () => {
+      const mockToken = 'JWT',
+        mockStatus = {
+          status: 'OK',
+        };
+
+      jest
+        .spyOn(authService, 'verifyResetToken')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(mockStatus);
+
+      const res = await appController.verifyResetToken(mockToken);
+
+      expect(res).toEqual(mockStatus);
+      expect(authService.verifyResetToken).toHaveBeenCalledWith(mockToken);
+    });
+
+    it('should reset password', async () => {
+      const mockToken = 'JWT',
+        mockData = {
+          password: 'password',
+        },
+        mockStatus = {
+          status: 'OK',
+        };
+
+      jest
+        .spyOn(authService, 'resetPassword')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(mockStatus);
+
+      const res = await authService.resetPassword(mockToken, mockData);
+
+      expect(res).toEqual(mockStatus);
+      expect(authService.resetPassword).toHaveBeenCalledWith(
+        mockToken,
+        mockData
+      );
     });
   });
 

@@ -6,20 +6,23 @@ import { AuthUtilModule } from '../../shared/auth/auth-util.module';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { EmailModule } from '../email/email.module';
 import { EmailService } from '../email/email.service';
+import { UserAccessTokenModule } from '../token/user-access/user-access.module';
+import { UserAccessTokenService } from '../token/user-access/user-access.service';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
-  let userService: UserService;
-  let userRepository: Repository<User>;
-  let authUtilService: AuthUtilService;
+  let userService: UserService,
+    userRepository: Repository<User>,
+    authUtilService: AuthUtilService,
+    userAccessTokenService: UserAccessTokenService;
 
   const user = createUser();
   const date = new Date();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthUtilModule, EmailModule],
+      imports: [AuthUtilModule, EmailModule, UserAccessTokenModule],
       providers: [
         UserService,
         EmailService,
@@ -51,10 +54,12 @@ describe('UserService', () => {
     userService = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     authUtilService = module.get<AuthUtilService>(AuthUtilService);
+    userAccessTokenService = module.get<UserAccessTokenService>(
+      UserAccessTokenService
+    );
 
-    jest
-      .spyOn(global, 'Date')
-      .mockImplementation(() => date as unknown as string);
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(date);
   });
 
   describe('GET', () => {
@@ -71,32 +76,35 @@ describe('UserService', () => {
 
   describe('POST', () => {
     it('should create a single user', async () => {
-      const mockToken = {
-        access_token: 'token',
-      };
+      const mockToken = 'token';
 
       const data = {
         email: 'email',
         password: 'password',
-        created_at: date,
-        updated_at: date,
       };
 
       jest.spyOn(authUtilService, 'hashData').mockResolvedValue(data.password);
-      jest.spyOn(authUtilService, 'createToken').mockResolvedValue(mockToken);
+      jest
+        .spyOn(userAccessTokenService, 'createToken')
+        .mockImplementation(() => mockToken);
       jest.spyOn(userService, 'createUser');
       jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
       jest.spyOn(userRepository, 'create');
       jest.spyOn(userRepository, 'insert');
+      jest.spyOn(Date, 'now').mockReturnValue(100);
 
       const res = await userService.createUser(data);
 
       expect(res).toEqual({
-        ...mockToken,
+        access_token: mockToken,
         created_at: date,
         user_id: 'uuid',
       });
-      expect(userRepository.create).toHaveBeenCalledWith(data);
+      expect(userRepository.create).toHaveBeenCalledWith({
+        ...data,
+        created_at: date,
+        updated_at: date,
+      });
       expect(userRepository.insert).toHaveBeenCalled();
     });
   });

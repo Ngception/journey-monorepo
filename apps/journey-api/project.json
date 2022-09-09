@@ -17,6 +17,7 @@
           "optimization": true,
           "extractLicenses": true,
           "inspect": false,
+          "sourceMap": false,
           "fileReplacements": [
             {
               "replace": "apps/journey-api/src/environments/environment.ts",

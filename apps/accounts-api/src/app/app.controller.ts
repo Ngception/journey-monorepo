@@ -1,24 +1,32 @@
 import { Request, Response } from 'express';
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req,
   Request as NestJSRequest,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from './modules/user/user.dto';
+import {
+  CreateUserDto,
+  RequestUserPasswordResetDto,
+  UpdateUserDto,
+} from './modules/user/user.dto';
 import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
 import { AuthService } from './modules/auth/auth.service';
 import { AppService } from './app.service';
+import { ControllerUtilService } from './shared/controller/controller.util.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private authService: AuthService
+    private authService: AuthService,
+    private controllerUtilService: ControllerUtilService
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -39,7 +47,9 @@ export class AppController {
         sameSite: 'strict',
         secure: true,
         signed: true,
-        expires: new Date(currentDate.getTime() + 300000),
+        expires: new Date(
+          currentDate.getTime() + parseInt(process.env['NX_COOKIE_EXPIRATION'])
+        ),
       });
 
       return {
@@ -54,6 +64,43 @@ export class AppController {
       return {
         message: 'error',
       };
+    }
+  }
+
+  @Post('auth/login/password/reset')
+  async requestPasswordReset(@Body() data: RequestUserPasswordResetDto) {
+    if (!data) {
+      throw new BadRequestException();
+    }
+
+    const res = await this.authService.sendPasswordResetLink(data);
+
+    if (res.status === 'OK') {
+      return res;
+    } else {
+      this.controllerUtilService.handleStatus(res.status);
+    }
+  }
+
+  @Get('auth/login/password/reset/:id')
+  async verifyResetToken(@Param('id') token: string) {
+    const res = await this.authService.verifyResetToken(token);
+
+    if (res.status === 'OK') {
+      return res;
+    } else {
+      this.controllerUtilService.handleStatus(res.status);
+    }
+  }
+
+  @Post('auth/login/password/reset/:id')
+  async resetPassword(@Param('id') token: string, @Body() data: UpdateUserDto) {
+    const res = await this.authService.resetPassword(token, data);
+
+    if (res.status === 'OK') {
+      return res;
+    } else {
+      this.controllerUtilService.handleStatus(res.status);
     }
   }
 

@@ -5,19 +5,20 @@ import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { createUser } from '@journey-monorepo/util';
 import { AuthUtilModule } from '../../shared/auth/auth-util.module';
-import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { EmailModule } from '../email/email.module';
 import { EmailService } from '../email/email.service';
 import { JwtAuthGuard } from '../auth/guards';
 import { User } from './user.entity';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { UserAccessTokenService } from '../token/user-access/user-access.service';
+import { UserAccessTokenModule } from '../token/user-access/user-access.module';
 
 describe('UserController', () => {
   let userService: UserService;
   let userController: UserController;
   let userRepository: Repository<User>;
-  let authUtilService: AuthUtilService;
+  let userAccessTokenService: UserAccessTokenService;
 
   const user = createUser();
   const date = new Date();
@@ -36,7 +37,7 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthUtilModule, EmailModule],
+      imports: [AuthUtilModule, EmailModule, UserAccessTokenModule],
       controllers: [UserController],
       providers: [
         UserService,
@@ -72,11 +73,12 @@ describe('UserController', () => {
     userService = module.get<UserService>(UserService);
     userController = module.get<UserController>(UserController);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
-    authUtilService = module.get<AuthUtilService>(AuthUtilService);
+    userAccessTokenService = module.get<UserAccessTokenService>(
+      UserAccessTokenService
+    );
 
-    jest
-      .spyOn(global, 'Date')
-      .mockImplementation(() => date as unknown as string);
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(date);
   });
 
   describe('GET', () => {
@@ -94,8 +96,8 @@ describe('UserController', () => {
   describe('POST', () => {
     it('should create a single user', async () => {
       jest
-        .spyOn(authUtilService, 'createToken')
-        .mockResolvedValue({ access_token: 'token' });
+        .spyOn(userAccessTokenService, 'createToken')
+        .mockReturnValue('token');
       jest.spyOn(userService, 'createUser');
       jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
 
@@ -110,14 +112,16 @@ describe('UserController', () => {
       );
 
       expect(userService.createUser).toHaveBeenCalledWith(data);
-      expect(res).toEqual({
-        message: 'success',
-        user: {
-          email: data.email,
-          user_id: 'uuid',
-          created_at: date,
-        },
-      });
+      expect(res).toEqual(
+        expect.objectContaining({
+          message: 'success',
+          user: {
+            email: data.email,
+            user_id: 'uuid',
+            created_at: date,
+          },
+        })
+      );
     });
   });
 

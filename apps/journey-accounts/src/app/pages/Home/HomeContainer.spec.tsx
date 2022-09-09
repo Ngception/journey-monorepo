@@ -5,12 +5,11 @@ import { AuthProvider, UserProvider } from '../../shared';
 import { HomeContainer } from './HomeContainer';
 
 describe('HomeContainer', () => {
-  let component: HTMLElement;
-  let query: any;
+  let component: HTMLElement, query: any;
 
   beforeEach(() => {
     const renderResult = render(
-      <MockRouter route={'/'}>
+      <MockRouter route="/">
         <AuthProvider>
           <UserProvider>
             <HomeContainer />

@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthUtilService } from '../../shared/auth/auth-util.service';
 import { EmailService } from '../email/email.service';
+import { UserAccessTokenService } from '../token/user-access/user-access.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 
@@ -11,7 +12,8 @@ export class UserService {
   constructor(
     @InjectRepository(User) private repo: Repository<User>,
     private authUtilService: AuthUtilService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private userAccessTokenService: UserAccessTokenService
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -81,7 +83,7 @@ export class UserService {
       updated_at: new Date(),
     });
 
-    const { access_token } = await this.authUtilService.createToken({
+    const access_token = await this.userAccessTokenService.createToken({
       email: data.email,
       user_id,
     });

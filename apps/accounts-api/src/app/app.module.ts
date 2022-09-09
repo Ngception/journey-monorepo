@@ -3,7 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule, EmailModule } from './modules';
+import { AuthModule, AuthUtilModule, EmailModule } from './modules';
+import { TokenModule } from './modules/token/token.module';
+import { ControllerUtilModule } from './shared/controller/controller.util.module';
 
 @Module({
   imports: [
@@ -14,8 +16,11 @@ import { AuthModule, EmailModule } from './modules';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    AuthUtilModule,
+    ControllerUtilModule,
     AuthModule,
     EmailModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

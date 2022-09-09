@@ -1,5 +1,5 @@
 import { FC, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { logoutUser, useAuth, useError } from '../../../shared';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -28,11 +28,13 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 
   return (
     <nav className="navbar" role="navigation" aria-label="primary navigation">
-      <div className="navbar-brand">
-        <h1 data-testid="brand-button" className="navbar-item">
-          Journey
-        </h1>
-      </div>
+      <Link to="/">
+        <div className="navbar-brand">
+          <h1 data-testid="brand-button" className="navbar-item">
+            Journey
+          </h1>
+        </div>
+      </Link>
 
       {user.isLoggedIn && (
         <div className="navbar-end">

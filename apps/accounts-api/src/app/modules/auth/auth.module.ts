@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AuthUtilModule } from '../../shared/auth/auth-util.module';
+import { TokenModule } from '../token/token.module';
+import { EmailModule } from '../email/email.module';
 import { UserModule } from '../user/user.module';
-import { AuthService } from './auth.service';
 import { JwtStrategy, LocalStrategy } from './strategies';
+import { AuthService } from './auth.service';
 
 @Module({
-  imports: [UserModule, AuthUtilModule],
+  imports: [UserModule, EmailModule, TokenModule],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })

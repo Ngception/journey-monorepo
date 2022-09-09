@@ -1,17 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthUtilService {
-  constructor(private jwtService: JwtService) {}
-
-  async createToken(payload) {
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
-
   async hashData(data: string, saltRounds = 10): Promise<string> {
     return await bcrypt.hash(data, saltRounds);
   }
@@ -20,7 +11,7 @@ export class AuthUtilService {
     return await bcrypt.compare(source, target);
   }
 
-  async throwError(statusCode?: number, error?: string) {
+  throwError(statusCode?: number, error?: string) {
     switch (statusCode) {
       case 401:
         throw new HttpException(

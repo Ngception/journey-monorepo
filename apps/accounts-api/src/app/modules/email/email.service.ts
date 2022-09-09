@@ -32,4 +32,22 @@ export class EmailService {
       }
     );
   }
+
+  sendPasswordResetEmail(toAddress: string, resetLink: string) {
+    this.transporter.sendMail(
+      {
+        from: process.env['NX_EMAIL_FROM'],
+        to: toAddress,
+        subject: 'Reset your Journey password',
+        text: `Hi there,\n\nSomeone (hopefully you) has requested a password reset for your Journey account. Follow the link below to set a new password:\n\n${process.env['NX_ORIGIN_ACCOUNTS_UI']}/login/${resetLink}\n\nIf you no longer wish to reset your password, please disregard this email and no action will be taken.\n\nBest,\n\nThe Journey Team`,
+      },
+      function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(`Email sent: ${info.response}`);
+        }
+      }
+    );
+  }
 }

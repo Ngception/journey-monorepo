@@ -49,7 +49,9 @@ export class UserController {
         sameSite: 'strict',
         secure: true,
         signed: true,
-        expires: new Date(currentDate.getTime() + 300000),
+        expires: new Date(
+          currentDate.getTime() + parseInt(process.env['NX_COOKIE_EXPIRATION'])
+        ),
       });
 
       return {

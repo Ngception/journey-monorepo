@@ -20,6 +20,31 @@ export const loginUser = async (loginUserData: ILoginUser) => {
   return data;
 };
 
+export const requestUserPasswordReset = async (
+  email: string
+): Promise<{ status: string }> => {
+  const { data }: AxiosResponse<{ status: string }> = await axios.post(
+    `${BASE_URL}/auth/login/password/reset`,
+    {
+      email,
+    }
+  );
+
+  return data;
+};
+
+export const resetUserPassword = async (
+  token: string,
+  userData: { password: string }
+): Promise<{ status: string }> => {
+  const { data }: AxiosResponse<{ status: string }> = await axios.post(
+    `${BASE_URL}/auth/login/password/reset/${token}`,
+    userData
+  );
+
+  return data;
+};
+
 export const logoutUser = async () => {
   const { data }: AxiosResponse<{ message: string }> = await axios.post(
     `${BASE_URL}/auth/logout`,
@@ -43,6 +68,16 @@ export const verifyAuthStatus = async () => {
       created_at: Date;
     };
   }> = await axios.get(`${BASE_URL}/auth/status`, { withCredentials: true });
+
+  return data;
+};
+
+export const verifyResetToken = async (
+  token: string
+): Promise<{ status: string }> => {
+  const { data }: AxiosResponse<{ status: string }> = await axios.get(
+    `${BASE_URL}/auth/login/password/reset/${token}`
+  );
 
   return data;
 };
