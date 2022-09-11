@@ -51,7 +51,7 @@ export const TooltipButton: FC<TooltipButtonProps> = (
     }
 
     if (props.outline) {
-      buttonClasses += ' is-outline';
+      buttonClasses += ' is-outlined';
     }
 
     if (props.inverted) {

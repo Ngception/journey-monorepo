@@ -66,7 +66,7 @@ export const DeleteAllTasks: FC<DeleteAllTasksProps> = (
       <TooltipButton
         triggerRef={deleteAllTasksTrigger}
         buttonTestId="open-delete-all-tasks-dialog-button"
-        color="white"
+        outline={true}
         label={`Delete all ${props.title} tasks`}
         clickHandler={() => setIsDialogOpen(true)}
         isDisabled={!props.tasks.length}

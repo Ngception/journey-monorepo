@@ -65,7 +65,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
                 <a
                   data-testid="navbar-logout-button"
                   href="#"
-                  className="button is-light"
+                  className="button is-dark is-outlined"
                   onClick={(event) => handleLogout(event)}
                 >
                   Log out

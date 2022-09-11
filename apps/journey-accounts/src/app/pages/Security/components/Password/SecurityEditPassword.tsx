@@ -128,7 +128,7 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
             <Button
               triggerRef={changePasswordTrigger}
               testId="open-confirm-dialog-button"
-              color="link"
+              color="primary"
               isDisabled={!isPasswordValid || isLoading}
               isLoading={isLoading}
               clickHandler={openDialog}
