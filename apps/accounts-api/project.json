@@ -17,7 +17,7 @@
           "optimization": true,
           "extractLicenses": true,
           "inspect": false,
-          "sourceMap": false,
+          "sourceMap": true,
           "fileReplacements": [
             {
               "replace": "apps/accounts-api/src/environments/environment.ts",

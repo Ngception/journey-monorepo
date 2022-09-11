@@ -1,4 +1,5 @@
 import { createContext, FC, ReactNode, useId, useReducer } from 'react';
+import * as uuid from 'uuid';
 import {
   InitialNotificationStateInterface,
   notificationInitialState,
@@ -33,7 +34,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({
     notificationInitialState
   );
 
-  const id = `${useId()}-${Math.floor(Math.random() * 100)}`;
+  const id = `${useId()}-${uuid.v4()}`;
 
   const value = {
     state: initialState || (state as InitialNotificationStateInterface),
