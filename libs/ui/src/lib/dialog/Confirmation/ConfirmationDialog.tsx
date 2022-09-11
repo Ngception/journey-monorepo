@@ -2,7 +2,7 @@ import { FC, FormEvent, ReactNode, RefObject, useState } from 'react';
 import FocusTrap from 'focus-trap-react';
 import { AnimateMotion } from '../../animate';
 import { Button } from '../../button';
-import { setFadeOptions } from '../../constants';
+import { setFadeOptions, setSlideYOptions } from '../../constants';
 
 import styles from './ConfirmationDialog.module.scss';
 
@@ -64,61 +64,65 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = (
       }}
     >
       <div className="modal is-active">
-        <AnimateMotion options={setFadeOptions('confirmation', 0.125)}>
+        <AnimateMotion options={setFadeOptions('confirmation-fade', 0.2)}>
           <div className="modal-background"></div>
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <p className="modal-card-title">{props.title}</p>
-              <button
-                data-testid="close-dialog-button"
-                id="close-dialog-button"
-                className="delete"
-                type="button"
-                aria-label="close"
-                disabled={props.isLoading}
-                onClick={() => closeDialog()}
-              ></button>
-            </header>
-            <form onSubmit={handleSubmit}>
-              <section className="modal-card-body">
-                <div className={setNotificationClasses()}>{props.children}</div>
-                <div className={styles['confirm-field']}>
-                  <label htmlFor="confirm-field">
-                    Please type "confirm" to proceed.
-                  </label>
-                  <input
-                    data-testid="confirm-field"
-                    className="input"
-                    type="text"
-                    id="confirm-field"
-                    aria-required="true"
-                    onChange={(e) =>
-                      setConfirmField(e.target.value.toLowerCase())
-                    }
-                  />
-                </div>
-              </section>
-              <footer className="modal-card-foot">
-                <Button
-                  color={props.confirmButtonColor || 'success'}
-                  testId="confirm-button"
-                  isDisabled={confirmField !== 'confirm' || props.isLoading}
-                  isLoading={props.isLoading}
-                  shouldSubmit={true}
-                >
-                  <span>{props.confirmButtonLabel || 'Confirm'}</span>
-                </Button>
+          <AnimateMotion options={setSlideYOptions('confirmation-slide', 0.2)}>
+            <div className="modal-card">
+              <header className="modal-card-head">
+                <p className="modal-card-title">{props.title}</p>
+                <button
+                  data-testid="close-dialog-button"
+                  id="close-dialog-button"
+                  className="delete"
+                  type="button"
+                  aria-label="close"
+                  disabled={props.isLoading}
+                  onClick={() => closeDialog()}
+                ></button>
+              </header>
+              <form onSubmit={handleSubmit}>
+                <section className="modal-card-body">
+                  <div className={setNotificationClasses()}>
+                    {props.children}
+                  </div>
+                  <div className={styles['confirm-field']}>
+                    <label htmlFor="confirm-field">
+                      Please type "confirm" to proceed.
+                    </label>
+                    <input
+                      data-testid="confirm-field"
+                      className="input"
+                      type="text"
+                      id="confirm-field"
+                      aria-required="true"
+                      onChange={(e) =>
+                        setConfirmField(e.target.value.toLowerCase())
+                      }
+                    />
+                  </div>
+                </section>
+                <footer className="modal-card-foot">
+                  <Button
+                    color={props.confirmButtonColor || 'success'}
+                    testId="confirm-button"
+                    isDisabled={confirmField !== 'confirm' || props.isLoading}
+                    isLoading={props.isLoading}
+                    shouldSubmit={true}
+                  >
+                    <span>{props.confirmButtonLabel || 'Confirm'}</span>
+                  </Button>
 
-                <Button
-                  testId="cancel-button"
-                  isDisabled={props.isLoading}
-                  clickHandler={() => closeDialog()}
-                >
-                  <span> {props.cancelButtonLabel || 'Cancel'}</span>
-                </Button>
-              </footer>
-            </form>
-          </div>
+                  <Button
+                    testId="cancel-button"
+                    isDisabled={props.isLoading}
+                    clickHandler={() => closeDialog()}
+                  >
+                    <span> {props.cancelButtonLabel || 'Cancel'}</span>
+                  </Button>
+                </footer>
+              </form>
+            </div>
+          </AnimateMotion>
         </AnimateMotion>
       </div>
     </FocusTrap>
