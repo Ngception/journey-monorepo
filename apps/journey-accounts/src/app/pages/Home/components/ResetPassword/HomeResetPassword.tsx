@@ -10,6 +10,7 @@ import {
   MessageBody,
   PasswordValidator,
   setFadeOptions,
+  TooltipButton,
   useNotification,
 } from '@journey-monorepo/ui';
 import {
@@ -142,19 +143,24 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
                   </span>
                 </div>
                 <div className="control">
-                  <Button
+                  <TooltipButton
                     clickHandler={() =>
                       setIsPasswordVisible(!isPasswordVisible)
                     }
                     label={
                       isPasswordVisible ? 'Hide Password' : 'Show password'
                     }
+                    tooltip={
+                      isPasswordVisible ? 'Hide Password' : 'Show password'
+                    }
+                    tooltipColor="dark"
+                    tooltipPosition="bottom-center"
                   >
                     <Icon
                       type="solid"
                       name={!isPasswordVisible ? 'eye' : 'eye-slash'}
                     />
-                  </Button>
+                  </TooltipButton>
                 </div>
               </div>
               <div className="my-3">
@@ -167,7 +173,7 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
                 <div className="control">
                   <Button
                     testId="submit-button"
-                    color={!isPasswordValid ? 'light' : 'primary'}
+                    color="primary"
                     isDisabled={invalidForm || isLoading}
                     isLoading={isLoading}
                     shouldSubmit={true}

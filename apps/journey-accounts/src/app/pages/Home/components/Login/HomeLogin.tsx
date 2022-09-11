@@ -11,6 +11,7 @@ import {
   Message,
   MessageBody,
   setFadeOptions,
+  TooltipButton,
 } from '@journey-monorepo/ui';
 import { loginUser, useAuth, useQueryLink, useUser } from '../../../../shared';
 
@@ -141,19 +142,24 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
                   </span>
                 </div>
                 <div className="control">
-                  <Button
+                  <TooltipButton
                     clickHandler={() =>
                       setIsPasswordVisible(!isPasswordVisible)
                     }
                     label={
                       isPasswordVisible ? 'Hide Password' : 'Show password'
                     }
+                    tooltip={
+                      isPasswordVisible ? 'Hide Password' : 'Show password'
+                    }
+                    tooltipColor="dark"
+                    tooltipPosition="top-center"
                   >
                     <Icon
                       type="solid"
                       name={!isPasswordVisible ? 'eye' : 'eye-slash'}
                     />
-                  </Button>
+                  </TooltipButton>
                 </div>
               </div>
 
@@ -161,7 +167,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
                 <div className="control">
                   <Button
                     testId="submit-button"
-                    color={invalidForm ? 'light' : 'primary'}
+                    color="primary"
                     isDisabled={invalidForm || isLoading}
                     isLoading={isLoading}
                     shouldSubmit={true}

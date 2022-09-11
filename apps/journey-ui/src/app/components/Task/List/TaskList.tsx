@@ -65,6 +65,12 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
     }
   };
 
+  const tooltipOptions = {
+    tooltipColor: 'dark',
+    tooltipPosition: 'top-center',
+    tooltip: 'Sort options',
+  };
+
   return (
     <>
       <div className="is-flex is-justify-content-space-between is-align-items-center">
@@ -95,6 +101,7 @@ export const TaskList: FC<TaskListProps> = (props: TaskListProps) => {
             triggerColor="white"
             testId="sort-dropdown"
             isDisabled={props.list.items.length <= 1}
+            tooltipOptions={tooltipOptions}
           />
         </div>
       </div>

@@ -18,3 +18,4 @@ export * from './lib/message';
 export * from './lib/notification';
 export * from './lib/password';
 export * from './lib/testing';
+export * from './lib/tooltip';

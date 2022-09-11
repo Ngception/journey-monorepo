@@ -1,5 +1,10 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
+import {
+  TooltipButton,
+  Dialog,
+  Icon,
+  useNotification,
+} from '@journey-monorepo/ui';
 import { addTask, useError, useTask, useUser } from '../../../shared';
 
 interface AddTaskProps {
@@ -79,16 +84,19 @@ export const AddTask: FC<AddTaskProps> = (props: AddTaskProps) => {
 
   return (
     <>
-      <Button
-        testId="open-add-task-dialog-button"
+      <TooltipButton
+        buttonTestId="open-add-task-dialog-button"
         color="primary"
         label={`Add new ${props.title} task`}
+        tooltip="Add new task"
+        tooltipColor="dark"
+        tooltipPosition="top-center"
         clickHandler={() => openDialog(props.title)}
       >
         <span>
           <Icon type="solid" name="plus" />
         </span>
-      </Button>
+      </TooltipButton>
       <Dialog type="action" dialogProps={dialogProps}>
         <fieldset disabled={isLoading}>
           <div className="field">

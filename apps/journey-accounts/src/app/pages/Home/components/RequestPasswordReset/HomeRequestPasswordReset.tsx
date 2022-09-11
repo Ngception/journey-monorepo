@@ -117,7 +117,7 @@ export const HomeRequestPasswordReset = (
               <div className="field">
                 <div className="control">
                   <Button
-                    color={!email ? 'light' : 'primary'}
+                    color="primary"
                     isDisabled={!email || isLoading}
                     isLoading={isLoading}
                     fullWidth={true}

@@ -2,6 +2,8 @@ import { FC, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { logoutUser, useAuth, useError } from '../../../shared';
 
+import styles from './PrimaryNavbar.module.scss';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PrimaryNavbarProps {}
 
@@ -28,13 +30,15 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
 
   return (
     <nav className="navbar" role="navigation" aria-label="primary navigation">
-      <Link to="/">
-        <div className="navbar-brand">
-          <h1 data-testid="brand-button" className="navbar-item">
-            Journey
-          </h1>
+      <div className="navbar-brand column is-one-third">
+        <div className="navbar-item">
+          <h2 data-testid="brand-button" className="subtitle">
+            <Link className={styles['navbar-brand-link']} to="/">
+              Journey
+            </Link>
+          </h2>
         </div>
-      </Link>
+      </div>
 
       {user.isLoggedIn && (
         <div className="navbar-end">

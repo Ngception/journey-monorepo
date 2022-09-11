@@ -14,8 +14,8 @@ interface ButtonProps {
   isDisabled?: boolean;
   shouldSubmit?: boolean;
   triggerRef?: RefObject<HTMLButtonElement>;
-  clickHandler?: () => void;
   fullWidth?: boolean;
+  clickHandler?: () => void;
 }
 
 export const Button: FC<ButtonProps> = (props: ButtonProps) => {
@@ -49,13 +49,11 @@ export const Button: FC<ButtonProps> = (props: ButtonProps) => {
     return buttonClasses;
   };
 
-  const buttonClasses = setButtonClasses();
-
   return (
     <button
       data-testid={props.testId || 'button'}
       ref={props.triggerRef || undefined}
-      className={buttonClasses}
+      className={setButtonClasses()}
       type={props.shouldSubmit ? 'submit' : 'button'}
       disabled={props.isDisabled}
       onClick={props.clickHandler || undefined}

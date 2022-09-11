@@ -1,0 +1,31 @@
+.button-container {
+  position: relative;
+}
+
+.button-tooltip {
+  position: absolute;
+  z-index: 50;
+}
+
+.tooltip-top {
+  top: -70%;
+}
+
+.tooltip-bottom {
+  bottom: -70%;
+}
+
+.tooltip-left {
+  left: 0;
+  transform: none;
+}
+
+.tooltip-right {
+  right: 0;
+  transform: none;
+}
+
+.tooltip-center {
+  left: 50%;
+  transform: translate(-50%);
+}

@@ -1,5 +1,10 @@
 import { FC, FormEvent, useRef, useState } from 'react';
-import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
+import {
+  Dialog,
+  Icon,
+  TooltipButton,
+  useNotification,
+} from '@journey-monorepo/ui';
 import { ITask } from '@journey-monorepo/util';
 import { deleteAllTasksById, useError } from '../../../shared';
 
@@ -58,16 +63,19 @@ export const DeleteAllTasks: FC<DeleteAllTasksProps> = (
 
   return (
     <>
-      <Button
+      <TooltipButton
         triggerRef={deleteAllTasksTrigger}
-        testId="open-delete-all-tasks-dialog-button"
+        buttonTestId="open-delete-all-tasks-dialog-button"
         color="white"
         label={`Delete all ${props.title} tasks`}
         clickHandler={() => setIsDialogOpen(true)}
         isDisabled={!props.tasks.length}
+        tooltip="Clear all tasks"
+        tooltipColor="dark"
+        tooltipPosition="top-center"
       >
         <Icon type="solid" name="trash-can" />
-      </Button>
+      </TooltipButton>
       <Dialog type="confirmation" dialogProps={dialogProps}>
         <div className="is-flex">
           <span className="mr-2">

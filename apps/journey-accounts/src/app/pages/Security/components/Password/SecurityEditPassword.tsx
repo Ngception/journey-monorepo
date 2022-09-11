@@ -4,6 +4,7 @@ import {
   Dialog,
   Icon,
   PasswordValidator,
+  TooltipButton,
   useNotification,
 } from '@journey-monorepo/ui';
 import {
@@ -98,17 +99,22 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
           />
         </div>
         <div className="control">
-          <Button
+          <TooltipButton
             label={
               isPasswordVisible ? 'Hide new password' : 'Show new password'
             }
+            tooltip={
+              isPasswordVisible ? 'Hide new password' : 'Show new password'
+            }
+            tooltipColor="dark"
+            tooltipPosition="top-center"
             clickHandler={() => setIsPasswordVisible(!isPasswordVisible)}
           >
             <Icon
               type="solid"
               name={!isPasswordVisible ? 'eye' : 'eye-slash'}
             />
-          </Button>
+          </TooltipButton>
         </div>
       </div>
 

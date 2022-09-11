@@ -2,6 +2,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { DropdownItem, DropdownTrigger } from './components';
 import { setFadeOptions } from '../constants';
 import { Animate, AnimateMotion } from '../animate';
+import { TooltipOptions } from '../button/components/Tooltip/TooltipButton';
 
 export interface IDropdownItem {
   label: string;
@@ -17,6 +18,7 @@ interface DropdownProps {
   triggerColor?: string;
   testId?: string;
   isDisabled?: boolean;
+  tooltipOptions?: TooltipOptions;
 }
 
 export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
@@ -57,6 +59,7 @@ export const Dropdown: FC<DropdownProps> = (props: DropdownProps) => {
         dropdownToggler={setIsDropdownVisible}
         dropdownLabel={props.label}
         isDisabled={props.isDisabled as boolean}
+        tooltipOptions={props.tooltipOptions}
       />
       <Animate>
         {isDropdownVisible && (

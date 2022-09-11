@@ -1,5 +1,9 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { FC } from 'react';
+import {
+  TooltipButton,
+  TooltipOptions,
+} from '../../../button/components/Tooltip/TooltipButton';
 import { COLORS } from '../../../constants';
 import { Icon } from '../../../icon';
 
@@ -11,6 +15,7 @@ interface DropdownTriggerProps {
   dropdownLabel: string;
   color?: string;
   isDisabled?: boolean;
+  tooltipOptions?: TooltipOptions;
 }
 
 export const DropdownTrigger: FC<DropdownTriggerProps> = (
@@ -27,26 +32,51 @@ export const DropdownTrigger: FC<DropdownTriggerProps> = (
   const buttonColor = props.color ? COLORS[props.color] : 'is-primary';
 
   return (
-    <div className="dropdown-trigger">
-      <button
-        data-testid="dropdown-trigger"
-        className={`button ${buttonColor}`}
-        aria-haspopup="true"
-        aria-controls="dropdown-menu"
-        aria-description={!props.text ? props.dropdownLabel : undefined}
-        onClick={props.clickHandler}
-        onKeyDown={autoCloseDropdown}
-        disabled={props.isDisabled}
-      >
-        {props.text && (
-          <span data-testid="dropdown-trigger-text">{props.text}</span>
-        )}
-        {props.icon && (
-          <span data-testid="dropdown-trigger-icon" className="icon is-small">
-            <Icon type="solid" name={props.icon as IconName} />
-          </span>
-        )}
-      </button>
+    <div>
+      {props.tooltipOptions ? (
+        <TooltipButton
+          {...props.tooltipOptions}
+          isDisabled={props.isDisabled}
+          clickHandler={props.clickHandler}
+          eventHandlers={{
+            onKeyDown: autoCloseDropdown,
+          }}
+        >
+          {props.text && (
+            <span data-testid="dropdown-trigger-text">{props.text}</span>
+          )}
+          {props.icon && (
+            <span data-testid="dropdown-trigger-icon" className="icon is-small">
+              <Icon type="solid" name={props.icon as IconName} />
+            </span>
+          )}
+        </TooltipButton>
+      ) : (
+        <div className="dropdown-trigger">
+          <button
+            data-testid="dropdown-trigger"
+            className={`button ${buttonColor}`}
+            aria-haspopup="true"
+            aria-controls="dropdown-menu"
+            aria-description={!props.text ? props.dropdownLabel : undefined}
+            onClick={props.clickHandler}
+            onKeyDown={autoCloseDropdown}
+            disabled={props.isDisabled}
+          >
+            {props.text && (
+              <span data-testid="dropdown-trigger-text">{props.text}</span>
+            )}
+            {props.icon && (
+              <span
+                data-testid="dropdown-trigger-icon"
+                className="icon is-small"
+              >
+                <Icon type="solid" name={props.icon as IconName} />
+              </span>
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
