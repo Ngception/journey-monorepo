@@ -33,10 +33,10 @@ export const HomeContainer: FC<HomeContainerProps> = (
           </div>
         </div>
         <div className={styles['scrum-board-graphic']}>
-          <ScrumBoard height={'300px'} width={'300px'} />
+          <ScrumBoard height="100%" width="100%" />
         </div>
         <div className={styles['completed-tasks-graphic']}>
-          <CompletedTasks height={'300px'} width={'300px'} />
+          <CompletedTasks height="100%" width="100%" />
         </div>
       </div>
     </AnimateMotion>
