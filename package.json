@@ -33,6 +33,7 @@
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bulma": "^0.9.4",
+    "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "core-js": "^3.6.5",
     "focus-trap-react": "^8.11.1",
@@ -52,7 +53,8 @@
     "rxjs": "^7.0.0",
     "tslib": "^2.3.0",
     "typeorm": "^0.3.6",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.0",
@@ -82,6 +84,7 @@
     "@types/react-dom": "18.0.3",
     "@types/react-router-dom": "5.3.3",
     "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.7.6",
     "@typescript-eslint/eslint-plugin": "~5.18.0",
     "@typescript-eslint/parser": "~5.18.0",
     "babel-jest": "27.5.1",

@@ -49,7 +49,7 @@ export class AuthService {
 
       if (!user) {
         return {
-          status: 'Unauthorized',
+          status: 'OK',
         };
       }
 
@@ -59,7 +59,7 @@ export class AuthService {
 
       if (resetTokenExists) {
         return {
-          status: 'Conflict',
+          status: 'OK',
         };
       }
 
@@ -79,7 +79,6 @@ export class AuthService {
       });
 
       const passwordResetLink = `reset-password?token=${resetToken}`;
-
       this.emailService.sendPasswordResetEmail(data.email, passwordResetLink);
 
       return {

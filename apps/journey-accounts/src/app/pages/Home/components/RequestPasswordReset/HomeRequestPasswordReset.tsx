@@ -1,10 +1,18 @@
 import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
+import validator from 'validator';
 import {
   AnimateMotion,
   Button,
   Card,
   CardContent,
+  Form,
+  FormControl,
+  FormField,
+  FormFieldError,
+  FormFieldset,
+  FormIcon,
+  FormInput,
   Icon,
   Message,
   MessageBody,
@@ -23,12 +31,29 @@ export const HomeRequestPasswordReset = (
   const [email, setEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
   const [confirmation, setConfirmation] = useState<string>('');
+
+  const validateForm = (): boolean => {
+    if (!email) {
+      setEmailError('Please enter an email address');
+      return false;
+    }
+
+    if (!validator.isEmail(email)) {
+      setEmailError('Please check email address format');
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!email) {
+    setEmailError('');
+
+    if (!validateForm()) {
       return;
     }
 
@@ -48,24 +73,10 @@ export const HomeRequestPasswordReset = (
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      handleError(err);
+      setError('Something went wrong. Please try again later.');
     }
 
     setIsLoading(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleError = (err?: any) => {
-    switch (err?.response?.status) {
-      case 409:
-        setError(
-          'A reset email has already been requested for this email address.'
-        );
-        break;
-      default:
-        setError('Something went wrong. Please try again later.');
-        break;
-    }
   };
 
   return (
@@ -97,38 +108,49 @@ export const HomeRequestPasswordReset = (
             <p className="mb-4">
               Enter your email address to receive a link to reset your password.
             </p>
-            <form onSubmit={handleSubmit}>
-              <div className="field">
-                <div className="control has-icons-left">
-                  <input
-                    data-testid="email-field"
-                    className="input"
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    aria-required="true"
-                    onChange={(event) => setEmail(event?.target.value)}
-                  />
-                  <span className="icon is-small is-left">
-                    <Icon type="solid" name="envelope" />
-                  </span>
-                </div>
-              </div>
-              <div className="field">
-                <div className="control">
-                  <Button
-                    color="primary"
-                    isDisabled={!email || isLoading}
-                    isLoading={isLoading}
-                    fullWidth={true}
-                    shouldSubmit={true}
-                    testId="submit-button"
-                  >
-                    Reset Password
-                  </Button>
-                </div>
-              </div>
-            </form>
+            <Form submitHandler={handleSubmit}>
+              <FormFieldset isDisabled={isLoading}>
+                <FormField>
+                  <FormControl hasIconsLeft={true} hasIconsRight={true}>
+                    <FormInput
+                      testId="email-field"
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      required={true}
+                      isInvalid={emailError ? true : false}
+                      errorMessageId="email-error"
+                      changeHandler={(event) => setEmail(event?.target.value)}
+                    />
+                    <FormIcon size="small" position="left">
+                      <Icon type="solid" name="envelope" />
+                    </FormIcon>
+                    {emailError && (
+                      <FormIcon color="danger" size="small" position="right">
+                        <Icon type="solid" name="exclamation-triangle" />
+                      </FormIcon>
+                    )}
+                  </FormControl>
+                  <FormFieldError id="email-error" isErrorActive={!!emailError}>
+                    {emailError}
+                  </FormFieldError>
+                </FormField>
+                <FormField>
+                  <FormControl>
+                    <Button
+                      color="primary"
+                      isDisabled={!email || isLoading}
+                      isLoading={isLoading}
+                      fullWidth={true}
+                      shouldSubmit={true}
+                      testId="submit-button"
+                    >
+                      Reset Password
+                    </Button>
+                  </FormControl>
+                </FormField>
+              </FormFieldset>
+            </Form>
             <div
               className={`has-text-centered mt-4 pt-4 ${styles['login-register-links']}`}
             >

@@ -37,8 +37,8 @@ describe('HomeLogin', () => {
     loginUser,
   };
   const testCredentials = {
-    email: 'email',
-    password: 'password',
+    email: 'hello@email.com',
+    password: 'abcABC123!@#',
   };
 
   beforeAll(() => {
@@ -74,17 +74,20 @@ describe('HomeLogin', () => {
   });
 
   it('should login user', async () => {
-    jest.spyOn(mocked, 'loginUser').mockResolvedValue({
-      message: 'Success',
-      user: createTestUser(),
-    });
+    jest
+      .spyOn(mocked, 'loginUser')
+      .mockImplementation(jest.fn())
+      .mockResolvedValue({
+        message: 'Success',
+        user: createTestUser(),
+      });
 
-    const emailField = query('email-field');
-    const passwordField = query('password-field');
-    const submitButton = query('submit-button');
+    const emailField = query('email-field'),
+      passwordField = query('password-field'),
+      submitButton = query('submit-button');
 
-    await userEvent.type(emailField, 'email');
-    await userEvent.type(passwordField, 'password');
+    await userEvent.type(emailField, testCredentials.email);
+    await userEvent.type(passwordField, testCredentials.password);
     await userEvent.click(submitButton);
 
     rerender();
@@ -94,19 +97,25 @@ describe('HomeLogin', () => {
   });
 
   it('should display error on failed login', async () => {
-    jest.spyOn(mocked, 'loginUser').mockRejectedValue(new Error());
+    jest
+      .spyOn(mocked, 'loginUser')
+      .mockImplementation(jest.fn())
+      .mockRejectedValue(new Error());
 
-    const emailField = query('email-field');
-    const passwordField = query('password-field');
-    const submitButton = query('submit-button');
+    const emailField = query('email-field'),
+      passwordField = query('password-field'),
+      submitButton = query('submit-button');
+    let errorMessage = query('error-message');
 
-    expect(query('error-message')).toBeNull();
+    expect(errorMessage).toBeNull();
 
-    await userEvent.type(emailField, 'email');
-    await userEvent.type(passwordField, 'password');
+    await userEvent.type(emailField, testCredentials.email);
+    await userEvent.type(passwordField, testCredentials.password);
     await userEvent.click(submitButton);
 
     rerender();
+
+    errorMessage = query('error-message');
 
     expect(mocked.loginUser).toHaveBeenCalledWith(testCredentials);
     expect(query('error-message')).toBeTruthy();

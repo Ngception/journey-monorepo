@@ -3,6 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { MockRouter, NotificationProvider } from '@journey-monorepo/ui';
 import { HomeResetPassword } from './HomeResetPassword';
 import { resetUserPassword } from '../../../../shared';
+import {
+  mockWindowLocation,
+  restoreWindowLocation,
+} from '@journey-monorepo/util';
 
 jest.mock('../../../../shared/api/auth.handler', () => ({
   ...jest.requireActual('../../../../shared/api/auth.handler'),
@@ -10,6 +14,11 @@ jest.mock('../../../../shared/api/auth.handler', () => ({
 }));
 describe('HomeResetPassword', () => {
   let component: HTMLElement, query: any;
+  const originalWindow = global.window;
+
+  beforeAll(() => {
+    mockWindowLocation();
+  });
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
@@ -22,6 +31,10 @@ describe('HomeResetPassword', () => {
 
     component = renderResult.baseElement;
     query = renderResult.queryByTestId;
+  });
+
+  afterAll(() => {
+    restoreWindowLocation(originalWindow);
   });
 
   it('should render', () => {

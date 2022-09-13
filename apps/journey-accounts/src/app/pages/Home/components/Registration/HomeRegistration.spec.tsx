@@ -37,7 +37,7 @@ describe('HomeRegistration', () => {
     createUser,
   };
   const testCredentials = {
-    email: 'email',
+    email: 'hello@email.com',
     password: 'abcABC123!@#',
   };
 
@@ -73,7 +73,7 @@ describe('HomeRegistration', () => {
     expect(query('register-form')).toBeTruthy();
   });
 
-  it('should register user if password passes validation', async () => {
+  it('should register user if email and password passes validation', async () => {
     jest.spyOn(mocked, 'createUser').mockResolvedValue({
       message: 'Success',
       user: createTestUser(),
@@ -93,18 +93,38 @@ describe('HomeRegistration', () => {
     expect(query('error-message')).toBeNull();
   });
 
-  it('should not allow registration if password fails validation', async () => {
-    const emailField = query('email-field');
-    const passwordField = query('password-field');
-    const submitButton = query('submit-button');
+  it('should not allow registration if email fails validation', async () => {
+    const emailField = query('email-field'),
+      passwordField = query('password-field');
+    let submitButton = query('submit-button');
+
+    expect(submitButton.disabled).toBeTruthy();
 
     await userEvent.type(emailField, 'email');
+    await userEvent.type(passwordField, testCredentials.password);
+
+    rerender();
+
+    submitButton = query('submit-button');
+
+    expect(submitButton.disabled).toBeTruthy();
+  });
+
+  it('should not allow registration if password fails validation', async () => {
+    const emailField = query('email-field'),
+      passwordField = query('password-field');
+    let submitButton = query('submit-button');
+
+    expect(submitButton.disabled).toBeTruthy();
+
+    await userEvent.type(emailField, testCredentials.email);
     await userEvent.type(passwordField, 'password');
 
     rerender();
 
-    expect(submitButton.disabled).toEqual(true);
-    expect(query('error-message')).toBeNull();
+    submitButton = query('submit-button');
+
+    expect(submitButton.disabled).toBeTruthy();
   });
 
   it('should display error on failed registration', async () => {

@@ -1,12 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, FormEvent, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import validator from 'validator';
 import { HttpException } from '@nestjs/common';
 import {
   AnimateMotion,
   Button,
   Card,
   CardContent,
+  Form,
+  FormControl,
+  FormField,
+  FormFieldError,
+  FormFieldset,
+  FormIcon,
+  FormInput,
   Icon,
   Message,
   MessageBody,
@@ -35,6 +44,8 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
   const [error, setError] = useState<string>('');
 
   const navigate = useNavigate();
@@ -44,12 +55,34 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
   const { getQueryParam, getQueryString } = useQueryLink();
 
   const from = location.state?.from?.pathname || '/profile';
-  const invalidForm = !email || !password || !isPasswordValid;
+
+  const validateForm = (): boolean => {
+    let errors = 0;
+
+    if (!validator.isEmail(email)) {
+      setEmailError('Please enter valid email');
+      errors++;
+    }
+
+    if (!isPasswordValid) {
+      setPasswordError('Please check password');
+      errors++;
+    }
+
+    if (errors > 0) {
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (invalidForm) {
+    setEmailError('');
+    setPasswordError('');
+
+    if (!validateForm()) {
       return;
     }
 
@@ -57,7 +90,7 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
     setError('');
 
     const data = {
-      email,
+      email: email.toLowerCase(),
       password,
     };
 
@@ -71,19 +104,18 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
         login();
         navigate(from, { replace: true });
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
       setIsLoading(false);
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleError = (err: AxiosError<HttpException>) => {
     switch (err?.response?.status) {
       case 409:
-        setError('Invalid registration. Please try logging in.');
+        setError(
+          'Invalid registration. Please check your registration credentials.'
+        );
         break;
       default:
         setError('Something went wrong. Please try again later.');
@@ -108,86 +140,130 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
                 </Message>
               </div>
             )}
-            <form
-              data-testid="register-form"
-              onSubmit={(event) => handleSubmit(event)}
+
+            <Form
+              testId="register-form"
+              submitHandler={(event) => handleSubmit(event)}
             >
-              <div className="field">
-                <div className="control has-icons-left">
-                  <input
-                    data-testid="email-field"
-                    className={`input ${error ? 'is-danger' : ''}`}
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    aria-required="true"
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                  <span className="icon is-small is-left">
-                    <Icon type="solid" name="envelope" />
-                  </span>
-                </div>
-              </div>
-
-              <div className="field has-addons">
-                <div className="control has-icons-left is-expanded">
-                  <input
-                    data-testid="password-field"
-                    className={`input ${error ? 'is-danger' : ''}`}
-                    name="password"
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    placeholder="Password"
-                    aria-required="true"
-                    onChange={(event) => setPassword(event?.target.value)}
-                  />
-                  <span className="icon is-small is-left">
-                    <Icon type="solid" name="lock" />
-                  </span>
-                </div>
-                <div className="control">
-                  <TooltipButton
-                    clickHandler={() =>
-                      setIsPasswordVisible(!isPasswordVisible)
-                    }
-                    label={
-                      isPasswordVisible ? 'Hide Password' : 'Show password'
-                    }
-                    tooltip={
-                      isPasswordVisible ? 'Hide Password' : 'Show password'
-                    }
-                    tooltipColor="dark"
-                    tooltipPosition="top-center"
-                  >
-                    <Icon
-                      type="solid"
-                      name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+              <FormFieldset isDisabled={isLoading}>
+                <FormField>
+                  <FormControl hasIconsLeft={true} hasIconsRight={true}>
+                    <FormInput
+                      testId="email-field"
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      required={true}
+                      isInvalid={emailError ? true : false}
+                      errorMessageId="email-error"
+                      changeHandler={(event) =>
+                        setEmail(event.target.value.toLowerCase())
+                      }
                     />
-                  </TooltipButton>
-                </div>
-              </div>
-
-              <div className="my-3">
-                <PasswordValidator
-                  password={password}
-                  onValidPasswordHandler={setIsPasswordValid}
-                />
-              </div>
-
-              <div className="field">
-                <div className="control">
-                  <Button
-                    testId="submit-button"
-                    color="primary"
-                    isDisabled={invalidForm || isLoading}
-                    isLoading={isLoading}
-                    shouldSubmit={true}
-                    fullWidth={true}
+                    <FormIcon size="small" position="left">
+                      <Icon type="solid" name="envelope" />
+                    </FormIcon>
+                    {emailError && (
+                      <FormIcon color="danger" size="small" position="right">
+                        <Icon type="solid" name="exclamation-triangle" />
+                      </FormIcon>
+                    )}
+                  </FormControl>
+                  <FormFieldError
+                    testId="email-errror"
+                    id="email-error"
+                    isErrorActive={!!emailError}
                   >
-                    Register
-                  </Button>
+                    {emailError}
+                  </FormFieldError>
+                </FormField>
+
+                <FormField>
+                  <FormField hasAddons={true}>
+                    <FormControl
+                      hasIconsLeft={true}
+                      hasIconsRight={true}
+                      isExpanded={true}
+                    >
+                      <FormInput
+                        testId="password-field"
+                        name="password"
+                        type={isPasswordVisible ? 'text' : 'password'}
+                        placeholder="Password"
+                        required={true}
+                        isInvalid={passwordError ? true : false}
+                        errorMessageId="password-error"
+                        changeHandler={(event) =>
+                          setPassword(event.target.value)
+                        }
+                      />
+                      <FormIcon size="small" position="left">
+                        <Icon type="solid" name="lock" />
+                      </FormIcon>
+
+                      {passwordError && (
+                        <FormIcon size="small" position="right" color="danger">
+                          <Icon type="solid" name="exclamation-triangle" />
+                        </FormIcon>
+                      )}
+                    </FormControl>
+                    <FormControl>
+                      <TooltipButton
+                        clickHandler={() =>
+                          setIsPasswordVisible(!isPasswordVisible)
+                        }
+                        label={
+                          isPasswordVisible ? 'Hide Password' : 'Show password'
+                        }
+                        tooltip={
+                          isPasswordVisible ? 'Hide Password' : 'Show password'
+                        }
+                        tooltipColor="dark"
+                        tooltipPosition="top-center"
+                      >
+                        <Icon
+                          type="solid"
+                          name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+                        />
+                      </TooltipButton>
+                    </FormControl>
+                  </FormField>
+                  <FormFieldError
+                    data-testid="password-error"
+                    id="password-error"
+                    isErrorActive={!!passwordError}
+                  >
+                    {passwordError}
+                  </FormFieldError>
+                </FormField>
+
+                <div className="my-3">
+                  <PasswordValidator
+                    password={password}
+                    onValidPasswordHandler={setIsPasswordValid}
+                  />
                 </div>
-              </div>
+
+                <FormField>
+                  <FormControl>
+                    <Button
+                      testId="submit-button"
+                      color="primary"
+                      isDisabled={
+                        !validator.isEmail(email) ||
+                        !isPasswordValid ||
+                        isLoading
+                      }
+                      isLoading={isLoading}
+                      shouldSubmit={true}
+                      fullWidth={true}
+                    >
+                      Register
+                    </Button>
+                  </FormControl>
+                </FormField>
+              </FormFieldset>
               <div
                 className={`has-text-centered mt-4 pt-2 ${styles['login-link']}`}
               >
@@ -201,7 +277,7 @@ export const HomeRegistration: FC<HomeRegistrationProps> = (
                   Already have an account?
                 </Link>
               </div>
-            </form>
+            </Form>
           </div>
         </CardContent>
       </Card>

@@ -2,6 +2,10 @@ import { FC, useRef, useState } from 'react';
 import {
   Button,
   Dialog,
+  FormControl,
+  FormField,
+  FormInput,
+  FormLabel,
   Icon,
   PasswordValidator,
   TooltipButton,
@@ -81,24 +85,23 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
   return (
     <div>
       <h2 className="subtitle">Change your password</h2>
-      <label className="label" htmlFor="new-pw">
+      <FormLabel controlId="new-pw">
         New Password <sup className="has-text-danger">*</sup>
-      </label>
+      </FormLabel>
 
-      <div className="field has-addons">
-        <div className="control is-expanded">
-          <input
-            data-testid="new-password-field"
-            className="input"
+      <FormField hasAddons={true}>
+        <FormControl isExpanded={true}>
+          <FormInput
+            testId="new-password-field"
             type={isPasswordVisible ? 'text' : 'password'}
             placeholder="Enter new password"
             id="new-pw"
             name="new"
-            aria-required="true"
-            onChange={(event) => setNewPassword(event.target.value)}
+            required={true}
+            changeHandler={(event) => setNewPassword(event.target.value)}
           />
-        </div>
-        <div className="control">
+        </FormControl>
+        <FormControl>
           <TooltipButton
             label={
               isPasswordVisible ? 'Hide new password' : 'Show new password'
@@ -115,15 +118,15 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
               name={!isPasswordVisible ? 'eye' : 'eye-slash'}
             />
           </TooltipButton>
-        </div>
-      </div>
+        </FormControl>
+      </FormField>
 
       <PasswordValidator
         password={newPassword}
         onValidPasswordHandler={setIsPasswordValid}
       />
-      <div className="field">
-        <div className="control">
+      <FormField>
+        <FormControl>
           <div className={styles['save-button']}>
             <Button
               triggerRef={changePasswordTrigger}
@@ -151,8 +154,8 @@ export const SecurityEditPassword: FC<SecurityEditPasswordProps> = (
               </div>
             </Dialog>
           </div>
-        </div>
-      </div>
+        </FormControl>
+      </FormField>
     </div>
   );
 };

@@ -4104,6 +4104,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/validator@npm:^13.7.6":
+  version: 13.7.6
+  resolution: "@types/validator@npm:13.7.6"
+  checksum: f860dd87bc5f90cc33d2802cf2a4da307ddac63c86d86b858a85dd62d457c8fa42fc8756e05b5d24e741376debc13d46ed14bc700006bf7d0cb910118022492b
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.5.1":
   version: 8.5.3
   resolution: "@types/ws@npm:8.5.3"
@@ -5637,6 +5644,16 @@ __metadata:
   version: 1.2.2
   resolution: "cjs-module-lexer@npm:1.2.2"
   checksum: 977f3f042bd4f08e368c890d91eecfbc4f91da0bc009a3c557bc4dfbf32022ad1141244ac1178d44de70fc9f3dea7add7cd9a658a34b9fae98a55d8f92331ce5
+  languageName: node
+  linkType: hard
+
+"class-validator@npm:^0.13.2":
+  version: 0.13.2
+  resolution: "class-validator@npm:0.13.2"
+  dependencies:
+    libphonenumber-js: ^1.9.43
+    validator: ^13.7.0
+  checksum: 0deb4c29faa18345f6989fd7eaaaa07b05caae5298603fcd6485531c6daad503e5d2b24cc1342e4fc88ae5ba0acffdc24d0fc333110ef3f21a667cd8a79e1258
   languageName: node
   linkType: hard
 
@@ -9722,12 +9739,14 @@ __metadata:
     "@types/react-dom": 18.0.3
     "@types/react-router-dom": 5.3.3
     "@types/uuid": ^8.3.4
+    "@types/validator": ^13.7.6
     "@typescript-eslint/eslint-plugin": ~5.18.0
     "@typescript-eslint/parser": ~5.18.0
     axios: ^0.27.2
     babel-jest: 27.5.1
     bcrypt: ^5.0.1
     bulma: ^0.9.4
+    class-validator: ^0.13.2
     cookie-parser: ^1.4.6
     core-js: ^3.6.5
     cypress: ^9.1.0
@@ -9764,6 +9783,7 @@ __metadata:
     typeorm: ^0.3.6
     typescript: ~4.6.2
     uuid: ^8.3.2
+    validator: ^13.7.0
   languageName: unknown
   linkType: soft
 
@@ -10130,6 +10150,13 @@ __metadata:
     prelude-ls: ~1.1.2
     type-check: ~0.3.2
   checksum: 0d084a524231a8246bb10fec48cdbb35282099f6954838604f3c7fc66f2e16fa66fd9cc2f3f20a541a113c4dafdf181e822c887c8a319c9195444e6c64ac395e
+  languageName: node
+  linkType: hard
+
+"libphonenumber-js@npm:^1.9.43":
+  version: 1.10.13
+  resolution: "libphonenumber-js@npm:1.10.13"
+  checksum: a1740bbed8faa1adb4ae01dda6a7c16b4fd2917efdd9bafac53fa06d9e4b53dc67543d282f7fd0043649edddc0f03359448a17adb837e534358c7ba92c7dc268
   languageName: node
   linkType: hard
 
@@ -14817,6 +14844,13 @@ __metadata:
     convert-source-map: ^1.6.0
     source-map: ^0.7.3
   checksum: 54ce92bec2727879626f623d02c8d193f0c7e919941fa373ec135189a8382265117f5316ea317a1e12a5f9c13d84d8449052a731fe3306fa4beaafbfa4cab229
+  languageName: node
+  linkType: hard
+
+"validator@npm:^13.7.0":
+  version: 13.7.0
+  resolution: "validator@npm:13.7.0"
+  checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
   languageName: node
   linkType: hard
 

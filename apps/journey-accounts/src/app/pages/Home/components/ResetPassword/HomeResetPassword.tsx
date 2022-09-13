@@ -5,6 +5,13 @@ import {
   Button,
   Card,
   CardContent,
+  Form,
+  FormControl,
+  FormField,
+  FormFieldError,
+  FormFieldset,
+  FormIcon,
+  FormInput,
   Icon,
   Message,
   MessageBody,
@@ -30,13 +37,12 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
   const effectCalled = useRef(false);
 
   const navigate = useNavigate();
   const { getQueryParam } = useQueryLink();
   const { showErrorNotification, showSuccessNotification } = useNotification();
-
-  const invalidForm = !password || !getQueryParam('token');
 
   useEffect(() => {
     if (effectCalled.current) {
@@ -46,6 +52,21 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
     effectCalled.current = true;
     handleResetToken();
   }, []);
+
+  const validateForm = (): boolean => {
+    let errors = 0;
+
+    if (!isPasswordValid) {
+      setPasswordError('Please check password');
+      errors++;
+    }
+
+    if (errors > 0) {
+      return false;
+    }
+
+    return true;
+  };
 
   const handleResetToken = async () => {
     const token = getQueryParam('token');
@@ -71,7 +92,7 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (invalidForm) {
+    if (!validateForm()) {
       return;
     }
 
@@ -126,64 +147,87 @@ export const HomeResetPassword: FC<HomeResetPasswordProps> = (
                 </div>
               )}
             </div>
-            <form onSubmit={(event) => handleSubmit(event)}>
-              <div className="field has-addons">
-                <div className="control has-icons-left is-expanded">
-                  <input
-                    data-testid="password-field"
-                    className={`input ${error ? 'is-danger' : ''}`}
-                    name="password"
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    placeholder="Password"
-                    aria-required="true"
-                    onChange={(event) => setPassword(event?.target.value)}
+            <Form submitHandler={(event) => handleSubmit(event)}>
+              <FormFieldset isDisabled={isLoading}>
+                <FormField>
+                  <FormField hasAddons={true}>
+                    <FormControl
+                      hasIconsLeft={true}
+                      hasIconsRight={true}
+                      isExpanded={true}
+                    >
+                      <FormInput
+                        testId="password-field"
+                        name="password"
+                        type={isPasswordVisible ? 'text' : 'password'}
+                        placeholder="Password"
+                        required={true}
+                        isInvalid={passwordError ? true : false}
+                        errorMessageId="password-error"
+                        changeHandler={(event) =>
+                          setPassword(event?.target.value)
+                        }
+                      />
+                      <FormIcon size="small" position="left">
+                        <Icon type="solid" name="lock" />
+                      </FormIcon>
+                      {passwordError && (
+                        <FormIcon size="small" position="right" color="danger">
+                          <Icon type="solid" name="exclamation-triangle" />
+                        </FormIcon>
+                      )}
+                    </FormControl>
+                    <FormControl>
+                      <TooltipButton
+                        clickHandler={() =>
+                          setIsPasswordVisible(!isPasswordVisible)
+                        }
+                        label={
+                          isPasswordVisible ? 'Hide Password' : 'Show password'
+                        }
+                        tooltip={
+                          isPasswordVisible ? 'Hide Password' : 'Show password'
+                        }
+                        tooltipColor="dark"
+                        tooltipPosition="top-center"
+                      >
+                        <Icon
+                          type="solid"
+                          name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+                        />
+                      </TooltipButton>
+                    </FormControl>
+                  </FormField>
+                  <FormFieldError
+                    id="password-error"
+                    isErrorActive={!!passwordError}
+                  >
+                    {passwordError}
+                  </FormFieldError>
+                </FormField>
+
+                <div className="my-3">
+                  <PasswordValidator
+                    password={password}
+                    onValidPasswordHandler={setIsPasswordValid}
                   />
-                  <span className="icon is-small is-left">
-                    <Icon type="solid" name="lock" />
-                  </span>
                 </div>
-                <div className="control">
-                  <TooltipButton
-                    clickHandler={() =>
-                      setIsPasswordVisible(!isPasswordVisible)
-                    }
-                    label={
-                      isPasswordVisible ? 'Hide Password' : 'Show password'
-                    }
-                    tooltip={
-                      isPasswordVisible ? 'Hide Password' : 'Show password'
-                    }
-                    tooltipColor="dark"
-                    tooltipPosition="bottom-center"
-                  >
-                    <Icon
-                      type="solid"
-                      name={!isPasswordVisible ? 'eye' : 'eye-slash'}
-                    />
-                  </TooltipButton>
-                </div>
-              </div>
-              <div className="my-3">
-                <PasswordValidator
-                  password={password}
-                  onValidPasswordHandler={setIsPasswordValid}
-                />
-              </div>
-              <div className="field">
-                <div className="control">
-                  <Button
-                    testId="submit-button"
-                    color="primary"
-                    isDisabled={invalidForm || isLoading}
-                    isLoading={isLoading}
-                    shouldSubmit={true}
-                    fullWidth={true}
-                  >
-                    Save Password
-                  </Button>
-                </div>
-              </div>
-            </form>
+                <FormField>
+                  <FormControl>
+                    <Button
+                      testId="submit-button"
+                      color="primary"
+                      isDisabled={!isPasswordValid || isLoading}
+                      isLoading={isLoading}
+                      shouldSubmit={true}
+                      fullWidth={true}
+                    >
+                      Save Password
+                    </Button>
+                  </FormControl>
+                </FormField>
+              </FormFieldset>
+            </Form>
           </div>
         </CardContent>
       </Card>

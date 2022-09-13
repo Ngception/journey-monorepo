@@ -11,6 +11,7 @@ export * from './lib/constants';
 export * from './lib/dialog';
 export * from './lib/dropdown';
 export * from './lib/error';
+export * from './lib/form';
 export * from './lib/icon';
 export * from './lib/layout';
 export * from './lib/loader';

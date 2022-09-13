@@ -11,8 +11,25 @@ export const COLORS: Record<string, string> = {
   text: 'is-text',
 };
 
+export const TEXT_COLORS: Record<string, string> = {
+  primary: 'has-text-primary',
+  link: 'has-text-link',
+  info: 'has-text-info',
+  success: 'has-text-success',
+  warning: 'has-text-warning',
+  danger: 'has-text-danger',
+  light: 'has-text-light',
+  white: 'has-text-white',
+  dark: 'has-text-dark',
+};
+
 export const SIZES: Record<string, string> = {
   small: 'is-small',
   medium: 'is-medium',
   large: 'is-large',
+};
+
+export const POSITIONS: Record<string, string> = {
+  left: 'is-left',
+  right: 'is-right',
 };

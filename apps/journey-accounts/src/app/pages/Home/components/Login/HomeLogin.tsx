@@ -1,6 +1,7 @@
 import { FC, FormEvent, useState } from 'react';
 import { Link, Location, useLocation, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import validator from 'validator';
 import { HttpException } from '@nestjs/common';
 import {
   AnimateMotion,
@@ -12,6 +13,14 @@ import {
   MessageBody,
   setFadeOptions,
   TooltipButton,
+  containsSpaces,
+  Form,
+  FormField,
+  FormControl,
+  FormInput,
+  FormIcon,
+  FormFieldError,
+  FormFieldset,
 } from '@journey-monorepo/ui';
 import { loginUser, useAuth, useQueryLink, useUser } from '../../../../shared';
 
@@ -31,6 +40,8 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
   const [error, setError] = useState<string>('');
 
   const navigate = useNavigate();
@@ -40,12 +51,34 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
   const { getQueryParam, getQueryString } = useQueryLink();
 
   const from = location.state?.from?.pathname || '/profile';
-  const invalidForm = !email || !password;
+
+  const validateForm = (): boolean => {
+    let errors = 0;
+
+    setEmailError('');
+    setPasswordError('');
+
+    if (!validator.isEmail(email)) {
+      setEmailError('Please enter valid email');
+      errors++;
+    }
+
+    if (!password || containsSpaces(password)) {
+      setPasswordError('Please enter password');
+      errors++;
+    }
+
+    if (errors > 0) {
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (invalidForm) {
+    if (!validateForm()) {
       return;
     }
 
@@ -104,79 +137,111 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
                 </Message>
               </div>
             )}
-            <form
-              data-testid="login-form"
-              onSubmit={(event) => handleSubmit(event)}
-            >
-              <div className="field">
-                <div className="control has-icons-left">
-                  <input
-                    data-testid="email-field"
-                    className={`input ${error ? 'is-danger' : ''}`}
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    aria-required="true"
-                    onChange={(event) => setEmail(event.target.value)}
-                  />
-                  <span className="icon is-small is-left">
-                    <Icon type="solid" name="envelope" />
-                  </span>
-                </div>
-              </div>
-
-              <div className="field has-addons">
-                <div className="control has-icons-left is-expanded">
-                  <input
-                    data-testid="password-field"
-                    className={`input ${error ? 'is-danger' : ''}`}
-                    name="password"
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    placeholder="Password"
-                    aria-required="true"
-                    onChange={(event) => setPassword(event?.target.value)}
-                  />
-                  <span className="icon is-small is-left">
-                    <Icon type="solid" name="lock" />
-                  </span>
-                </div>
-                <div className="control">
-                  <TooltipButton
-                    clickHandler={() =>
-                      setIsPasswordVisible(!isPasswordVisible)
-                    }
-                    label={
-                      isPasswordVisible ? 'Hide Password' : 'Show password'
-                    }
-                    tooltip={
-                      isPasswordVisible ? 'Hide Password' : 'Show password'
-                    }
-                    tooltipColor="dark"
-                    tooltipPosition="top-center"
-                  >
-                    <Icon
-                      type="solid"
-                      name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+            <Form testId="login-form" submitHandler={handleSubmit}>
+              <FormFieldset isDisabled={isLoading}>
+                <FormField>
+                  <FormControl hasIconsLeft={true} hasIconsRight={true}>
+                    <FormInput
+                      testId="email-field"
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      required={true}
+                      isInvalid={emailError ? true : false}
+                      errorMessageId="email-error"
+                      changeHandler={(event) =>
+                        setEmail(event.target.value.toLowerCase())
+                      }
                     />
-                  </TooltipButton>
-                </div>
-              </div>
+                    <FormIcon size="small" position="left">
+                      <Icon type="solid" name="envelope" />
+                    </FormIcon>
+                    {emailError && (
+                      <FormIcon color="danger" size="small" position="right">
+                        <Icon type="solid" name="exclamation-triangle" />
+                      </FormIcon>
+                    )}
+                  </FormControl>
+                  <FormFieldError id="email-error" isErrorActive={!!emailError}>
+                    {emailError}
+                  </FormFieldError>
+                </FormField>
 
-              <div className="field">
-                <div className="control">
-                  <Button
-                    testId="submit-button"
-                    color="primary"
-                    isDisabled={invalidForm || isLoading}
-                    isLoading={isLoading}
-                    shouldSubmit={true}
-                    fullWidth={true}
+                <FormField>
+                  <FormField hasAddons={true}>
+                    <FormControl
+                      hasIconsLeft={true}
+                      hasIconsRight={true}
+                      isExpanded={true}
+                    >
+                      <FormInput
+                        testId="password-field"
+                        name="password"
+                        type={isPasswordVisible ? 'text' : 'password'}
+                        placeholder="Password"
+                        required={true}
+                        isInvalid={passwordError ? true : false}
+                        errorMessageId="password-error"
+                        changeHandler={(event) =>
+                          setPassword(event?.target.value)
+                        }
+                      />
+                      <FormIcon size="small" position="left">
+                        <Icon type="solid" name="lock" />
+                      </FormIcon>
+
+                      {passwordError && (
+                        <FormIcon color="danger" size="small" position="right">
+                          <Icon type="solid" name="exclamation-triangle" />
+                        </FormIcon>
+                      )}
+                    </FormControl>
+
+                    <FormControl>
+                      <TooltipButton
+                        clickHandler={() =>
+                          setIsPasswordVisible(!isPasswordVisible)
+                        }
+                        label={
+                          isPasswordVisible ? 'Hide Password' : 'Show password'
+                        }
+                        tooltip={
+                          isPasswordVisible ? 'Hide Password' : 'Show password'
+                        }
+                        tooltipColor="dark"
+                        tooltipPosition="top-center"
+                      >
+                        <Icon
+                          type="solid"
+                          name={!isPasswordVisible ? 'eye' : 'eye-slash'}
+                        />
+                      </TooltipButton>
+                    </FormControl>
+                  </FormField>
+                  <FormFieldError
+                    id="password-error"
+                    isErrorActive={!!passwordError}
                   >
-                    Login
-                  </Button>
-                </div>
-              </div>
+                    {passwordError}
+                  </FormFieldError>
+                </FormField>
+
+                <FormField>
+                  <FormControl>
+                    <Button
+                      testId="submit-button"
+                      color="primary"
+                      isDisabled={!email || !password || isLoading}
+                      isLoading={isLoading}
+                      shouldSubmit={true}
+                      fullWidth={true}
+                    >
+                      Login
+                    </Button>
+                  </FormControl>
+                </FormField>
+              </FormFieldset>
               <div
                 className={`is-flex is-justify-content-space-between mt-4 pt-4 ${styles['register-link']}`}
               >
@@ -196,7 +261,7 @@ export const HomeLogin: FC<HomeLoginProps> = (props: HomeLoginProps) => {
                   Forgot password?
                 </Link>
               </div>
-            </form>
+            </Form>
           </div>
         </CardContent>
       </Card>
