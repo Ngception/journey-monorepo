@@ -13,6 +13,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserAccessTokenService } from '../token/user-access/user-access.service';
 import { UserAccessTokenModule } from '../token/user-access/user-access.module';
+import { ConfigModule } from '@nestjs/config';
 
 describe('UserController', () => {
   let userService: UserService;
@@ -37,7 +38,12 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [AuthUtilModule, EmailModule, UserAccessTokenModule],
+      imports: [
+        AuthUtilModule,
+        EmailModule,
+        UserAccessTokenModule,
+        ConfigModule,
+      ],
       controllers: [UserController],
       providers: [
         UserService,

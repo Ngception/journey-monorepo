@@ -9,7 +9,11 @@ import { ControllerUtilModule } from './shared/controller/controller.util.module
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env/accounts-db.env' }),
+    ConfigModule.forRoot({
+      envFilePath: ['.env/accounts-db.env', 'apps/accounts-api/.env'],
+      isGlobal: true,
+      cache: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DB_URL,

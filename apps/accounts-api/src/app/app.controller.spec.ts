@@ -15,6 +15,7 @@ import { ResetPasswordTokenService } from './modules/token/reset-password/reset-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ControllerUtilService } from './shared/controller/controller.util.service';
+import { ConfigModule } from '@nestjs/config';
 
 describe('AppController', () => {
   let app: TestingModule,
@@ -50,6 +51,7 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
+      imports: [ConfigModule],
       controllers: [AppController],
       providers: [
         AppService,

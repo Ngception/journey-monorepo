@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
@@ -11,11 +12,17 @@ export class ResetPasswordTokenService {
   constructor(
     @InjectRepository(ResetPasswordToken)
     private repo: Repository<ResetPasswordToken>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private configService: ConfigService
   ) {}
 
   createToken(payload: { token_id: string; user_id: string }): string {
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign(payload, {
+      expiresIn:
+        parseInt(
+          this.configService.get('NX_RESET_PASSWORD_TOKEN_EXPIRATION')
+        ) || 300,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

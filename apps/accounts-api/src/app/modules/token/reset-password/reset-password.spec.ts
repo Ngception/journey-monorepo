@@ -4,16 +4,19 @@ import { Test } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { ResetPasswordToken } from './reset-password.entity';
 import { ResetPasswordTokenService } from './reset-password.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 describe('ResetPasswordTokenService', () => {
   let resetPasswordTokenService: ResetPasswordTokenService,
     jwtService: JwtService,
+    configService: ConfigService,
     resetPasswordTokenRepository: Repository<ResetPasswordToken>;
 
   const date = new Date();
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [ConfigModule],
       providers: [
         ResetPasswordTokenService,
         JwtService,
@@ -33,6 +36,7 @@ describe('ResetPasswordTokenService', () => {
       ResetPasswordTokenService
     );
     jwtService = module.get<JwtService>(JwtService);
+    configService = module.get<ConfigService>(ConfigService);
     resetPasswordTokenRepository = module.get<Repository<ResetPasswordToken>>(
       getRepositoryToken(ResetPasswordToken)
     );
@@ -57,7 +61,11 @@ describe('ResetPasswordTokenService', () => {
       const JWT = resetPasswordTokenService.createToken(mockPayload);
 
       expect(JWT).toEqual(mockJWT);
-      expect(jwtService.sign).toHaveBeenCalledWith(mockPayload);
+      expect(jwtService.sign).toHaveBeenCalledWith(mockPayload, {
+        expiresIn: parseInt(
+          configService.get('NX_RESET_PASSWORD_TOKEN_EXPIRATION')
+        ),
+      });
     });
   });
 

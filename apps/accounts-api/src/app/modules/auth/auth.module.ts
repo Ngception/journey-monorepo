@@ -4,9 +4,10 @@ import { EmailModule } from '../email/email.module';
 import { UserModule } from '../user/user.module';
 import { JwtStrategy, LocalStrategy } from './strategies';
 import { AuthService } from './auth.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, EmailModule, TokenModule],
+  imports: [UserModule, EmailModule, TokenModule, ConfigModule],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })

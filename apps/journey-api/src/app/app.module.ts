@@ -7,7 +7,9 @@ import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env/journey-db.env' }),
+    ConfigModule.forRoot({
+      envFilePath: ['.env/journey-db.env', 'apps/journey-api/.env'],
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DB_URL,

@@ -13,6 +13,7 @@ import { ResetPasswordToken } from '../token/reset-password/reset-password.entit
 import { ResetPasswordTokenService } from '../token/reset-password/reset-password.service';
 import { EmailService } from '../email/email.service';
 import { AuthService } from './auth.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 describe('AuthService', () => {
   let authService: AuthService,
@@ -26,6 +27,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [ConfigModule],
       providers: [
         UserService,
         AuthUtilService,

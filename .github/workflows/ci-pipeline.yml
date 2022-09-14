@@ -21,4 +21,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn test
+        env:
+          NX_RESET_PASSWORD_TOKEN_EXPIRATION: ${{secrets.NX_RESET_PASSWORD_TOKEN_EXPIRATION}}
+          NX_USER_ACCESS_TOKEN_EXPIRATION: ${{secrets.NX_USER_ACCESS_TOKEN_EXPIRATION}}
       - run: echo "🍏 This job's status is ${{ job.status }}."

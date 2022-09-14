@@ -20,14 +20,56 @@ import { JwtAuthGuard, LocalAuthGuard } from './modules/auth/guards';
 import { AuthService } from './modules/auth/auth.service';
 import { AppService } from './app.service';
 import { ControllerUtilService } from './shared/controller/controller.util.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private authService: AuthService,
-    private controllerUtilService: ControllerUtilService
+    private readonly authService: AuthService,
+    private readonly controllerUtilService: ControllerUtilService,
+    private readonly configService: ConfigService
   ) {}
+
+  @Get('status')
+  getStatus() {
+    return this.appService.getStatus();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('auth/status')
+  getAuthStatus(@NestJSRequest() request) {
+    const { user_id, email, created_at } = request.user;
+
+    return {
+      ...this.authService.getAuthStatus(),
+      user: {
+        user_id,
+        email,
+        created_at,
+      },
+    };
+  }
+
+  @Post('auth/logout')
+  logout(
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: Request
+  ) {
+    if (request.signedCookies['user']) {
+      response.clearCookie('user', {
+        domain: this.configService.get('NX_COOKIE_DOMAIN'),
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: true,
+        signed: true,
+      });
+    }
+
+    return {
+      message: 'success',
+    };
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
@@ -40,16 +82,16 @@ export class AppController {
 
     if (access_token) {
       const currentDate = new Date();
+      const expiration =
+        parseInt(this.configService.get('NX_COOKIE_EXPIRATION')) || 300000;
 
       response.cookie('user', access_token, {
-        domain: process.env['NX_COOKIE_DOMAIN'],
+        domain: this.configService.get('NX_COOKIE_DOMAIN'),
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
         signed: true,
-        expires: new Date(
-          currentDate.getTime() + parseInt(process.env['NX_COOKIE_EXPIRATION'])
-        ),
+        expires: new Date(currentDate.getTime() + expiration),
       });
 
       return {
@@ -69,22 +111,11 @@ export class AppController {
 
   @Post('auth/login/password/reset')
   async requestPasswordReset(@Body() data: RequestUserPasswordResetDto) {
-    if (!data) {
+    if (!data.email) {
       throw new BadRequestException();
     }
 
     const res = await this.authService.sendPasswordResetLink(data);
-
-    if (res.status === 'OK') {
-      return res;
-    } else {
-      this.controllerUtilService.handleStatus(res.status);
-    }
-  }
-
-  @Get('auth/login/password/reset/:id')
-  async verifyResetToken(@Param('id') token: string) {
-    const res = await this.authService.verifyResetToken(token);
 
     if (res.status === 'OK') {
       return res;
@@ -104,43 +135,14 @@ export class AppController {
     }
   }
 
-  @Post('auth/logout')
-  logout(
-    @Res({ passthrough: true }) response: Response,
-    @Req() request: Request
-  ) {
-    if (request.signedCookies['user']) {
-      response.clearCookie('user', {
-        domain: process.env['NX_COOKIE_DOMAIN'],
-        httpOnly: true,
-        sameSite: 'strict',
-        secure: true,
-        signed: true,
-      });
+  @Get('auth/login/password/reset/:id')
+  async verifyResetToken(@Param('id') token: string) {
+    const res = await this.authService.verifyResetToken(token);
+
+    if (res.status === 'OK') {
+      return res;
+    } else {
+      this.controllerUtilService.handleStatus(res.status);
     }
-
-    return {
-      message: 'success',
-    };
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('auth/status')
-  getAuthStatus(@NestJSRequest() request) {
-    const { user_id, email, created_at } = request.user;
-
-    return {
-      ...this.authService.getAuthStatus(),
-      user: {
-        user_id,
-        email,
-        created_at,
-      },
-    };
-  }
-
-  @Get('status')
-  getStatus() {
-    return this.appService.getStatus();
   }
 }

@@ -10,6 +10,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from '../auth/guards';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
@@ -17,7 +18,10 @@ import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly configService: ConfigService
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -42,16 +46,16 @@ export class UserController {
 
     if (access_token) {
       const currentDate = new Date();
+      const expiration =
+        parseInt(this.configService.get('NX_COOKIE_EXPIRATION')) || 300000;
 
       response.cookie('user', access_token, {
-        domain: process.env['NX_COOKIE_DOMAIN'],
+        domain: this.configService.get('NX_COOKIE_DOMAIN'),
         httpOnly: true,
         sameSite: 'strict',
         secure: true,
         signed: true,
-        expires: new Date(
-          currentDate.getTime() + parseInt(process.env['NX_COOKIE_EXPIRATION'])
-        ),
+        expires: new Date(currentDate.getTime() + expiration),
       });
 
       return {

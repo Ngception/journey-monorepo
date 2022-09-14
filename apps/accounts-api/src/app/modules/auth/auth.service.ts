@@ -5,6 +5,7 @@ import { LoginUserDto, RequestUserPasswordResetDto } from '../user/user.dto';
 import { EmailService } from '../email/email.service';
 import { ResetPasswordTokenService } from '../token/reset-password/reset-password.service';
 import { UserAccessTokenService } from '../token/user-access/user-access.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,8 @@ export class AuthService {
     private userService: UserService,
     private emailService: EmailService,
     private userAccessTokenService: UserAccessTokenService,
-    private resetPasswordTokenService: ResetPasswordTokenService
+    private resetPasswordTokenService: ResetPasswordTokenService,
+    private configService: ConfigService
   ) {}
 
   async validateUser(
@@ -64,13 +66,13 @@ export class AuthService {
       }
 
       const currentDate = new Date();
+      const expiration =
+        parseInt(this.configService.get('NX_RESET_PASSWORD_LINK_EXPIRATION')) ||
+        300000;
 
       const tokenId = await this.resetPasswordTokenService.saveToken({
         user_id: user.user_id,
-        expires_at: new Date(
-          currentDate.getTime() +
-            parseInt(process.env['NX_RESET_PASSWORD_LINK_EXPIRATION'])
-        ),
+        expires_at: new Date(currentDate.getTime() + expiration),
       });
 
       const resetToken = this.resetPasswordTokenService.createToken({
