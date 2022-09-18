@@ -5,6 +5,7 @@ import { createTask, createTasks } from '@journey-monorepo/util';
 import { TaskController } from './task.controller';
 import { Task } from './task.entity';
 import { TaskService } from './task.service';
+import { Repository } from 'typeorm';
 
 describe('TaskController', () => {
   let taskService: TaskService;
@@ -20,29 +21,7 @@ describe('TaskController', () => {
         TaskService,
         {
           provide: getRepositoryToken(Task),
-          useValue: {
-            find: jest.fn().mockResolvedValue([task]),
-            findOneBy: jest.fn().mockResolvedValue(task),
-            create: jest.fn().mockResolvedValue(task),
-            insert: jest
-              .fn()
-              .mockResolvedValue({ identifiers: [{ task_id: 'uuid' }] }),
-            update: jest.fn().mockResolvedValue({
-              affected: 1,
-            }),
-            delete: jest.fn().mockResolvedValue({
-              affected: 1,
-            }),
-            getAllTasks: jest.fn(),
-            getTaskById: jest.fn(),
-            createTask: jest.fn(),
-            updateTaskById: jest.fn(),
-            deleteTaskbyId: jest.fn(),
-            deleteAllTasksById: jest.fn(),
-            save: jest.fn().mockResolvedValue({
-              affected: tasks.length,
-            }),
-          },
+          useValue: Repository,
         },
       ],
     }).compile();
@@ -53,16 +32,22 @@ describe('TaskController', () => {
 
   describe('GET', () => {
     it('should get all tasks', async () => {
-      jest.spyOn(taskService, 'getAllTasks');
+      jest
+        .spyOn(taskService, 'getAllTasks')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(tasks);
 
       const res = await taskController.getAllTasks();
 
       expect(taskService.getAllTasks).toHaveBeenCalled();
-      expect(res).toEqual([task]);
+      expect(res).toEqual(tasks);
     });
 
     it('should get a single task by id', async () => {
-      jest.spyOn(taskService, 'getTaskById');
+      jest
+        .spyOn(taskService, 'getTaskById')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(task);
 
       const res = await taskController.getTaskById('id');
 
@@ -73,7 +58,10 @@ describe('TaskController', () => {
 
   describe('POST', () => {
     it('should create a single task', async () => {
-      jest.spyOn(taskService, 'createTask');
+      jest
+        .spyOn(taskService, 'createTask')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue('uuid');
 
       const data = {
         content: 'test content',
@@ -90,7 +78,10 @@ describe('TaskController', () => {
 
   describe('PATCH', () => {
     it('should update a single task by id', async () => {
-      jest.spyOn(taskService, 'updateTaskById');
+      jest
+        .spyOn(taskService, 'updateTaskById')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(1);
 
       const data = {
         content: 'updated content',
@@ -104,7 +95,10 @@ describe('TaskController', () => {
     });
 
     it('should update multiple tasks', async () => {
-      jest.spyOn(taskService, 'updateTasks');
+      jest
+        .spyOn(taskService, 'updateTasks')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(tasks.length);
 
       const res = await taskController.updateTasks(tasks);
 
@@ -115,7 +109,10 @@ describe('TaskController', () => {
 
   describe('DELETE', () => {
     it('should delete a single task by id', async () => {
-      jest.spyOn(taskService, 'deleteTaskById');
+      jest
+        .spyOn(taskService, 'deleteTaskById')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(1);
 
       const res = await taskController.deleteTaskById('uuid');
 
@@ -128,6 +125,7 @@ describe('TaskController', () => {
 
       jest
         .spyOn(taskService, 'deleteAllTasksById')
+        .mockImplementation(jest.fn())
         .mockResolvedValue(tasksIds.length);
 
       const res = await taskController.deleteAllTasksById(tasksIds);
