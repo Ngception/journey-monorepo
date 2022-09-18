@@ -16,25 +16,22 @@ import { UserAccessTokenModule } from '../token/user-access/user-access.module';
 import { ConfigModule } from '@nestjs/config';
 
 describe('UserController', () => {
-  let userService: UserService;
-  let userController: UserController;
-  let userRepository: Repository<User>;
-  let userAccessTokenService: UserAccessTokenService;
+  let userService: UserService,
+    userController: UserController,
+    userAccessTokenService: UserAccessTokenService;
 
-  const user = createUser();
-  const date = new Date();
-
-  const responseObject = {
-    status: 201,
-    message: 'success',
-  };
-
-  const mockResponse: Partial<Response> = {
-    status: jest.fn().mockImplementation().mockReturnValue(201),
-    json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-    cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
-    clearCookie: jest.fn(),
-  };
+  const user = createUser(),
+    date = new Date(),
+    responseObject = {
+      status: 201,
+      message: 'success',
+    },
+    mockResponse: Partial<Response> = {
+      status: jest.fn().mockImplementation().mockReturnValue(201),
+      json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+      cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
+      clearCookie: jest.fn(),
+    };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -50,25 +47,7 @@ describe('UserController', () => {
         EmailService,
         {
           provide: getRepositoryToken(User),
-          useValue: {
-            find: jest.fn().mockResolvedValue([user]),
-            findOneBy: jest.fn(),
-            create: jest.fn().mockResolvedValue(user),
-            insert: jest
-              .fn()
-              .mockResolvedValue({ identifiers: [{ user_id: 'uuid' }] }),
-            update: jest.fn().mockResolvedValue({
-              affected: 1,
-            }),
-            delete: jest.fn().mockResolvedValue({
-              affected: 1,
-            }),
-            getAllUsers: jest.fn(),
-            getUserById: jest.fn(),
-            createUser: jest.fn(),
-            updateUserById: jest.fn(),
-            deleteUserById: jest.fn(),
-          },
+          useValue: Repository,
         },
       ],
     })
@@ -78,7 +57,6 @@ describe('UserController', () => {
 
     userService = module.get<UserService>(UserService);
     userController = module.get<UserController>(UserController);
-    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     userAccessTokenService = module.get<UserAccessTokenService>(
       UserAccessTokenService
     );
@@ -89,8 +67,7 @@ describe('UserController', () => {
 
   describe('GET', () => {
     it('should get a single user by id', async () => {
-      jest.spyOn(userService, 'getUserById');
-      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(user);
+      jest.spyOn(userService, 'getUserById').mockResolvedValue(user);
 
       const res = await userController.getUserById('id');
 
@@ -101,16 +78,22 @@ describe('UserController', () => {
 
   describe('POST', () => {
     it('should create a single user', async () => {
-      jest
-        .spyOn(userAccessTokenService, 'createToken')
-        .mockReturnValue('token');
-      jest.spyOn(userService, 'createUser');
-      jest.spyOn(userRepository, 'findOneBy').mockResolvedValue(null);
-
       const data = {
         email: 'testemail',
         password: 'testpassword',
       };
+
+      jest
+        .spyOn(userAccessTokenService, 'createToken')
+        .mockReturnValue('token');
+      jest
+        .spyOn(userService, 'createUser')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue({
+          user_id: 'uuid',
+          access_token: 'token',
+          created_at: date,
+        });
 
       const res = await userController.createUser(
         data,
@@ -134,7 +117,10 @@ describe('UserController', () => {
   describe('PATCH', () => {
     it('should update a single user by id', async () => {
       jest.restoreAllMocks();
-      jest.spyOn(userService, 'updateUserById');
+      jest
+        .spyOn(userService, 'updateUserById')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(1);
 
       const data = {
         password: 'newpassword',
@@ -150,7 +136,10 @@ describe('UserController', () => {
 
   describe('DELETE', () => {
     it('should delete a single user by id', async () => {
-      jest.spyOn(userService, 'deleteUserById');
+      jest
+        .spyOn(userService, 'deleteUserById')
+        .mockImplementation(jest.fn())
+        .mockResolvedValue(1);
 
       const res = await userController.deleteUserById('uuid');
 

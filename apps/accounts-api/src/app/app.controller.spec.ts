@@ -23,31 +23,28 @@ describe('AppController', () => {
     authService: AuthService;
 
   const responseObject = {
-    status: 201,
-    message: 'success',
-  };
-
-  const date = new Date();
-
-  const mockResponse: Partial<Response> = {
-    status: jest.fn().mockImplementation().mockReturnValue(201),
-    json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-    cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
-    clearCookie: jest.fn(),
-  };
-
-  const mockRequest: Partial<Request> = {
-    body: jest.fn().mockImplementation().mockReturnValue({}),
-    signedCookies: {
-      user: {},
+      status: 201,
+      message: 'success',
     },
-    user: {
-      access_token: 'token',
-      user_id: 'uuid',
-      email: 'email',
-      created_at: date,
+    date = new Date(),
+    mockResponse: Partial<Response> = {
+      status: jest.fn().mockImplementation().mockReturnValue(201),
+      json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+      cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
+      clearCookie: jest.fn(),
     },
-  };
+    mockRequest: Partial<Request> = {
+      body: jest.fn().mockImplementation().mockReturnValue({}),
+      signedCookies: {
+        user: {},
+      },
+      user: {
+        access_token: 'token',
+        user_id: 'uuid',
+        email: 'email',
+        created_at: date,
+      },
+    };
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
