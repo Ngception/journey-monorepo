@@ -8,11 +8,10 @@ import { TaskService } from './task.service';
 import { Repository } from 'typeorm';
 
 describe('TaskController', () => {
-  let taskService: TaskService;
-  let taskController: TaskController;
+  let taskService: TaskService, taskController: TaskController;
 
-  const task = createTask();
-  const tasks = createTasks();
+  const task = createTask(),
+    tasks = createTasks();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({

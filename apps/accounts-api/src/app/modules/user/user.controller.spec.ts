@@ -20,20 +20,18 @@ describe('UserController', () => {
     userController: UserController,
     userAccessTokenService: UserAccessTokenService;
 
-  const user = createUser();
-  const date = new Date();
-
-  const responseObject = {
-    status: 201,
-    message: 'success',
-  };
-
-  const mockResponse: Partial<Response> = {
-    status: jest.fn().mockImplementation().mockReturnValue(201),
-    json: jest.fn().mockImplementation().mockReturnValue(responseObject),
-    cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
-    clearCookie: jest.fn(),
-  };
+  const user = createUser(),
+    date = new Date(),
+    responseObject = {
+      status: 201,
+      message: 'success',
+    },
+    mockResponse: Partial<Response> = {
+      status: jest.fn().mockImplementation().mockReturnValue(201),
+      json: jest.fn().mockImplementation().mockReturnValue(responseObject),
+      cookie: jest.fn().mockImplementation().mockReturnValue('cookie'),
+      clearCookie: jest.fn(),
+    };
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
