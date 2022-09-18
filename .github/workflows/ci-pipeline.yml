@@ -1,6 +1,9 @@
 name: CI Pipeline
 
-on: [pull_request]
+on:
+  pull_request:
+    paths-ignore:
+      - 'apps/golang-journey-api/**'
 
 jobs:
   test:
