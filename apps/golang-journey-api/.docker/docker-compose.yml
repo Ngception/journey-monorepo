@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  journey-db:
+    container_name: journey-db
+    env_file:
+      - ../.env/db.env
+    image: 'postgres:latest'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+    networks:
+      - journey-api
+    restart: unless-stopped
+  journey-api:
+    container_name: journey-api
+    env_file:
+      - ../.env/api.env
+    build:
+      context: ../.
+      dockerfile: .docker/api/dockerfile
+    volumes:
+      - ../.:/go/src/github.com/golang-journey-api
+    ports:
+      - '8080:8080'
+    depends_on:
+      journey-db:
+        condition: service_healthy
+    networks:
+      - journey-api
+    restart: unless-stopped
+networks:
+  journey-api:
+    driver: bridge
