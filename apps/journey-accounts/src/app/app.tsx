@@ -53,14 +53,11 @@ export function App() {
         <NotificationProvider>
           <UserProvider>
             <ErrorProvider>
-              <LayoutHeader>
-                <div className={styles['skip-link']}>
-                  <SkipLink clickHandler={skipToMainContent}>
-                    Skip to main content
-                  </SkipLink>
-                </div>
-                <PrimaryNavbar />
-              </LayoutHeader>
+              <div className={styles['skip-link']}>
+                <SkipLink clickHandler={skipToMainContent}>
+                  Skip to main content
+                </SkipLink>
+              </div>
               <AppRoutes />
               <div className={styles['notification-container']}>
                 <Notification />
