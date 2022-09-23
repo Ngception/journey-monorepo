@@ -66,7 +66,6 @@ describe('PrimaryNavbar', () => {
 
   it('should render', () => {
     expect(component).toBeTruthy();
-    expect(query('brand-button')).toBeTruthy();
   });
 
   it('should hide buttons if user is not logged in', () => {
