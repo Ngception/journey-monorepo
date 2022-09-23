@@ -32,11 +32,7 @@ export const PrimaryNavbar: FC<PrimaryNavbarProps> = (
     <nav className="navbar" role="navigation" aria-label="primary navigation">
       <div className="navbar-brand column is-one-third">
         <div className="navbar-item">
-          <h2 data-testid="brand-button" className="subtitle">
-            <Link className={styles['navbar-brand-link']} to="/">
-              Journey
-            </Link>
-          </h2>
+          <h2 className="subtitle">Journey</h2>
         </div>
       </div>
 
