@@ -13,6 +13,7 @@ import { ProfileRoutes } from './pages/Profile/Profile.routes';
 import { SecurityRoutes } from './pages/Security/Security.routes';
 import { AuthGuard } from './components/Auth/AuthGuard';
 import { AsideNavbar } from './components/Nav/Aside/AsideNavbar';
+import { PrimaryNavbar } from './components/Nav/Primary/PrimaryNavbar';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AppRoutesProps {}
@@ -36,6 +37,7 @@ export const AppRoutes: FC<AppRoutesProps> = (props: AppRoutesProps) => {
             <Route
               element={
                 <Layout
+                  primaryNavbar={<PrimaryNavbar />}
                   aside={<AsideNavbar />}
                   body={
                     <Animate>
