@@ -6,17 +6,22 @@ import {
   MockRouter,
   NotificationProvider,
 } from '@journey-monorepo/ui';
-import { AuthProvider, deleteUser, UserProvider } from '../../../../shared';
+import {
+  AuthProvider,
+  deleteUser,
+  deleteTasksByUserId,
+  UserProvider,
+} from '../../../../shared';
 import { AccountPreferencesDeleteAccount } from './AccountPreferencesDeleteAccount';
 
 // Mock utils module to be able mock certain methods
 jest.mock('../../../../shared', () => ({
   ...jest.requireActual('../../../../shared'),
   deleteUser: jest.fn().mockResolvedValue({ message: 'success' }),
+  deleteTasksByUserId: jest.fn(),
 }));
 describe('AccountPreferencesDeleteAccount', () => {
-  let component: HTMLElement;
-  let query: any;
+  let component: HTMLElement, query: any;
 
   beforeEach(() => {
     const renderResult: RenderResult = render(
@@ -42,9 +47,8 @@ describe('AccountPreferencesDeleteAccount', () => {
   });
 
   it('should delete account', async () => {
-    const mocked = { deleteUser };
-
-    const deleteAccountDialogTrigger = query('delete-account-dialog-trigger');
+    const mocked = { deleteUser, deleteTasksByUserId },
+      deleteAccountDialogTrigger = query('delete-account-dialog-trigger');
 
     expect(deleteAccountDialogTrigger).toBeTruthy();
 
@@ -62,5 +66,6 @@ describe('AccountPreferencesDeleteAccount', () => {
     await userEvent.click(confirmButton);
 
     expect(mocked.deleteUser).toHaveBeenCalled();
+    expect(mocked.deleteTasksByUserId).toHaveBeenCalled();
   });
 });
