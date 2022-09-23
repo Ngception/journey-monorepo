@@ -1,6 +1,12 @@
 import { FC, FormEvent, useRef, useState } from 'react';
 import { Button, Dialog, Icon, useNotification } from '@journey-monorepo/ui';
-import { deleteUser, useError, useLogout, useUser } from '../../../../shared';
+import {
+  deleteTasksByUserId,
+  deleteUser,
+  useError,
+  useLogout,
+  useUser,
+} from '../../../../shared';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AccountPreferencesDeleteAccountProps {}
@@ -34,10 +40,12 @@ export const AccountPreferencesDeleteAccount: FC<
       await deleteUser({
         user_id: user.user_id,
       });
+      await deleteTasksByUserId(user.user_id);
 
       setIsDialogOpen(false);
       showSuccessNotification('Account has been successfully deleted.');
       handleLogout();
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       handleError(err);
