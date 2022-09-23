@@ -2,8 +2,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { HttpException } from '@nestjs/common';
 import { ICreateUser, IDeleteUser, IUpdateUser } from '@journey-monorepo/util';
 
-const AAPI_BASE_URL = process.env['NX_AAPI_BASE_URL'];
-const JAPI_BASE_URL = process.env['NX_JAPI_BASE_URL'];
+const AAPI_BASE_URL = process.env['NX_AAPI_BASE_URL'],
+  JAPI_BASE_URL = process.env['NX_JAPI_BASE_URL'];
 
 export const handleError = (error: AxiosError<HttpException>) => {
   return error?.response?.data;
