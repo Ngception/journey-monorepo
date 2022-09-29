@@ -6,17 +6,22 @@ export default {
   component: Button,
   parameters: {
     controls: {
-      exclude: [
-        'testId',
-        'description',
-        'label',
-        'triggerRef',
-        'shouldSubmit',
-        'clickHandler',
+      include: [
+        'children',
+        'color',
+        'size',
+        'outline',
+        'inverted',
+        'loading',
+        'disabled',
+        'full width',
       ],
     },
   },
   argTypes: {
+    children: {
+      name: 'text',
+    },
     color: {
       options: [
         'primary',
@@ -36,11 +41,14 @@ export default {
       options: ['default', 'small', 'medium', 'large'],
       control: 'select',
     },
-    outline: {
-      control: 'boolean',
+    isLoading: {
+      name: 'loading',
     },
-    inverted: {
-      control: 'boolean',
+    isDisabled: {
+      name: 'disabled',
+    },
+    fullWidth: {
+      name: 'full width',
     },
   },
 } as ComponentMeta<typeof Button>;
