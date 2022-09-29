@@ -8,6 +8,7 @@
     "start:aapi": "nx serve accounts-api",
     "start:ui": "nx serve journey-ui",
     "start:japi": "nx serve journey-api",
+    "start:storybook": "nx run ui:storybook",
     "start:all": "nx run-many --target=serve --all --maxParallel=4",
     "build": "nx build",
     "test": "nx run-many --all --target=test",
