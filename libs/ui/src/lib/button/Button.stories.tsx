@@ -53,11 +53,11 @@ export default {
   },
 } as ComponentMeta<typeof Button>;
 
-export const Primary: ComponentStory<typeof Button> = (args) => (
+export const Default: ComponentStory<typeof Button> = (args) => (
   <Button {...args}>{args.children}</Button>
 );
 
-Primary.args = {
+Default.args = {
   children: 'Click',
   color: 'link',
   size: 'default',
