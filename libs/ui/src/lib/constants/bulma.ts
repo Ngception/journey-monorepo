@@ -1,3 +1,16 @@
+export const COLOR_KEYS: string[] = [
+  'primary',
+  'link',
+  'info',
+  'success',
+  'warning',
+  'danger',
+  'light',
+  'white',
+  'dark',
+  'text',
+];
+
 export const COLORS: Record<string, string> = {
   primary: 'is-primary',
   link: 'is-link',
