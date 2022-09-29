@@ -2,7 +2,7 @@
 
 ## About
 
-This monorepo houses applications, services, and libraries related to the Journey project; a task management application. Journey's frontend is built using Typescript with React components and Bulma styling. The backend services are built using Nestjs.
+This monorepo houses applications, services, and libraries for the Journey project; a task management application. Journey's frontend is built using Typescript with React components and Bulma styling. The backend services are built using Nestjs.
 
 This project is constantly being improved over time with plans for adding new features, apps, and services or translate existing ones using alternative libraries and languages that may include:
 
@@ -64,6 +64,12 @@ Start development server for a specific app:
 
 ```
   APP=app-name yarn start
+```
+
+Start storybook for UI library:
+
+```
+  yarn run start:storybook
 ```
 
 Shutdown project databases:
