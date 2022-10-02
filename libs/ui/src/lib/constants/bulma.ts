@@ -1,3 +1,16 @@
+export const COLOR_KEYS: string[] = [
+  'primary',
+  'link',
+  'info',
+  'success',
+  'warning',
+  'danger',
+  'light',
+  'white',
+  'dark',
+  'text',
+];
+
 export const COLORS: Record<string, string> = {
   primary: 'is-primary',
   link: 'is-link',
@@ -22,6 +35,8 @@ export const TEXT_COLORS: Record<string, string> = {
   white: 'has-text-white',
   dark: 'has-text-dark',
 };
+
+export const SIZE_KEYS: string[] = ['small', 'medium', 'large'];
 
 export const SIZES: Record<string, string> = {
   small: 'is-small',
