@@ -64,7 +64,7 @@ describe('UserService', () => {
       UserAccessTokenService
     );
 
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
     jest.setSystemTime(date);
   });
 
