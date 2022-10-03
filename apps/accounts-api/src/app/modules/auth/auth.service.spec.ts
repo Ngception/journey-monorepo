@@ -58,7 +58,7 @@ describe('AuthService', () => {
       ResetPasswordTokenService
     );
 
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
     jest.setSystemTime(date);
   });
 

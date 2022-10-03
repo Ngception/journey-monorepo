@@ -41,7 +41,7 @@ describe('ResetPasswordTokenService', () => {
       getRepositoryToken(ResetPasswordToken)
     );
 
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
     jest.setSystemTime(date);
   });
 
