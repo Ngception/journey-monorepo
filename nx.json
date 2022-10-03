@@ -25,14 +25,6 @@
       }
     }
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "generators": {
     "@nrwl/react": {
       "application": {
@@ -49,5 +41,10 @@
       }
     }
   },
-  "defaultProject": "journey-ui"
+  "defaultProject": "journey-ui",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
+  }
 }
