@@ -61,7 +61,7 @@ describe('UserController', () => {
       UserAccessTokenService
     );
 
-    jest.useFakeTimers();
+    jest.useFakeTimers('modern');
     jest.setSystemTime(date);
   });
 
